@@ -10,9 +10,7 @@ export function meta({ }: Route.MetaArgs) {
 
 export default function TopLevelLayout() {
 	return (
-		<div className="grow flex flex-col justify-start bg-lime-200">
-			<h1>Toad Website</h1>
-			<p>Yayyyy its toading time!</p>
+		<div className="grow flex flex-col justify-stretch items-stretch bg-lime-200">
 			<Outlet />
 		</div>
 	);
