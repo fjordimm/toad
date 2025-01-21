@@ -7,6 +7,7 @@ export default function Sidebar() {
 			<Link to="/" className="underline text-blue-800 visited:text-purple-800">Home</Link>
 			<Link to="/page-b" className="underline text-blue-800 visited:text-purple-800">Page B</Link>
 			<Link to="/page-c" className="underline text-blue-800 visited:text-purple-800">Page C</Link>
+			<Link to="/create-trip" className="underline text-blue-800 visited:text-purple-800">Create New Trip</Link>
 		</div>
 	);
 }

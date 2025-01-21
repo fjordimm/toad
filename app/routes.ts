@@ -5,7 +5,8 @@ export default [
 		layout("components/pages/main-layout.tsx", [
 			index("components/pages/landing.tsx"),
 			route("/page-b", "components/pages/page-b.tsx"),
-			route("/page-c", "components/pages/page-c.tsx")
+			route("/page-c", "components/pages/page-c.tsx"),
+			route("/create-trip", "components/pages/CreateTrip/index.tsx")
 		])
 	])
 ] satisfies RouteConfig;
