@@ -14,6 +14,8 @@ const handleFunnyButtonPress: FormEventHandler<HTMLFormElement> = async (event) 
 	} else {
 		console.log("Couldn't do it.");
 	}
+
+	console.log("Done with button handling.");
 }
 
 export default function Sidebar() {
