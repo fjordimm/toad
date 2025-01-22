@@ -1,3 +1,9 @@
+import { Form } from "react-router";
+import type { Route } from "./+types/landing";
+
+async function testBruh() {
+	console.log("Yipeeeeeeeeee weheeeeeeeeeeee!");
+}
 
 export default function Landing() {
 	return (
