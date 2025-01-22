@@ -16,6 +16,12 @@ export default {
 					'"Noto Color Emoji"',
 				],
 			},
+			colors: {
+				dashboard_lime: "#AECF83",
+				sidebar_deep_green: "#3D5846",
+				sidebar_button_bg: "#4E6A55",
+				dashboard_component_bg: "#9DBD7A",
+			},
 		},
 	},
 	plugins: [],
