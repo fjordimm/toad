@@ -15,6 +15,8 @@ export default {
 					'"Segoe UI Symbol"',
 					'"Noto Color Emoji"',
 				],
+				'maven': ['"Maven Pro"', 'sans-serif'],
+        		'sunflower': ['"Sunflower"', 'sans-serif'],
 			},
 			colors: {
 				dashboard_lime: "#AECF83",
