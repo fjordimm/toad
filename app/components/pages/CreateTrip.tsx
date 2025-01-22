@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import calendarIcon from '../../../assets/calendarIcon.svg'
+import calendarIcon from '../../assets/calendarIcon.svg'
 
 
 
-const CreateApplication = () =>{
+const CreateTrip = () =>{
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -36,6 +36,7 @@ const CreateApplication = () =>{
                                 type="text" 
                                 id="TripName" 
                                 name="TripName" 
+                                required
                                 placeholder="Name Your Trip"
                                 onChange={(e) => setTripName(e.target.value)}
                                 className="w-full min-w-32 bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0  border-b-2 border-[#FFF]/50"
@@ -50,6 +51,7 @@ const CreateApplication = () =>{
                                     type="date" 
                                     id="startDate" 
                                     name="startDate" 
+                                    required
                                     placeholder="Start Date"
                                     onChange={(e) => setStartDate(e.target.value)}
                                     className="w-40 min-w-32 bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0  border-b-2 border-[#FFF]/50"
@@ -62,6 +64,7 @@ const CreateApplication = () =>{
                                     id="endDate" 
                                     name="endDate" 
                                     placeholder="End Date"
+                                    required
                                     onChange={(e) => setEndDate(e.target.value)}
                                     className="w-40 min-w-32 bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0  border-b-2 border-[#FFF]/50"
                                 />
@@ -82,4 +85,4 @@ const CreateApplication = () =>{
     )
 }
 
-export default CreateApplication
+export default CreateTrip
