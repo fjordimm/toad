@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import calendarIcon from '../../assets/calendarIcon.svg'
+import calendarIcon from '../../../public/calendarIcon.svg'
+import {firebaseDb} from "../../src/toadFirebase"
+import { collection, addDoc } from 'firebase/firestore';
 
 
 
@@ -9,13 +11,46 @@ const CreateTrip = () =>{
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        console.log({
-            tripName: tripName,
-            startDate: startDate,
-            endDate: endDate
-        });
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try{
+
+            // Add a trip to the 'trips' collection
+            const tripRef = await addDoc(collection(firebaseDb, "trips"), {
+                tripName: tripName,
+                startDate: startDate,
+                endDate: endDate,
+                createdAt: new Date(), 
+                tripOwner: "",
+                days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
+              });
+            
+            // Users Field
+            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_users"), {
+                placeholder: "",      
+            });
+            // Invited Users Field
+            await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
+                placeholder: "",      
+            });
+
+            // Itinerary
+            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_itinerary"), {
+                placeholder: "",      
+            });
+
+            // Expenses
+            await addDoc(collection(firebaseDb, "trips", tripRef.id, "expenses"), {
+                placeholder: "",  
+            });
+
+            setTripName('');
+            setStartDate('');
+            setEndDate('');
+        }
+        catch (error) {
+            console.error("Error adding trip: ", error);
+        }
     };
 
 
@@ -36,6 +71,7 @@ const CreateTrip = () =>{
                                 type="text" 
                                 id="TripName" 
                                 name="TripName" 
+                                value={tripName}
                                 required
                                 placeholder="Name Your Trip"
                                 onChange={(e) => setTripName(e.target.value)}
@@ -52,6 +88,7 @@ const CreateTrip = () =>{
                                     id="startDate" 
                                     name="startDate" 
                                     required
+                                    value={startDate}
                                     placeholder="Start Date"
                                     onChange={(e) => setStartDate(e.target.value)}
                                     className="w-40 min-w-32 bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0  border-b-2 border-[#FFF]/50"
@@ -63,6 +100,7 @@ const CreateTrip = () =>{
                                     type="date" 
                                     id="endDate" 
                                     name="endDate" 
+                                    value={endDate}
                                     placeholder="End Date"
                                     required
                                     onChange={(e) => setEndDate(e.target.value)}
