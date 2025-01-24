@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import emailicon from 'app/assets/mail.svg'
-import lock from 'app/assets/lock.svg'
-import globe from 'app/assets/globe.svg'
+import emailicon from '../../../public/mail.svg'
+import lock from '../../../public/lock.svg'
+import globe from '../../../public/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { firebaseAuth, firebaseDb } from '../../../src/toadFirebase'
+import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
 
 const SignInPage = () => {
 
@@ -30,14 +30,16 @@ const SignInPage = () => {
             // }
             setEmail('');
             setPassword('');
+            setError('');
         } catch (err: any) {
             if(err.code === 'auth/user-not-found') {
                 setError('The email you entered does not belong to any account!');
+                setEmail('');
+                setPassword('');
             } else if(err.code === 'auth/wrong-password') {
                 setError('The password you entered is incorrect.');
+                setPassword('');
             }
-            setEmail('');
-            setPassword('');
         }
     }
 

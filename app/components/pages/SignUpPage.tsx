@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import emailicon from 'app/assets/mail.svg'
-import lock from 'app/assets/lock.svg'
-import globe from 'app/assets/globe.svg'
-import person from 'app/assets/person.svg'
+import emailicon from '../../../public/mail.svg'
+import lock from '../../../public/lock.svg'
+import globe from '../../../public/globe.svg'
+import person from '../../../public/person.svg'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { firebaseAuth, firebaseDb } from '../../../src/toadFirebase'
+import { doc, addDoc, setDoc, collection} from 'firebase/firestore';
+import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
 const SignUpPage = () => {
 
     const [email, setEmail] = useState('');
@@ -27,9 +27,18 @@ const SignUpPage = () => {
                 email: email,
                 first_name: fname,
                 last_name: lname,
-                trips: [], 
-                trip_invites: []
+                // trips: [], 
+                // trip_invites: []
             });
+
+            /*This creates new empty collections for user trips and invited trips. Can also do with an array, but did with a collection for now*/
+            await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
+                placeholder: "",      
+            });
+            await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
+                placeholder: "",      
+            });
+            
         } catch(err: any) {
             if(err.code === 'auth/email-already-in-use') {
                 setError('Email already in use! Sign In.');
