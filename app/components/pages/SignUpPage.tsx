@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import emailicon from '../../../public/mail.svg'
-import lock from '../../../public/lock.svg'
-import globe from '../../../public/globe.svg'
-import person from '../../../public/person.svg'
+import emailicon from '/mail.svg'
+import lock from '/lock.svg'
+import globe from '/globe.svg'
+import person from '/person.svg'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, addDoc, setDoc, collection} from 'firebase/firestore';
-import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
+import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
+
 const SignUpPage = () => {
 
     const [email, setEmail] = useState('');
@@ -86,7 +87,7 @@ const SignUpPage = () => {
             }}>To Outline A Destination</p>
         <div style={{justifyItems: "center", alignItems: "center", marginTop: "-30px"}}>
             {/*already have account link to sign in page*/}
-            <p className="font-maven text-white">Already have an account?{" "} <a href="your-link-here" className="font-bold text-white underline">Sign In.</a></p>
+            <p className="font-maven text-white">Already have an account?{" "} <a href="/sign-in" className="font-bold text-white underline">Sign In.</a></p>
             {/*form*/}
             <form style={{
                 display: "flex",

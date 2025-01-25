@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import emailicon from '../../../public/mail.svg'
-import lock from '../../../public/lock.svg'
-import globe from '../../../public/globe.svg'
+import emailicon from '/mail.svg'
+import lock from '/lock.svg'
+import globe from '/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
@@ -104,7 +104,7 @@ const SignInPage = () => {
             <p className="font-maven" style={{ color: "white"}}>
               Don't have an account?{" "}
               <a
-                href="your-link-here"
+                href="/sign-up"
                 style={{
                   fontWeight: "bold",
                   color: "white",

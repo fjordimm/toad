@@ -1,7 +1,7 @@
 import calendarIcon from '/calendarIcon.svg';
-import React, { useState } from "react";
-import TripButton from './TripsButton'
-import InvitationButton from './InvitationButton';
+import TripButton from './MenuBar/TripsButton'
+import InvitationButton from './MenuBar/InvitationButton';
+import { useState } from 'react';
 
 function MenuBar(props: {name: string; }){
     
@@ -17,7 +17,7 @@ function MenuBar(props: {name: string; }){
             {open ? (
             <div>
                 <h1 className="text-center">Insert Logo Here :3</h1>
-                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {props.user}</h1>
+                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {props.name}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <TripButton name="Portland" num={0}></TripButton>
                 <TripButton name="Tahoe" num={1}></TripButton>
