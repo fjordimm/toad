@@ -2,10 +2,39 @@ import calendarIcon from '/calendarIcon.svg';
 import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
 import { useState } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
+import { firebaseDb } from '~/src/toadFirebase';
+import type { Route } from '../pages/+types/MainLayout';
 
-function MenuBar(props: {name: string; }){
+export default function MenuBar(props: {name: string; }) {
+
+	// console.log("Yipeeeee");
+	// const fireauthUser = getAuth().currentUser;
+	// console.log(getAuth().currentUser);
+	// const bruh: string = fireauthUser?.email as string;
+	// console.log(bruh);
+	// const asdfhsdjfh: string = "billmularski@gmail.com";
+	// const docThing = getDoc(doc(firebaseDb, 'users', bruh));
+	// docThing.then((result) => { console.log(result.data()) });
+
+	onAuthStateChanged(getAuth(), (authUser) => {
+		if (authUser) {
+			console.log("Bro is logged in:");
+
+			const emailId: string = authUser.email as string;
+			console.log(`Email: ${emailId}`);
+
+			const docPromise: Promise<DocumentSnapshot> = getDoc(doc(firebaseDb, "users", emailId));
+			docPromise.then((result: DocumentSnapshot) => {
+				console.log(result.data()?.first_name);
+			});
+		} else {
+			console.log("Bro is NOT logged in.");
+		}
+	});
     
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <div className={`${
@@ -25,15 +54,15 @@ function MenuBar(props: {name: string; }){
                     <button className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</button>
                     <span className="ml-2 pt-1 text-white text-sm font-sunflower">Create New Trip</span>
                 </div>
-                <h3 className='text-center text-center text-white font-sunflower text-base px-4'>Invitations</h3>
+                <h3 className='text-center text-white font-sunflower text-base px-4'>Invitations</h3>
                 <InvitationButton name="Japan"></InvitationButton>
                 <InvitationButton name="Europe 2024"></InvitationButton>
 
                 <div className='flex justify-center my-4 pt-24'>
-                <button className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
+                <a href="/sign-in" className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
                     <span className='absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75'></span>
                     <span className='relative text-center text-white font-sunflower text-lg'>Log Out</span>
-                </button>
+                </a>
             </div>
             </div>
             ) : null}
@@ -41,4 +70,3 @@ function MenuBar(props: {name: string; }){
     )
 
 }
-export default MenuBar
