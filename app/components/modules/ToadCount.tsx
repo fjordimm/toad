@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ToadMember from "./members";
 import { Form } from "react-router";
+import ToadMember from "./ToadCount/ToadMembers";
 
-const ToadCountComponent: React.FC = () => {
+const ToadCount: React.FC = () => {
   const [email, setEmail] = useState("");
 
   function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -50,7 +50,7 @@ const ToadCountComponent: React.FC = () => {
 		  	</Form>
         </div>
         {/* Delete Trip Button */}
-        <div className="mt-7 flex flex-col items-center">
+        <div className="mt-10 flex flex-col items-center">
             <button
               onClick={() => console.log("Trip deleted")}
               className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
@@ -63,4 +63,4 @@ const ToadCountComponent: React.FC = () => {
   );
 };
 
-export default ToadCountComponent;
+export default ToadCount;

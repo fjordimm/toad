@@ -6,8 +6,6 @@ export default [
 		route("/sign-up", "components/pages/SignUpPage.tsx"),
 		layout("components/pages/MainLayout.tsx", [
 			index("components/pages/Landing.tsx"),
-			route("/page-b", "components/pages/page-b.tsx"),
-			route("/page-c", "components/pages/page-c.tsx"),
 			route("/create-trip", "components/pages/CreateTrip.tsx")
 		])
 	])
