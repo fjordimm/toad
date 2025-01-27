@@ -2,12 +2,14 @@ import calendarIcon from '/calendarIcon.svg';
 import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
 import { useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
+import { authenticateUser } from '~/src/userAuthenticationUtil';
+import { Navigate } from 'react-router';
 
-export default function MenuBar(props: {name: string; }) {
+export default function MenuBar(props: { name: string }) {
 
 	// console.log("Yipeeeee");
 	// const fireauthUser = getAuth().currentUser;
@@ -18,21 +20,23 @@ export default function MenuBar(props: {name: string; }) {
 	// const docThing = getDoc(doc(firebaseDb, 'users', bruh));
 	// docThing.then((result) => { console.log(result.data()) });
 
-	onAuthStateChanged(getAuth(), (authUser) => {
-		if (authUser) {
-			console.log("Bro is logged in:");
+	// onAuthStateChanged(getAuth(), (authUser: User | null) => {
+	// 	if (authUser !== null) {
+	// 		console.log("Bro is logged in:");
 
-			const emailId: string = authUser.email as string;
-			console.log(`Email: ${emailId}`);
+	// 		const emailId: string = authUser.email as string;
+	// 		console.log(`Email: ${emailId}`);
 
-			const docPromise: Promise<DocumentSnapshot> = getDoc(doc(firebaseDb, "users", emailId));
-			docPromise.then((result: DocumentSnapshot) => {
-				console.log(result.data()?.first_name);
-			});
-		} else {
-			console.log("Bro is NOT logged in.");
-		}
-	});
+	// 		const docPromise: Promise<DocumentSnapshot> = getDoc(doc(firebaseDb, "users", emailId));
+	// 		docPromise.then((result: DocumentSnapshot) => {
+	// 			console.log(result.data()?.first_name);
+	// 		});
+	// 	} else {
+	// 		console.log("Bro is NOT logged in.");
+	// 	}
+	// });
+
+	// return <Navigate to="/sign-in" />;
     
     const [open, setOpen] = useState(true);
 
