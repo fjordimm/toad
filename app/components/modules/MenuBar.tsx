@@ -10,11 +10,10 @@ import { authenticateUser } from '~/src/userAuthenticationUtil';
 import { Navigate } from 'react-router';
 
 function logOut() {
-	console.log("AHHHHHHHHHHHHHHH SIGN SODUIOUEROTIUEIOTUIOJ");
 	firebaseAuth.signOut();
 }
 
-export default function MenuBar(props: { name: string }) {
+export default function MenuBar(props: { firebaseDocSnapshot: DocumentSnapshot }) {
 
 	// console.log("Yipeeeee");
 	// const fireauthUser = getAuth().currentUser;
@@ -55,7 +54,7 @@ export default function MenuBar(props: { name: string }) {
             {open ? (
             <div>
                 <h1 className="text-center">Insert Logo Here :3</h1>
-                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {props.name}</h1>
+                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${props.firebaseDocSnapshot.data()?.first_name} ${props.firebaseDocSnapshot.data()?.last_name}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <TripButton name="Portland" num={0}></TripButton>
                 <TripButton name="Tahoe" num={1}></TripButton>
