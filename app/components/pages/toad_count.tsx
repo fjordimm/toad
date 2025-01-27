@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ToadMembers from "./members"; // Import the ToadMembers component
+import ToadMember from "./members"; // Import the ToadMembers component
 
 const ToadCountComponent: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,12 +17,12 @@ const ToadCountComponent: React.FC = () => {
       <div className="mt-3 max-h-40 overflow-y-auto scrollbar-none">
         <div className="space-y-3">
           {/* Can add members to the trip by calling <ToadMembers name="name" /> */}
-          <ToadMembers name="Angelina" />
-          <ToadMembers name="Billiam" />
-          <ToadMembers name="Sophie" />
-          <ToadMembers name="Arnav" />
-          <ToadMembers name="Jiggy" />
-          <ToadMembers name="Angelina" />
+          <ToadMember name="Angelina" />
+          <ToadMember name="Billiam" />
+          <ToadMember name="Sophie" />
+          <ToadMember name="Arnav" />
+          <ToadMember name="Jiggy" />
+          <ToadMember name="Angelina" />
         </div>
       </div>
       

@@ -5,7 +5,7 @@ interface ToadMemberProps {
   name: string;
 }
 
-const ToadMembers: React.FC<ToadMemberProps> = ({ name }) => {
+const ToadMember: React.FC<ToadMemberProps> = ({ name }) => {
 
   return (
     <div className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm">
@@ -29,4 +29,4 @@ const ToadMembers: React.FC<ToadMemberProps> = ({ name }) => {
   );
 };
 
-export default ToadMembers;
+export default ToadMember;
