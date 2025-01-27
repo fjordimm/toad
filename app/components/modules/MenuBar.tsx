@@ -4,10 +4,15 @@ import InvitationButton from './MenuBar/InvitationButton';
 import { useState } from 'react';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
-import { firebaseDb } from '~/src/toadFirebase';
+import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
 import { authenticateUser } from '~/src/userAuthenticationUtil';
 import { Navigate } from 'react-router';
+
+function logOut() {
+	console.log("AHHHHHHHHHHHHHHH SIGN SODUIOUEROTIUEIOTUIOJ");
+	firebaseAuth.signOut();
+}
 
 export default function MenuBar(props: { name: string }) {
 
@@ -63,10 +68,14 @@ export default function MenuBar(props: { name: string }) {
                 <InvitationButton name="Europe 2024"></InvitationButton>
 
                 <div className='flex justify-center my-4 pt-24'>
-                <a href="/sign-in" className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
+                {/* <a href="/sign-in" className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
                     <span className='absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75'></span>
                     <span className='relative text-center text-white font-sunflower text-lg'>Log Out</span>
-                </a>
+                </a> */}
+				<button onClick={logOut} className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
+                    <span className='absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75'></span>
+                    <span className='relative text-center text-white font-sunflower text-lg'>Log Out</span>
+                </button>
             </div>
             </div>
             ) : null}
