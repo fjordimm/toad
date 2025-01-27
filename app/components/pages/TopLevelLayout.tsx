@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import type { Route } from "./+types/top-level-layout";
+import type { Route } from "./+types/TopLevelLayout";
 
 export function meta({ }: Route.MetaArgs) {
 	return [

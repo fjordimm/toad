@@ -17,11 +17,13 @@ const ToadCountComponent: React.FC = () => {
 
         {/* Member List */}
         <div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
-          <ToadMembers name="Angelina" />
-          <ToadMembers name="Billiam" />
-          <ToadMembers name="Sophie" />
-          <ToadMembers name="Arnav" />
-          <ToadMembers name="Jiggy" />
+          {/* Can add members to the trip by calling <ToadMembers name="name" /> */}
+          <ToadMember name="Angelina" />
+          <ToadMember name="Billiam" />
+          <ToadMember name="Sophie" />
+          <ToadMember name="Arnav" />
+          <ToadMember name="Jiggy" />
+          <ToadMember name="Angelina" />
         </div>
 
         {/* Email Input and Invite Button */}
