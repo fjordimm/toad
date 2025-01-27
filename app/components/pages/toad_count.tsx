@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import ToadMembers from "./members";
+import ToadMember from "./members";
+import { Form } from "react-router";
 
 const ToadCountComponent: React.FC = () => {
   const [email, setEmail] = useState("");
+
+  function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
+  	e.preventDefault();
+  	console.log(email);
+  }
 
   return (
     <div className="relative">
@@ -28,18 +34,20 @@ const ToadCountComponent: React.FC = () => {
 
         {/* Email Input and Invite Button */}
         <div className="mt-2 flex flex-col items-center space-y-3">
-          <input
-            type="email"
-            placeholder="Enter member email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full max-w-[207px] h-[22px] bg-white border border-gray-300 rounded-full px-4 py-1 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-400 text-center"
-          />
-          <button
-            className="w-full max-w-[207px] h-[29px] bg-[#BCD3B5]/50 text-[#3C533A] rounded-lg text-sm hover:bg-[#BCD3B5]/70 text-center"
-          >
-            + Invite Member
-          </button>
+			<Form onSubmit={handleInviteSubmit}>
+				<input
+					type="email"
+					placeholder="Enter member email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					className="w-full max-w-[207px] h-[22px] bg-white border border-gray-300 rounded-full px-4 py-1 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-400 text-center"
+				/>
+				<button
+					className="w-full max-w-[207px] h-[29px] bg-[#BCD3B5]/50 text-[#3C533A] rounded-lg text-sm hover:bg-[#BCD3B5]/70 text-center"
+				>
+					+ Invite Member
+				</button>
+		  	</Form>
         </div>
         {/* Delete Trip Button */}
         <div className="mt-7 flex flex-col items-center">
