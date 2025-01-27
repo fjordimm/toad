@@ -7,40 +7,13 @@ import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
 import { authenticateUser } from '~/src/userAuthenticationUtil';
-import { Navigate } from 'react-router';
+import { Link, Navigate, redirect } from 'react-router';
 
 function logOut() {
 	firebaseAuth.signOut();
 }
 
 export default function MenuBar(props: { firebaseDocSnapshot: DocumentSnapshot }) {
-
-	// console.log("Yipeeeee");
-	// const fireauthUser = getAuth().currentUser;
-	// console.log(getAuth().currentUser);
-	// const bruh: string = fireauthUser?.email as string;
-	// console.log(bruh);
-	// const asdfhsdjfh: string = "billmularski@gmail.com";
-	// const docThing = getDoc(doc(firebaseDb, 'users', bruh));
-	// docThing.then((result) => { console.log(result.data()) });
-
-	// onAuthStateChanged(getAuth(), (authUser: User | null) => {
-	// 	if (authUser !== null) {
-	// 		console.log("Bro is logged in:");
-
-	// 		const emailId: string = authUser.email as string;
-	// 		console.log(`Email: ${emailId}`);
-
-	// 		const docPromise: Promise<DocumentSnapshot> = getDoc(doc(firebaseDb, "users", emailId));
-	// 		docPromise.then((result: DocumentSnapshot) => {
-	// 			console.log(result.data()?.first_name);
-	// 		});
-	// 	} else {
-	// 		console.log("Bro is NOT logged in.");
-	// 	}
-	// });
-
-	// return <Navigate to="/sign-in" />;
     
     const [open, setOpen] = useState(true);
 
@@ -67,14 +40,10 @@ export default function MenuBar(props: { firebaseDocSnapshot: DocumentSnapshot }
                 <InvitationButton name="Europe 2024"></InvitationButton>
 
                 <div className='flex justify-center my-4 pt-24'>
-                {/* <a href="/sign-in" className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
+				<Link to="/sign-in" onClick={logOut} className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
                     <span className='absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75'></span>
                     <span className='relative text-center text-white font-sunflower text-lg'>Log Out</span>
-                </a> */}
-				<button onClick={logOut} className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
-                    <span className='absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75'></span>
-                    <span className='relative text-center text-white font-sunflower text-lg'>Log Out</span>
-                </button>
+                </Link>
             </div>
             </div>
             ) : null}

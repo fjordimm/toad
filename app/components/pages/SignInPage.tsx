@@ -5,8 +5,11 @@ import globe from '/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
+import { Form, useNavigate } from 'react-router';
 
 const SignInPage = () => {
+
+	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +34,8 @@ const SignInPage = () => {
             setEmail('');
             setPassword('');
             setError('');
+
+			navigate("/");
         } catch (err: any) {
             if(err.code === 'auth/user-not-found') {
                 setError('The email you entered does not belong to any account!');
@@ -215,10 +220,10 @@ const SignInPage = () => {
                   }}
                 />
               </div>
-      
+
               {/* login button */}
               <button
-                type="submit"
+				type="submit"
                 style={{
                   width: "300px",
                   height: "50px",
