@@ -18,13 +18,15 @@ export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => 
 }
 
 export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
-	// TODO: error handling
-	// TODO: actually get the trips of the user
+	// TODO: better error handling and null handling
 
-	return [
-		await getDoc(doc(firebaseDb, "trips", "O9Q0sGbNJEkyDh3OjOUb")),
-		await getDoc(doc(firebaseDb, "trips", "O9Q0sGbNJEkyDh3OjOUb"))
-	];
+	const ret: DocumentSnapshot[] = []
+
+	for (const item of userDbDoc.data()?.trips) {
+		ret.push(await getDoc(doc(firebaseDb, "trips", item)));
+	}
+
+	return ret;
 }
 
 export async function retrieveTripDbDoc(tripId: string): Promise<DocumentSnapshot | null> {
