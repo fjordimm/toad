@@ -15,12 +15,6 @@ function TripsButton(props: { num: number; tripId: string }){
                     "#D66A38", "#624865", "#277893", "#501C1C", "#335735"];
     
     const color = colors[props.num % colors.length] || colors[0];
-    // console.log(color)
-
-    // const handleClick = () => {
-    //     console.log(`Trip Name: ${props.name}, Trip Number: ${props.num}`);
-    //     alert(`You clicked on ${props.name}!`);
-    //   };
 
 	const [tripName, setTripName] = useState<string>("Loading...");
 	retrieveTripDbDoc(props.tripId).then(

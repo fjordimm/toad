@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import calendarIcon from "/calendarIcon.svg";
 import {firebaseDb} from "../../src/toadFirebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
+import { useNavigate } from "react-router";
 
 // TODO: error handling
 
 const CreateTrip = () => {
 
 	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+
+	const navigate = useNavigate();
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -18,20 +21,25 @@ const CreateTrip = () => {
         e.preventDefault();
         try{
 
+			const emailId: string = mainLayoutContext.userDbDoc.data()?.email;
+
             // Add a trip to the 'trips' collection
             const tripRef = await addDoc(collection(firebaseDb, "trips"), {
                 tripName: tripName,
                 startDate: startDate,
                 endDate: endDate,
                 createdAt: new Date(), 
-                tripOwner: mainLayoutContext.userDbDoc.data()?.email,
+                tripOwner: emailId,
                 days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
+				trip_users: [ emailId ]
               });
             
-            // Users Field
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_users"), {
-                placeholder: "",      
-            });
+			// Removed the collection 'trip_users' to instead use an attribute 'trip_users'.
+            // // Users Field
+            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_users"), {
+            //     placeholder: "",      
+            // });
+
             // Invited Users Field
             await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
                 placeholder: "",      
@@ -47,9 +55,20 @@ const CreateTrip = () => {
                 placeholder: "",  
             });
 
+			// Adds this trip to the owner's trips
+			await updateDoc(doc(firebaseDb, "users", emailId), {
+				trips: arrayUnion(tripRef.id)
+			});
+
+			// {
+			// 	// const newArray = (await getDoc(doc(firebaseDb, "users", emailId))).data()?.trips;
+			// }
+
             setTripName('');
             setStartDate('');
             setEndDate('');
+
+			navigate(`/trip/${tripRef.id}`);
         }
         catch (error) {
             console.error("Error adding trip: ", error);

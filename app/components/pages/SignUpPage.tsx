@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import emailicon from '/mail.svg'
-import lock from '/lock.svg'
-import globe from '/globe.svg'
-import person from '/person.svg'
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, addDoc, setDoc, collection} from 'firebase/firestore';
+import emailicon from '/mail.svg';
+import lock from '/lock.svg';
+import globe from '/globe.svg';
+import person from '/person.svg';
 import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router';
 
 const SignUpPage = () => {
+
+	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fname, setFName] = useState('');
     const [lname, setLName] = useState('');
     const [error, setError] = useState('');
+
+	// TODO: handle weak password error (and any other errors from createUserWithEmailAndPassword)
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -23,22 +28,25 @@ const SignUpPage = () => {
 
             const emailLower = email.toLowerCase();
             /* Creates a user with their email as the identifier*/
-            const userDocRef = doc(firebaseDb, 'users', emailLower);
-            setDoc(userDocRef, {
+            const userDocRef = doc(firebaseDb, "users", emailLower);
+            await setDoc(userDocRef, {
                 email: email,
                 first_name: fname,
                 last_name: lname,
-                // trips: [], 
-                // trip_invites: []
+                trips: [], 
+                trip_invites: []
             });
 
+			// Removed this in place of arrays
             /*This creates new empty collections for user trips and invited trips. Can also do with an array, but did with a collection for now*/
-            await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
-                placeholder: "",      
-            });
-            await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
-                placeholder: "",      
-            });
+            // await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
+            //     placeholder: "",      
+            // });
+            // await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
+            //     placeholder: "",      
+            // });
+
+			navigate("/sign-in");
             
         } catch(err: any) {
             if(err.code === 'auth/email-already-in-use') {
