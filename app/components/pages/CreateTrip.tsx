@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import calendarIcon from '../../assets/calendarIcon.svg'
-import {firebaseDb} from "../../src/toadFirebase"
-import { collection, addDoc } from 'firebase/firestore';
+import React, { useState } from "react";
+import calendarIcon from "/calendarIcon.svg";
+import {firebaseDb} from "../../src/toadFirebase";
+import { collection, addDoc } from "firebase/firestore";
 
 
 
