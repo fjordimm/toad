@@ -45,14 +45,16 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
             {open ? "\u276E" : "\u276F"}</button>
             {open ? (
             <div>
-                <h1 className="text-center">Insert Logo Here :3</h1>
+				<Link to="/">
+					<h1 className="text-center">Insert Logo Here :3</h1>
+				</Link>
                 <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${props.userDbDoc.data()?.first_name} ${props.userDbDoc.data()?.last_name}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <div className="flex flex-col my-4 gap-y-4">
 					{ turnTripDbDocsIntoElems(tripDbDocs) }
 				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
-                    <button className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</button>
+                    <Link to="/create-trip" className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</Link>
                     <span className="ml-2 pt-1 text-white text-sm font-sunflower">Create New Trip</span>
                 </div>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Invitations</h3>
