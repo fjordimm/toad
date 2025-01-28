@@ -9,6 +9,8 @@ import { Form, useNavigate } from 'react-router';
 
 const SignInPage = () => {
 
+	console.log("SIGN IN RERENDERING");
+
 	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');

@@ -4,29 +4,39 @@ import MenuBar from "../modules/MenuBar";
 import { useState } from "react";
 import { authenticateUser } from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
+import { useTopLevelLayoutContext, type TopLevelLayoutContext } from "./TopLevelLayout";
 
 export default function MainLayout() {
 
-	const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
-	const [userDbDoc, setFirebaseDocSnapshot] = useState<DocumentSnapshot | null>(null);
+	console.log("MAIN LAYOUT RERENDERING");
 
-	authenticateUser(
-		(result: DocumentSnapshot) => {
-			setUserIsAuthenticated(true);
-			setFirebaseDocSnapshot(result);
-		},
-		() => {
-			setUserIsAuthenticated(false);
-		}
-	);
+	// // const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
+	// const [userDbDoc, setUserDbDoc] = useState<DocumentSnapshot | null>(null);
+
+	// authenticateUser(
+	// 	(result: DocumentSnapshot) => {
+	// 		console.log("authenticate positive");
+	// 		// setUserIsAuthenticated(true);
+	// 		// setUserDbDoc(result);
+	// 	},
+	// 	() => {
+	// 		console.log("authenticate negative");
+	// 		// setUserIsAuthenticated(false);
+	// 		// setUserDbDoc(null);
+	// 	}
+	// );
+
+	const topLevelLayoutContext: TopLevelLayoutContext = useTopLevelLayoutContext();
+
+	// return <p>Is authenticated = {topLevelLayoutContext.userDbDoc !== null ? "true" : "false"}.</p>;
 
 	// TODO: the `var as type` will cause errors, so do it in a different way
-	return userIsAuthenticated
+	return topLevelLayoutContext.userDbDoc !== null
 		? (
 			<div className="grow flex flex-row">
-				<MenuBar userDbDoc={userDbDoc as DocumentSnapshot} />
+				<MenuBar userDbDoc={topLevelLayoutContext.userDbDoc as DocumentSnapshot} stateChangeForcer={topLevelLayoutContext.stateChangeForcer} forceStateChange={topLevelLayoutContext.forceStateChange} />
 				<div className="p-5 grow flex">
-					<Outlet context={{ userDbDoc: userDbDoc as DocumentSnapshot }}/>
+					<Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc as DocumentSnapshot, stateChangeForcer: topLevelLayoutContext.stateChangeForcer, forceStateChange: topLevelLayoutContext.forceStateChange }}/>
 				</div>
 			</div>
 		)
@@ -39,7 +49,5 @@ export default function MainLayout() {
 }
 
 // To be used by subroutes
-export type MainLayoutContext = { userDbDoc: DocumentSnapshot };
-export function useMainLayoutContext(): MainLayoutContext {
-	return useOutletContext();
-}
+export type MainLayoutContext = { userDbDoc: DocumentSnapshot, stateChangeForcer: boolean, forceStateChange: () => null };
+export function useMainLayoutContext(): MainLayoutContext { return useOutletContext(); }

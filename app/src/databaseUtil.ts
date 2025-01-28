@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseDb } from "./toadFirebase";
 
 export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => void, onNotAuthenticated: () => void) {
@@ -31,4 +31,14 @@ export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promis
 
 export async function retrieveTripDbDoc(tripId: string): Promise<DocumentSnapshot | null> {
 	return await getDoc(doc(firebaseDb, "trips", tripId));
+}
+
+export async function deleteTripDbDoc(tripDbDoc: DocumentSnapshot) {
+
+	for (const emailId of tripDbDoc.data()?.trip_users)
+	{
+		console.log(emailId);
+	}
+	
+	// await deleteDoc(tripDbDoc.ref);
 }

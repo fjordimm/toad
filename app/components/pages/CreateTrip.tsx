@@ -40,20 +40,21 @@ const CreateTrip = () => {
             //     placeholder: "",      
             // });
 
-            // Invited Users Field
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
-                placeholder: "",      
-            });
+			// Temporarily removed all subcollections from trips
+            // // Invited Users Field
+            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
+            //     placeholder: "",      
+            // });
 
-            // Itinerary
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_itinerary"), {
-                placeholder: "",      
-            });
+            // // Itinerary
+            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_itinerary"), {
+            //     placeholder: "",      
+            // });
 
-            // Expenses
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "expenses"), {
-                placeholder: "",  
-            });
+            // // Expenses
+            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "expenses"), {
+            //     placeholder: "",  
+            // });
 
 			// Adds this trip to the owner's trips
 			await updateDoc(doc(firebaseDb, "users", emailId), {
@@ -64,6 +65,7 @@ const CreateTrip = () => {
             setStartDate('');
             setEndDate('');
 
+			mainLayoutContext.forceStateChange();
 			navigate(`/trip/${tripRef.id}`);
         }
         catch (error) {

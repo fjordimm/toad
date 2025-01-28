@@ -27,7 +27,7 @@ export default function TripPage({ params }: Route.ComponentProps) {
 				<h1 className="text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripDbDoc?.data()?.tripName}</h1>
 			</div>
 
-			<ToadCount />
+			<ToadCount tripDbDoc={tripDbDoc} />
 		</div>
 	);
 }

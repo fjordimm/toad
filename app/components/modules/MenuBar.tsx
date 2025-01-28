@@ -1,7 +1,7 @@
 import calendarIcon from '/calendarIcon.svg';
 import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
@@ -16,24 +16,31 @@ function logOut() {
 }
 
 function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): ReactNode {
-	if (tripDbDocList != null) {
+	if (tripDbDocList !== null) {
 		return tripDbDocList.map((trip: DocumentSnapshot) => {
 			return <TripsButton tripId={trip.id} tripName={trip.data()?.tripName} num={0} />
-		})
+		});
 	} else {
 		return <Loading />;
 	}
 }
 
-export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot, stateChangeForcer: boolean, forceStateChange: () => null }) {
+
+	console.log("MENU BAR RERENDERING");
     
     const [open, setOpen] = useState(true);
 
 	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
-	retrieveTripDbDocList(props.userDbDoc).then(
-		(result: DocumentSnapshot[] | null) => {
-			setTripDbDocList(result);
-		}
+	useEffect( // So that it only runs once
+		() => {
+			retrieveTripDbDocList(props.userDbDoc).then(
+				(result: DocumentSnapshot[] | null) => {
+					setTripDbDocList(result);
+				}
+			);
+		},
+		[ props.stateChangeForcer ] // The array as the second argument of useEffect ensures it only runs once
 	);
 
     return (
@@ -58,8 +65,8 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                     <span className="ml-2 pt-1 text-white text-sm font-sunflower">Create New Trip</span>
                 </div>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Invitations</h3>
-                <InvitationButton name="Japan"></InvitationButton>
-                <InvitationButton name="Europe 2024"></InvitationButton>
+                {/* <InvitationButton name="Japan"></InvitationButton>
+                <InvitationButton name="Europe 2024"></InvitationButton> */}
 
                 <div className='flex justify-center my-4 pt-24'>
 				<Link to="/sign-in" onClick={logOut} className='relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs'>
