@@ -1,5 +1,6 @@
 import type { DocumentSnapshot } from "firebase/firestore";
 import React, { useState } from "react";
+import { Link } from "react-router";
 import { retrieveTripDbDoc } from "~/src/databaseUtil";
 
 // When you call this component, give 2 paramenteters: NameOfTrip and TripNumber
@@ -8,7 +9,7 @@ import { retrieveTripDbDoc } from "~/src/databaseUtil";
 
 
 
-function TripsButton(props: { num: number; tripId: string }){
+function TripsButton(props: { tripId: string, tripName: string, num: number }){
 
     const colors = ["#E4BF3B", "#B298BF", "#85CCCC", "#BD7B7B", "#97CA7B",
                     "#DA934C", "#8B618F", "#6BB0DD", "#A25656", "#A25656",
@@ -16,25 +17,14 @@ function TripsButton(props: { num: number; tripId: string }){
     
     const color = colors[props.num % colors.length] || colors[0];
 
-	const [tripName, setTripName] = useState<string>("Loading...");
-	retrieveTripDbDoc(props.tripId).then(
-		(result: DocumentSnapshot | null) => {
-			if (result != null) {
-				setTripName(result.data()?.tripName);
-			} else {
-				// Do nothing
-			}
-		}
-	);
-
     return(
     <div className="flex justify-center">
-      <button className="flex items-center justify-between bg-sidebar_button_bg py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
-        <span className="font-sunflower text-white">{tripName}</span>
+      <Link to={`/trip/${props.tripId}`} className="flex items-center justify-between bg-sidebar_button_bg py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
+        <span className="font-sunflower text-white">{props.tripName}</span>
         <div className="relative rounded-full h-7 w-7 flex items-center justify-center"
           style={{ backgroundColor: color }}>
         </div>
-      </button>
+      </Link>
     </div>
     )
 

@@ -18,7 +18,7 @@ function logOut() {
 function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): ReactNode {
 	if (tripDbDocList != null) {
 		return tripDbDocList.map((trip: DocumentSnapshot) => {
-			return <TripsButton num={0} tripId={trip.id} />
+			return <TripsButton tripId={trip.id} tripName={trip.data()?.tripName} num={0} />
 		})
 	} else {
 		return <Loading />;

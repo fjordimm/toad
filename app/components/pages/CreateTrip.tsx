@@ -60,10 +60,6 @@ const CreateTrip = () => {
 				trips: arrayUnion(tripRef.id)
 			});
 
-			// {
-			// 	// const newArray = (await getDoc(doc(firebaseDb, "users", emailId))).data()?.trips;
-			// }
-
             setTripName('');
             setStartDate('');
             setEndDate('');
