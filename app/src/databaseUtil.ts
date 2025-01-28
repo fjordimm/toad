@@ -22,8 +22,8 @@ export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promis
 	// TODO: actually get the trips of the user
 
 	return [
-		await getDoc(doc(firebaseDb, "trips", "rT3hlFefjRkcnz7mjP05")),
-		await getDoc(doc(firebaseDb, "trips", "tu3cHGwnOlWsodVEJkOs"))
+		await getDoc(doc(firebaseDb, "trips", "O9Q0sGbNJEkyDh3OjOUb")),
+		await getDoc(doc(firebaseDb, "trips", "O9Q0sGbNJEkyDh3OjOUb"))
 	];
 }
 

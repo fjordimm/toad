@@ -15,10 +15,10 @@ function logOut() {
 	firebaseAuth.signOut();
 }
 
-function turnTripDbDocsIntoElems(tripDbDocs: DocumentSnapshot[] | null): ReactNode {
-	if (tripDbDocs != null) {
-		return tripDbDocs.map((trip: DocumentSnapshot) => {
-			return <TripsButton num={0} name="Test trip" />
+function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): ReactNode {
+	if (tripDbDocList != null) {
+		return tripDbDocList.map((trip: DocumentSnapshot) => {
+			return <TripsButton num={0} tripId={trip.id} />
 		})
 	} else {
 		return <Loading />;
@@ -29,10 +29,10 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     
     const [open, setOpen] = useState(true);
 
-	const [tripDbDocs, setTripDbDocs] = useState<DocumentSnapshot[] | null>(null);
+	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
 	retrieveTripDbDocList(props.userDbDoc).then(
 		(result: DocumentSnapshot[] | null) => {
-			setTripDbDocs(result);
+			setTripDbDocList(result);
 		}
 	);
 
@@ -51,7 +51,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                 <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${props.userDbDoc.data()?.first_name} ${props.userDbDoc.data()?.last_name}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <div className="flex flex-col my-4 gap-y-4">
-					{ turnTripDbDocsIntoElems(tripDbDocs) }
+					{ turnTripDbDocListIntoElems(tripDbDocList) }
 				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
                     <Link to="/create-trip" className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</Link>
