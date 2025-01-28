@@ -55,7 +55,7 @@ const CreateTrip = () =>{
 
 
     return(
-        <div className="mt-32">
+        <div className="mt-32 grow">
             <div className="flex flex-col justify-center items-center gap-12">
                 <p className="font-sunflower text-sidebar_deep_green text-3xl">Create Your Next Adventure</p>
 
