@@ -21,7 +21,7 @@ function TripsButton(props: { num: number; name: string; }){
     //   };
 
     return(
-    <div className="flex justify-center my-4">
+    <div className="flex justify-center">
       <button className="flex items-center justify-between bg-sidebar_button_bg py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
         <span className="font-sunflower text-white">{props.name|| "New Trip"}</span>
         <div className="relative rounded-full h-7 w-7 flex items-center justify-center"

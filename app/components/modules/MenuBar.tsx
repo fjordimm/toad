@@ -1,21 +1,40 @@
 import calendarIcon from '/calendarIcon.svg';
 import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
-import { authenticateUser } from '~/src/userAuthenticationUtil';
+import { authenticateUser, retrieveTripDbDocs } from '~/src/databaseUtil';
 import { Link, Navigate, redirect } from 'react-router';
+import TripsButton from './MenuBar/TripsButton';
+import Loading from './Loading';
 
 function logOut() {
 	firebaseAuth.signOut();
 }
 
-export default function MenuBar(props: { firebaseDocSnapshot: DocumentSnapshot }) {
+function turnTripDbDocsIntoElems(tripDbDocs: DocumentSnapshot[] | null): ReactNode {
+	if (tripDbDocs != null) {
+		return tripDbDocs.map((trip: DocumentSnapshot) => {
+			return <TripsButton num={0} name="Test trip" />
+		})
+	} else {
+		return <Loading />;
+	}
+}
+
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     
     const [open, setOpen] = useState(true);
+
+	const [tripDbDocs, setTripDbDocs] = useState<DocumentSnapshot[] | null>(null);
+	retrieveTripDbDocs(props.userDbDoc).then(
+		(result: DocumentSnapshot[] | null) => {
+			setTripDbDocs(result);
+		}
+	);
 
     return (
         <div className={`${
@@ -27,10 +46,11 @@ export default function MenuBar(props: { firebaseDocSnapshot: DocumentSnapshot }
             {open ? (
             <div>
                 <h1 className="text-center">Insert Logo Here :3</h1>
-                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${props.firebaseDocSnapshot.data()?.first_name} ${props.firebaseDocSnapshot.data()?.last_name}`}</h1>
+                <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${props.userDbDoc.data()?.first_name} ${props.userDbDoc.data()?.last_name}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
-                <TripButton name="Portland" num={0}></TripButton>
-                <TripButton name="Tahoe" num={1}></TripButton>
+                <div className="flex flex-col my-4 gap-y-4">
+					{ turnTripDbDocsIntoElems(tripDbDocs) }
+				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
                     <button className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</button>
                     <span className="ml-2 pt-1 text-white text-sm font-sunflower">Create New Trip</span>

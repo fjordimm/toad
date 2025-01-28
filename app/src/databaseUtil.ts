@@ -16,3 +16,13 @@ export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => 
 		}
 	});
 }
+
+export async function retrieveTripDbDocs(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
+	// TODO: error handling
+	// TODO: actually get the trips of the user
+
+	return [
+		await getDoc(doc(firebaseDb, "trips", "rT3hlFefjRkcnz7mjP05")),
+		await getDoc(doc(firebaseDb, "trips", "tu3cHGwnOlWsodVEJkOs"))
+	];
+}
