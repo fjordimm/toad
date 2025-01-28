@@ -5,10 +5,10 @@ const ToadCountComponent: React.FC = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="relative">
-      {/* Positioning the container closer to the top-left */}
+    <div className="absolute top-2 right-2">
+      {/* Main Container */}
       <div
-        className="absolute top-2 right-2 max-w-[271px] w-full max-h-[330px] bg-[#EAFFB9] p-6 rounded-lg shadow-lg"
+        className="max-w-[271px] w-full bg-[#EAFFB9] p-6 rounded-lg shadow-lg flex flex-col justify-between"
       >
         {/* Toad Count */}
         <div className="flex flex-col items-center text-[24px] font-sunflower text-[#3C533A]">
@@ -16,16 +16,18 @@ const ToadCountComponent: React.FC = () => {
         </div>
 
         {/* Member List */}
-        <div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
+        <div className="mt-4 h-[150px] overflow-y-auto scrollbar-none space-y-3">
           <ToadMembers name="Angelina" />
-          <ToadMembers name="Billiam" />
-          <ToadMembers name="Sophie" />
-          <ToadMembers name="Arnav" />
-          <ToadMembers name="Jiggy" />
+          <ToadMembers name="Angelina" />
+          <ToadMembers name="Angelina" />
+          <ToadMembers name="Angelina" />
+          <ToadMembers name="Angelina" />
+          <ToadMembers name="Angelina" />
+          <ToadMembers name="Angelina" />
         </div>
 
         {/* Email Input and Invite Button */}
-        <div className="mt-2 flex flex-col items-center space-y-3">
+        <div className="mt-4 flex flex-col items-center space-y-3">
           <input
             type="email"
             placeholder="Enter member email"
@@ -39,15 +41,16 @@ const ToadCountComponent: React.FC = () => {
             + Invite Member
           </button>
         </div>
-        {/* Delete Trip Button */}
-        <div className="mt-7 flex flex-col items-center">
-            <button
-              onClick={() => console.log("Trip deleted")}
-              className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
-            >
-              Delete Trip
-            </button>
-          </div>
+      </div>
+
+      {/* Delete Trip Button */}
+      <div className="mt-2">
+        <button
+          onClick={() => console.log("Trip deleted")}
+          className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
+        >
+          Delete Trip
+        </button>
       </div>
     </div>
   );
