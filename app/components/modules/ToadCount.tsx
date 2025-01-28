@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
-import type { DocumentSnapshot } from "firebase/firestore";
-import { deleteTripDbDoc } from "~/src/databaseUtil";
+import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
+import { addUserToTrip, deleteTripDbDoc } from "~/src/databaseUtil";
+import { firebaseDb } from "~/src/toadFirebase";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
@@ -10,9 +11,11 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	const [email, setEmail] = useState("");
 
-	function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		console.log(email);
+
+		const user = await getDoc(doc(firebaseDb, "users", email));
+		await addUserToTrip(props.tripDbDoc as DocumentSnapshot, user);
 	}
 
 	async function handleDeleteTripButton(tripDbDoc: DocumentSnapshot | null) {
@@ -39,12 +42,12 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			{/* Member List */}
 			<div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
 				{/* Can add members to the trip by calling <ToadMembers name="name" /> */}
-				<ToadMember name="Angelina" />
+				{/* <ToadMember name="Angelina" />
 				<ToadMember name="Billiam" />
 				<ToadMember name="Sophie" />
 				<ToadMember name="Arnav" />
 				<ToadMember name="Jiggy" />
-				<ToadMember name="Angelina" />
+				<ToadMember name="Angelina" /> */}
 			</div>
 
 			{/* Email Input and Invite Button */}

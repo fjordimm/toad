@@ -25,7 +25,7 @@ function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): R
 	}
 }
 
-export default function MenuBar(props: { userDbDoc: DocumentSnapshot, stateChangeForcer: boolean, forceStateChange: () => null }) {
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
 	console.log("MENU BAR RERENDERING");
     

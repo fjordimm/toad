@@ -11,6 +11,8 @@ const CreateTrip = () => {
 
 	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
+	const emailId: string = mainLayoutContext.userDbDoc.data()?.email;
+
 	const navigate = useNavigate();
 
     const [tripName, setTripName] = useState('');
@@ -20,8 +22,6 @@ const CreateTrip = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
-
-			const emailId: string = mainLayoutContext.userDbDoc.data()?.email;
 
             // Add a trip to the 'trips' collection
             const tripRef = await addDoc(collection(firebaseDb, "trips"), {
@@ -65,7 +65,6 @@ const CreateTrip = () => {
             setStartDate('');
             setEndDate('');
 
-			mainLayoutContext.forceStateChange();
 			navigate(`/trip/${tripRef.id}`);
         }
         catch (error) {

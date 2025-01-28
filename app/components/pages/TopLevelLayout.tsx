@@ -15,12 +15,6 @@ export default function TopLevelLayout() {
 
 	console.log("TOP LEVEL LAYOUT RERENDERING");
 
-	const [stateChangeForcer, setStateChangeForcer] = useState<boolean>(false);
-	function forceStateChange() {
-		console.log("!!!!!!!!!!!!!!!!!!!!! forcing a state change");
-		setStateChangeForcer(!stateChangeForcer);
-	}
-
 	const [userDbDoc, setUserDbDoc] = useState<DocumentSnapshot | null>(null);
 	useEffect( // So that it only runs once
 		() => {
@@ -41,10 +35,10 @@ export default function TopLevelLayout() {
 	return (
 		<div className="grow flex flex-col justify-stretch items-stretch bg-dashboard_lime">
 			{  }
-			<Outlet context={{ userDbDoc: userDbDoc, stateChangeForcer: stateChangeForcer, forceStateChange: forceStateChange }}/>
+			<Outlet context={{ userDbDoc: userDbDoc }}/>
 		</div>
 	);
 }
 
-export type TopLevelLayoutContext = { userDbDoc: DocumentSnapshot | null, stateChangeForcer: boolean, forceStateChange: () => null };
+export type TopLevelLayoutContext = { userDbDoc: DocumentSnapshot | null };
 export function useTopLevelLayoutContext(): TopLevelLayoutContext { return useOutletContext(); }
