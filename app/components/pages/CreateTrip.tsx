@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import calendarIcon from "/calendarIcon.svg";
 import {firebaseDb} from "../../src/toadFirebase";
 import { collection, addDoc } from "firebase/firestore";
+import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 
+// TODO: error handling
 
+const CreateTrip = () => {
 
-const CreateTrip = () =>{
+	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -21,7 +24,7 @@ const CreateTrip = () =>{
                 startDate: startDate,
                 endDate: endDate,
                 createdAt: new Date(), 
-                tripOwner: "",
+                tripOwner: mainLayoutContext.userDbDoc.data()?.email,
                 days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
               });
             

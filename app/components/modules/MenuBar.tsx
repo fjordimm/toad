@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
-import { authenticateUser, retrieveTripDbDocs } from '~/src/databaseUtil';
+import { authenticateUser, retrieveTripDbDocList } from '~/src/databaseUtil';
 import { Link, Navigate, redirect } from 'react-router';
 import TripsButton from './MenuBar/TripsButton';
 import Loading from './Loading';
@@ -30,7 +30,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     const [open, setOpen] = useState(true);
 
 	const [tripDbDocs, setTripDbDocs] = useState<DocumentSnapshot[] | null>(null);
-	retrieveTripDbDocs(props.userDbDoc).then(
+	retrieveTripDbDocList(props.userDbDoc).then(
 		(result: DocumentSnapshot[] | null) => {
 			setTripDbDocs(result);
 		}

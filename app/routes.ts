@@ -1,4 +1,4 @@
-import { type RouteConfig, index, layout, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes";
 
 export default [
 	layout("components/pages/TopLevelLayout.tsx", [
@@ -7,7 +7,9 @@ export default [
 		layout("components/pages/MainLayout.tsx", [
 			index("components/pages/LandingPage.tsx"),
 			route("/create-trip", "components/pages/CreateTrip.tsx"),
-			route("/test-trip", "components/pages/TripPage.tsx")
+			...prefix("trip", [
+				route(":tripId", "components/pages/TripPage.tsx")
+			])
 		])
 	])
 ] satisfies RouteConfig;

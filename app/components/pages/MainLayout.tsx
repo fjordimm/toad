@@ -1,4 +1,4 @@
-import { Link, Navigate, Outlet, redirect, useNavigate } from "react-router";
+import { Link, Navigate, Outlet, redirect, useNavigate, useOutletContext } from "react-router";
 import Sidebar from "../modules/sidebar";
 import MenuBar from "../modules/MenuBar";
 import { useState } from "react";
@@ -20,12 +20,13 @@ export default function MainLayout() {
 		}
 	);
 
+	// TODO: the `var as type` will cause errors, so do it in a different way
 	return userIsAuthenticated
 		? (
 			<div className="grow flex flex-row">
 				<MenuBar userDbDoc={userDbDoc as DocumentSnapshot} />
 				<div className="p-5 grow flex">
-					<Outlet />
+					<Outlet context={{ userDbDoc: userDbDoc as DocumentSnapshot }}/>
 				</div>
 			</div>
 		)
@@ -35,4 +36,10 @@ export default function MainLayout() {
 				<Link to="/sign-in" className="underline">Sign In</Link>
 			</div>
 		);
+}
+
+// To be used by subroutes
+export type MainLayoutContext = { userDbDoc: DocumentSnapshot };
+export function useMainLayoutContext(): MainLayoutContext {
+	return useOutletContext();
 }
