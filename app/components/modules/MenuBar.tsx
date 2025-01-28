@@ -32,7 +32,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot, stateChang
     const [open, setOpen] = useState(true);
 
 	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
-	useEffect( // So that it only runs once
+	useEffect(
 		() => {
 			retrieveTripDbDocList(props.userDbDoc).then(
 				(result: DocumentSnapshot[] | null) => {
@@ -40,7 +40,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot, stateChang
 				}
 			);
 		},
-		[ props.stateChangeForcer ] // The array as the second argument of useEffect ensures it only runs once
+		[] // TODO: made it actually update on real state changes
 	);
 
     return (

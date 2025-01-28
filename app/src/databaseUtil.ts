@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { deleteDoc, doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
+import { arrayRemove, deleteDoc, doc, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseDb } from "./toadFirebase";
 
 export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => void, onNotAuthenticated: () => void) {
@@ -35,10 +35,14 @@ export async function retrieveTripDbDoc(tripId: string): Promise<DocumentSnapsho
 
 export async function deleteTripDbDoc(tripDbDoc: DocumentSnapshot) {
 
+	console.log(`Deleting trip with id = ${tripDbDoc.id}`);
+
 	for (const emailId of tripDbDoc.data()?.trip_users)
 	{
-		console.log(emailId);
+		await updateDoc(doc(firebaseDb, "users", emailId), {
+			trips: arrayRemove(tripDbDoc.id)
+		});
 	}
 	
-	// await deleteDoc(tripDbDoc.ref);
+	await deleteDoc(tripDbDoc.ref);
 }

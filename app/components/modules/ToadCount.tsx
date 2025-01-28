@@ -1,25 +1,28 @@
 import React, { useState } from "react";
-import { Form } from "react-router";
+import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { deleteTripDbDoc } from "~/src/databaseUtil";
 
-async function handleDeleteTripButton(tripDbDoc: DocumentSnapshot | null) {
-	if (tripDbDoc != null) {
-		console.log(`Trip id = ${tripDbDoc.id}`);
-		await deleteTripDbDoc(tripDbDoc);
-	} else {
-		console.log("Trying to delete an invalid trip.");
-	}
-}
-
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
+
+	const navigate = useNavigate();
 
 	const [email, setEmail] = useState("");
 
 	function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		console.log(email);
+	}
+
+	async function handleDeleteTripButton(tripDbDoc: DocumentSnapshot | null) {
+		if (tripDbDoc != null) {
+			console.log(`Trip id = ${tripDbDoc.id}`);
+			await deleteTripDbDoc(tripDbDoc);
+			navigate("/");
+		} else {
+			console.log("Trying to delete an invalid trip.");
+		}
 	}
 
 	return (

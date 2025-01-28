@@ -40,7 +40,8 @@ export default function TopLevelLayout() {
 
 	return (
 		<div className="grow flex flex-col justify-stretch items-stretch bg-dashboard_lime">
-			<Outlet context={{ userDbDoc: userDbDoc, forceStateChange: forceStateChange }}/>
+			{  }
+			<Outlet context={{ userDbDoc: userDbDoc, stateChangeForcer: stateChangeForcer, forceStateChange: forceStateChange }}/>
 		</div>
 	);
 }
