@@ -5,8 +5,9 @@ export default [
 		route("/sign-in", "components/pages/SignInPage.tsx"),
 		route("/sign-up", "components/pages/SignUpPage.tsx"),
 		layout("components/pages/MainLayout.tsx", [
-			index("components/pages/Landing.tsx"),
-			route("/create-trip", "components/pages/CreateTrip.tsx")
+			index("components/pages/LandingPage.tsx"),
+			route("/create-trip", "components/pages/CreateTrip.tsx"),
+			route("/test-trip", "components/pages/TripPage.tsx")
 		])
 	])
 ] satisfies RouteConfig;

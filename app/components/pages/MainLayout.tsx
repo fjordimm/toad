@@ -24,7 +24,7 @@ export default function MainLayout() {
 		? (
 			<div className="grow flex flex-row">
 				<MenuBar userDbDoc={userDbDoc as DocumentSnapshot} />
-				<div className="p-5 grow">
+				<div className="p-5 grow flex">
 					<Outlet />
 				</div>
 			</div>
