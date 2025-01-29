@@ -20,7 +20,7 @@ export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => 
 export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
 	// TODO: better error handling and null handling
 
-	const ret: DocumentSnapshot[] = []
+	const ret: DocumentSnapshot[] = [];
 
 	for (const item of userDbDoc.data()?.trips) {
 		ret.push(await getDoc(doc(firebaseDb, "trips", item)));
@@ -45,6 +45,18 @@ export async function deleteTripDbDoc(tripDbDoc: DocumentSnapshot) {
 	}
 	
 	await deleteDoc(tripDbDoc.ref);
+}
+
+export async function retrieveTripMemberDbDocList(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
+	// TODO: better error handling and null handling
+
+	const ret: DocumentSnapshot[] = [];
+
+	for (const item of tripDbDoc.data()?.trip_users) {
+		ret.push(await getDoc(doc(firebaseDb, "users", item)));
+	}
+
+	return ret;
 }
 
 export async function addUserToTrip(tripDbDoc: DocumentSnapshot, userDbDoc: DocumentSnapshot) {

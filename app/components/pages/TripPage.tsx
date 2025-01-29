@@ -2,7 +2,7 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import ToadCount from "../modules/ToadCount";
 import type { Route } from "./+types/TripPage";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { retrieveTripDbDoc } from "~/src/databaseUtil";
 
 export default function TripPage({ params }: Route.ComponentProps) {
@@ -10,14 +10,21 @@ export default function TripPage({ params }: Route.ComponentProps) {
 	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
 	const [tripDbDoc, setTripDbDoc] = useState<DocumentSnapshot | null>(null);
-	retrieveTripDbDoc(params.tripId).then(
-		(result: DocumentSnapshot | null) => {
-			if (result != null) {
-				setTripDbDoc(result);
-			} else {
-				setTripDbDoc(null);
-			}
-		}
+	useEffect(
+		() => {
+			retrieveTripDbDoc(params.tripId).then(
+				(result: DocumentSnapshot | null) => {
+					if (result != null) {
+						console.log("YES");
+						setTripDbDoc(result);
+					} else {
+						console.log("NO");
+						setTripDbDoc(null);
+					}
+				}
+			);
+		},
+		[ mainLayoutContext ] // TODO: made it actually update on real state changes
 	);
 
 	return (

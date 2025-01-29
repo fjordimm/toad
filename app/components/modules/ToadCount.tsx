@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { addUserToTrip, deleteTripDbDoc } from "~/src/databaseUtil";
+import { addUserToTrip, deleteTripDbDoc, retrieveTripMemberDbDocList } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
+import Loading from "./Loading";
+
+function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[] | null) {
+	if (tripMemberDbDocList !== null) {
+		return tripMemberDbDocList.map((trip: DocumentSnapshot) => {
+			return <p>{trip.data()?.first_name}</p>;
+		});
+	} else {
+		return <Loading />;
+	}
+}
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
 	const navigate = useNavigate();
+
+	const [tripMemberDbDocList, setTripMemberDbDocList] = useState<DocumentSnapshot[] | null>(null);
+	useEffect(
+		() => {
+			if (props.tripDbDoc !== null) {
+				retrieveTripMemberDbDocList(props.tripDbDoc).then(
+					(result: DocumentSnapshot[] | null) => {
+						setTripMemberDbDocList(result);
+					}
+				);
+			} else {
+				console.log("Bad doc.");
+			}
+		},
+		[ props.tripDbDoc ] // TODO: made it actually update on real state changes
+	);
 
 	const [email, setEmail] = useState("");
 
@@ -48,6 +75,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 				<ToadMember name="Arnav" />
 				<ToadMember name="Jiggy" />
 				<ToadMember name="Angelina" /> */}
+				{ turnTripMemberDbDocListIntoElems(tripMemberDbDocList) }
 			</div>
 
 			{/* Email Input and Invite Button */}
