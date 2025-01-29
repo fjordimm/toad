@@ -53,7 +53,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		if (tripDbDoc != null) {
 			console.log(`Trip id = ${tripDbDoc.id}`);
 			await deleteTripDbDoc(tripDbDoc);
-			mainLayoutContext.forceUpdate();
 			navigate("/");
 		} else {
 			console.log("Trying to delete an invalid trip.");

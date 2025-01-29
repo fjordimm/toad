@@ -65,8 +65,6 @@ const CreateTrip = () => {
             setStartDate('');
             setEndDate('');
 
-			mainLayoutContext.forceUpdate();
-
 			navigate(`/trip/${tripRef.id}`);
         }
         catch (error) {

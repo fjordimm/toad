@@ -3,7 +3,7 @@ import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
 import { useEffect, useState, type ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
-import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
+import { doc, DocumentSnapshot, getDoc, onSnapshot } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
 import { authenticateUser, retrieveTripDbDocList } from '~/src/databaseUtil';
@@ -25,23 +25,72 @@ function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): R
 	}
 }
 
-export default function MenuBar(props: { userDbDoc: DocumentSnapshot, forceUpdateState: boolean }) {
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
 	console.log("MENU BAR RERENDERING");
     
     const [open, setOpen] = useState(true);
 
+	const [testState1, setTestState1] = useState(0);
+
 	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
+	// function thing() {
+	// 	useEffect(
+	// 		() => {
+	// 			console.log("(((TWO)))");
+	// 		},
+	// 		[]
+	// 	);
+	// }
+	// onSnapshot(props.userDbDoc.ref, () => {
+	// 	console.log("(((ONE)))");
+	// 	thing();
+	// });
+
+	// useEffect(
+	// 	() => {
+	// 		retrieveTripDbDocList(props.userDbDoc).then(
+	// 			(result: DocumentSnapshot[] | null) => {
+	// 				setTripDbDocList(result);
+	// 			}
+	// 		);
+	// 	},
+	// 	[] // TODO: made it actually update on real state changes
+	// );
+	// function bruhtober() {
+	// 	console.log("What the sigma");
+	// 	console.log(`testState = ${testState1}`);
+	// 	setTestState1(testState1 + 1);
+	// }
 	useEffect(
 		() => {
-			retrieveTripDbDocList(props.userDbDoc).then(
-				(result: DocumentSnapshot[] | null) => {
-					setTripDbDocList(result);
-				}
-			);
+			onSnapshot(props.userDbDoc.ref, async () => {
+				console.log("ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+				// console.log(`testState = ${testState1}`);
+				// setTestState1(testState1 + 1);
+
+				const newUserDbDoc = await getDoc(doc(firebaseDb, "users", props.userDbDoc.data()?.email));
+				await retrieveTripDbDocList(newUserDbDoc).then(
+					(result: DocumentSnapshot[] | null) => {
+						console.log("-------------- ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+						console.log(`Thing length = ${result?.length}`);
+						setTripDbDocList(result);
+					}
+				);
+			});
 		},
-		[ props.forceUpdateState ] // TODO: made it actually update on real state changes
+		[]
 	);
+	// onSnapshot(props.userDbDoc.ref, async () => {
+	// 	console.log("ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
+	// 	await retrieveTripDbDocList(props.userDbDoc).then(
+	// 		(result: DocumentSnapshot[] | null) => {
+	// 			console.log("-------------- ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+	// 			// setTripDbDocList(result);
+	// 		}
+	// 	);
+	// });
 
     return (
         <div className={`${
@@ -59,6 +108,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot, forceUpdat
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <div className="flex flex-col my-4 gap-y-4">
 					{ turnTripDbDocListIntoElems(tripDbDocList) }
+					<p>THing is {testState1}</p>
 				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
                     <Link to="/create-trip" className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</Link>

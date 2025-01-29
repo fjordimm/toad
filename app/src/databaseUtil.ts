@@ -26,6 +26,8 @@ export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promis
 		ret.push(await getDoc(doc(firebaseDb, "trips", item)));
 	}
 
+	console.log(`Bruh length = ${ret.length}`);
+
 	return ret;
 }
 
