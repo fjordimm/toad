@@ -6,14 +6,10 @@ import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentReference, DocumentSnapshot, getDoc, onSnapshot } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
-import { Link, Navigate, redirect } from 'react-router';
+import { Link, Navigate, redirect, useNavigate } from 'react-router';
 import TripsButton from './MenuBar/TripsButton';
 import Loading from './Loading';
 import { dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
-  
-function logOut() {
-	firebaseAuth.signOut();
-}
 
 function turnUserListOfTripsIntoElems(userListOfTrips: DocumentSnapshot[] | null): ReactNode {
 	if (userListOfTrips !== null) {
@@ -29,6 +25,8 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
 	console.log("MENU BAR RERENDERING");
 
+	const navigate = useNavigate();
+
     const [open, setOpen] = useState(true);
 
 	const [userListOfTrips, setUserListOfTrips] = useState<DocumentSnapshot[] | null>(null);
@@ -42,6 +40,11 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 		},
 		[ props.userDbDoc ]
 	);
+
+	function handleLogOut() {
+		firebaseAuth.signOut();
+		navigate("/sign-in");
+	}
 
 	const userFirstName: string = props.userDbDoc.get("first_name");
 	const userLastName: string = props.userDbDoc.get("last_name");
@@ -65,7 +68,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
             <div className="flex-shrink-0">
               <h1 className="text-center">Insert Logo Here :3</h1>
               <h1 className="text-center text-white font-sunflower text-lg py-4 px-4 pb-6">
-                Welcome Back, {props.name}
+                Welcome Back, {`${userFirstName} ${userLastName}`}
               </h1>
             </div>
   
@@ -73,18 +76,11 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
               <h3 className="text-center text-white font-sunflower text-base px-4">
                 Your Trips
               </h3>
-              <TripButton name="Portland" num={0}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
-              <TripButton name="Tahoe" num={1}></TripButton>
+			  { turnUserListOfTripsIntoElems(userListOfTrips) }
               <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-6 rounded-lg">
-                <button className="relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white">
+                <Link to="/create-trip" className="relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white">
                   +
-                </button>
+                </Link>
                 <span className="ml-2 pt-1 text-white text-sm font-sunflower">
                   Create New Trip
                 </span>
@@ -97,7 +93,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
             </div>
   
             <div className="flex-shrink-0 flex justify-center my-4">
-              <button className="relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
+              <button onClick={handleLogOut} className="relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
                 <span className="absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75"></span>
                 <span className="relative text-center text-white font-sunflower text-lg">
                   Log Out

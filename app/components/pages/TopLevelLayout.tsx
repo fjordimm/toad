@@ -3,6 +3,7 @@ import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
 import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot } from "firebase/firestore";
 import { dbCheckAndGetUserAuthentication } from "~/src/databaseUtil";
+import { firebaseAuth } from "~/src/toadFirebase";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
