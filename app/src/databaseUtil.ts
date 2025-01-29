@@ -1,21 +1,32 @@
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
+import { arrayRemove, arrayUnion, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseDb } from "./toadFirebase";
 
-export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => void, onNotAuthenticated: () => void) {
+export function checkAndGetUserAuthentication(onAuthenticated: (result: DocumentReference) => void, onNotAuthenticated: () => void) {
 	onAuthStateChanged(getAuth(), (authUser: User | null) => {
 		if (authUser !== null) {
-			const emailId: string = authUser.email as string;
-
-			const docPromise: Promise<DocumentSnapshot> = getDoc(doc(firebaseDb, "users", emailId));
-			docPromise.then((result: DocumentSnapshot) => {
-				onAuthenticated(result);
-			});
+			// TODO: better null checking and error handling. The 'as' shouldn't be there
+			onAuthenticated(doc(firebaseDb, "users", authUser.email as string));
 		} else {
 			onNotAuthenticated();
 		}
 	});
 }
+
+// export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => void, onNotAuthenticated: () => void) {
+// 	onAuthStateChanged(getAuth(), (authUser: User | null) => {
+// 		if (authUser !== null) {
+// 			const emailId: string = authUser.email as string;
+
+// 			const docPromise: DocumentReference = doc(firebaseDb, "users", emailId);
+// 			docPromise.then((result: DocumentSnapshot) => {
+// 				onAuthenticated(result);
+// 			});
+// 		} else {
+// 			onNotAuthenticated();
+// 		}
+// 	});
+// }
 
 export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
 	// TODO: better error handling and null handling

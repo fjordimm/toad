@@ -1,8 +1,8 @@
 import { Outlet, useOutletContext } from "react-router";
 import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
-import type { DocumentSnapshot } from "firebase/firestore";
-import { authenticateUser } from "~/src/databaseUtil";
+import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot } from "firebase/firestore";
+import { checkAndGetUserAuthentication } from "~/src/databaseUtil";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
@@ -15,26 +15,37 @@ export default function TopLevelLayout() {
 
 	console.log("TOP LEVEL LAYOUT RERENDERING");
 
-	const [userDbDoc, setUserDbDoc] = useState<DocumentSnapshot | null>(null);
-	useEffect( // So that it only runs once
+	const [userDbDocRef, setUserDbDocRef] = useState<DocumentReference | null>(null);
+	useEffect(
 		() => {
-			authenticateUser(
-				(result: DocumentSnapshot) => {
+			checkAndGetUserAuthentication(
+				(result: DocumentReference) => {
 					console.log("authenticate positive");
-					setUserDbDoc(result);
+					setUserDbDocRef(result);
 				},
 				() => {
 					console.log("authenticate negative");
-					setUserDbDoc(null);
+					setUserDbDocRef(null);
 				}
 			);
 		},
-		[] // The empty array as the second argument of useEffect ensures it only runs once
+		[]
+	);
+
+	const [userDbDoc, setUserDbDoc] = useState<DocumentSnapshot | null>(null);
+	useEffect(
+		() => {
+			if (userDbDocRef !== null) {
+				onSnapshot(userDbDocRef, async () => {
+					setUserDbDoc(await getDoc(userDbDocRef));
+				});
+			}
+		},
+		[ userDbDocRef ]
 	);
 
 	return (
 		<div className="grow flex flex-col justify-stretch items-stretch bg-dashboard_lime">
-			{  }
 			<Outlet context={{ userDbDoc: userDbDoc }}/>
 		</div>
 	);
