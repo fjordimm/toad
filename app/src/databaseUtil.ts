@@ -13,21 +13,6 @@ export function checkAndGetUserAuthentication(onAuthenticated: (result: Document
 	});
 }
 
-// export function authenticateUser(onAuthenticated: (result: DocumentSnapshot) => void, onNotAuthenticated: () => void) {
-// 	onAuthStateChanged(getAuth(), (authUser: User | null) => {
-// 		if (authUser !== null) {
-// 			const emailId: string = authUser.email as string;
-
-// 			const docPromise: DocumentReference = doc(firebaseDb, "users", emailId);
-// 			docPromise.then((result: DocumentSnapshot) => {
-// 				onAuthenticated(result);
-// 			});
-// 		} else {
-// 			onNotAuthenticated();
-// 		}
-// 	});
-// }
-
 export async function retrieveTripDbDocList(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
 	// TODO: better error handling and null handling
 

@@ -13,21 +13,23 @@ export default function MainLayout() {
 
 	console.log(topLevelLayoutContext.userDbDoc);
 
-	return topLevelLayoutContext.userDbDoc !== null
-		? (
+	if (topLevelLayoutContext.userDbDoc !== null) {
+		return (
 			<div className="grow flex flex-row">
 				<MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
 				<div className="p-5 grow flex">
 					<Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }}/>
 				</div>
 			</div>
-		)
-		: (
+		);
+	} else {
+		return (
 			<div>
 				<p>You are not signed in.</p>
 				<Link to="/sign-in" className="underline">Sign In</Link>
 			</div>
 		);
+	}
 }
 
 // To be used by subroutes

@@ -31,30 +31,17 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     
     const [open, setOpen] = useState(true);
 
-	// const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
-	// function thing() {
-	// 	useEffect(
-	// 		() => {
-	// 			console.log("(((TWO)))");
-	// 		},
-	// 		[]
-	// 	);
-	// }
-	// onSnapshot(props.userDbDoc.ref, () => {
-	// 	console.log("(((ONE)))");
-	// 	thing();
-	// });
-
-	// useEffect(
-	// 	() => {
-	// 		retrieveTripDbDocList(props.userDbDoc).then(
-	// 			(result: DocumentSnapshot[] | null) => {
-	// 				setTripDbDocList(result);
-	// 			}
-	// 		);
-	// 	},
-	// 	[] // TODO: made it actually update on real state changes
-	// );
+	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
+	useEffect(
+		() => {
+			retrieveTripDbDocList(props.userDbDoc).then(
+				(result: DocumentSnapshot[] | null) => {
+					setTripDbDocList(result);
+				}
+			);
+		},
+		[ props.userDbDoc ]
+	);
 	// function bruhtober() {
 	// 	console.log("What the sigma");
 	// 	console.log(`testState = ${testState1}`);
@@ -108,7 +95,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                 <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${userFirstName} ${userLastName}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <div className="flex flex-col my-4 gap-y-4">
-					{/* { turnTripDbDocListIntoElems(tripDbDocList) } */}
+					{ turnTripDbDocListIntoElems(tripDbDocList) }
 				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
                     <Link to="/create-trip" className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</Link>
