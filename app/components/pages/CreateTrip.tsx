@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
-import calendarIcon from '../../assets/calendarIcon.svg'
-import {firebaseDb} from "../../src/toadFirebase"
-import { collection, addDoc } from 'firebase/firestore';
+import React, { useState } from "react";
+import calendarIcon from "/calendarIcon.svg";
+import {firebaseDb} from "../../src/toadFirebase";
+import { collection, addDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
+import { useNavigate } from "react-router";
+import { dbCreateTrip } from "~/src/databaseUtil";
 
+// TODO: error handling
 
+const CreateTrip = () => {
 
-const CreateTrip = () =>{
+	console.log("CREATE TRIP RERENDERING");
+
+	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+
+	const navigate = useNavigate();
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -13,40 +22,14 @@ const CreateTrip = () =>{
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try{
-
-            // Add a trip to the 'trips' collection
-            const tripRef = await addDoc(collection(firebaseDb, "trips"), {
-                tripName: tripName,
-                startDate: startDate,
-                endDate: endDate,
-                createdAt: new Date(), 
-                tripOwner: "",
-                days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
-              });
-            
-            // Users Field
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_users"), {
-                placeholder: "",      
-            });
-            // Invited Users Field
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
-                placeholder: "",      
-            });
-
-            // Itinerary
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_itinerary"), {
-                placeholder: "",      
-            });
-
-            // Expenses
-            await addDoc(collection(firebaseDb, "trips", tripRef.id, "expenses"), {
-                placeholder: "",  
-            });
+        try {
+			const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
 
             setTripName('');
             setStartDate('');
             setEndDate('');
+
+			navigate(`/trip/${tripDbDocRef.id}`);
         }
         catch (error) {
             console.error("Error adding trip: ", error);
@@ -55,7 +38,7 @@ const CreateTrip = () =>{
 
 
     return(
-        <div className="mt-32">
+        <div className="mt-32 grow">
             <div className="flex flex-col justify-center items-center gap-12">
                 <p className="font-sunflower text-sidebar_deep_green text-3xl">Create Your Next Adventure</p>
 

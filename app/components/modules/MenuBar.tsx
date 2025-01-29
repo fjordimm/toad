@@ -1,11 +1,51 @@
 import calendarIcon from '/calendarIcon.svg';
-import React, { useState } from "react";
-import TripButton from './TripsButton'
-import InvitationButton from './InvitationButton';
-
-function MenuBar(props: { name: string }) {
-    const [open, setOpen] = useState(false);
+import TripButton from './MenuBar/TripsButton'
+import InvitationButton from './MenuBar/InvitationButton';
+import { useEffect, useState, type ReactNode } from 'react';
+import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
+import { doc, DocumentReference, DocumentSnapshot, getDoc, onSnapshot } from 'firebase/firestore';
+import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
+import type { Route } from '../pages/+types/MainLayout';
+import { Link, Navigate, redirect } from 'react-router';
+import TripsButton from './MenuBar/TripsButton';
+import Loading from './Loading';
+import { dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
   
+function logOut() {
+	firebaseAuth.signOut();
+}
+
+function turnUserListOfTripsIntoElems(userListOfTrips: DocumentSnapshot[] | null): ReactNode {
+	if (userListOfTrips !== null) {
+		return userListOfTrips.map((trip: DocumentSnapshot) => {
+			return <TripsButton tripDbDoc={trip} num={0} />
+		});
+	} else {
+		return <Loading />;
+	}
+}
+
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
+
+	console.log("MENU BAR RERENDERING");
+
+    const [open, setOpen] = useState(true);
+
+	const [userListOfTrips, setUserListOfTrips] = useState<DocumentSnapshot[] | null>(null);
+	useEffect(
+		() => {
+			dbRetrieveUsersListOfTrips(props.userDbDoc).then(
+				(result: DocumentSnapshot[] | null) => {
+					setUserListOfTrips(result);
+				}
+			);
+		},
+		[ props.userDbDoc ]
+	);
+
+	const userFirstName: string = props.userDbDoc.get("first_name");
+	const userLastName: string = props.userDbDoc.get("last_name");
+
     return (
       <div
         className={`${
@@ -69,5 +109,3 @@ function MenuBar(props: { name: string }) {
       </div>
     );
   }
-  
-  export default MenuBar;
