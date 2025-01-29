@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router';
 
 const SignUpPage = () => {
 
+	console.log("SIGN UP RERENDERING");
+
 	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');

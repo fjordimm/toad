@@ -6,19 +6,19 @@ import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import { doc, DocumentReference, DocumentSnapshot, getDoc, onSnapshot } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '~/src/toadFirebase';
 import type { Route } from '../pages/+types/MainLayout';
-import { retrieveTripDbDocList } from '~/src/databaseUtil';
 import { Link, Navigate, redirect } from 'react-router';
 import TripsButton from './MenuBar/TripsButton';
 import Loading from './Loading';
+import { dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
 
 function logOut() {
 	firebaseAuth.signOut();
 }
 
-function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): ReactNode {
-	if (tripDbDocList !== null) {
-		return tripDbDocList.map((trip: DocumentSnapshot) => {
-			return <TripsButton tripId={trip.id} tripName={trip.data()?.tripName} num={0} />
+function turnUserListOfTripsIntoElems(userListOfTrips: DocumentSnapshot[] | null): ReactNode {
+	if (userListOfTrips !== null) {
+		return userListOfTrips.map((trip: DocumentSnapshot) => {
+			return <TripsButton tripDbDoc={trip} num={0} />
 		});
 	} else {
 		return <Loading />;
@@ -28,57 +28,23 @@ function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): R
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
 	console.log("MENU BAR RERENDERING");
-    
+
     const [open, setOpen] = useState(true);
 
-	const [tripDbDocList, setTripDbDocList] = useState<DocumentSnapshot[] | null>(null);
+	const [userListOfTrips, setUserListOfTrips] = useState<DocumentSnapshot[] | null>(null);
 	useEffect(
 		() => {
-			retrieveTripDbDocList(props.userDbDoc).then(
+			dbRetrieveUsersListOfTrips(props.userDbDoc).then(
 				(result: DocumentSnapshot[] | null) => {
-					setTripDbDocList(result);
+					setUserListOfTrips(result);
 				}
 			);
 		},
 		[ props.userDbDoc ]
 	);
-	// function bruhtober() {
-	// 	console.log("What the sigma");
-	// 	console.log(`testState = ${testState1}`);
-	// 	setTestState1(testState1 + 1);
-	// }
-	// useEffect(
-	// 	() => {
-	// 		onSnapshot(props.userDbDoc.ref, async () => {
-	// 			console.log("ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-	// 			// console.log(`testState = ${testState1}`);
-	// 			// setTestState1(testState1 + 1);
 
-	// 			const newUserDbDoc = await getDoc(doc(firebaseDb, "users", props.userDbDoc.data()?.email));
-	// 			await retrieveTripDbDocList(newUserDbDoc).then(
-	// 				(result: DocumentSnapshot[] | null) => {
-	// 					console.log("-------------- ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-	// 					console.log(`Thing length = ${result?.length}`);
-	// 					setTripDbDocList(result);
-	// 				}
-	// 			);
-	// 		});
-	// 	},
-	// 	[]
-	// );
-	// onSnapshot(props.userDbDoc.ref, async () => {
-	// 	console.log("ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-
-	// 	await retrieveTripDbDocList(props.userDbDoc).then(
-	// 		(result: DocumentSnapshot[] | null) => {
-	// 			console.log("-------------- ITS UPDATING TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-	// 			// setTripDbDocList(result);
-	// 		}
-	// 	);
-	// });
-
-	const userFirstName = props.userDbDoc.data()?.first_name;
-	const userLastName = props.userDbDoc.data()?.last_name;
+	const userFirstName: string = props.userDbDoc.get("first_name");
+	const userLastName: string = props.userDbDoc.get("last_name");
 
     return (
         <div className={`${
@@ -95,7 +61,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                 <h1 className='text-center text-white font-sunflower text-lg py-4 px-4 pb-14'>Welcome Back, {`${userFirstName} ${userLastName}`}</h1>
                 <h3 className='text-center text-white font-sunflower text-base px-4'>Your Trips</h3>
                 <div className="flex flex-col my-4 gap-y-4">
-					{ turnTripDbDocListIntoElems(tripDbDocList) }
+					{ turnUserListOfTripsIntoElems(userListOfTrips) }
 				</div>
                 <div className="flex items-center bg-sidebar_deep_green px-14 py-2 mb-24 rounded-lg">
                     <Link to="/create-trip" className='relative rounded-full h-7 w-7 flex items-center justify-center bg-[#4E6A55] text-white'>+</Link>

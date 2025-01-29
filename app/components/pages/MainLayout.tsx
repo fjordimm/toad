@@ -11,8 +11,6 @@ export default function MainLayout() {
 
 	const topLevelLayoutContext: TopLevelLayoutContext = useTopLevelLayoutContext();
 
-	console.log(topLevelLayoutContext.userDbDoc);
-
 	if (topLevelLayoutContext.userDbDoc !== null) {
 		return (
 			<div className="grow flex flex-row">

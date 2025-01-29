@@ -2,16 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { addUserToTrip, deleteTripDbDoc, retrieveTripMemberDbDocList } from "~/src/databaseUtil";
+import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
 import Loading from "./Loading";
-import { useMainLayoutContext, type MainLayoutContext } from "../pages/MainLayout";
 
-function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[] | null) {
-	if (tripMemberDbDocList !== null) {
-		return tripMemberDbDocList.map((trip: DocumentSnapshot) => {
-			// return <p>{trip.data()?.first_name}</p>;
-			return <ToadMember name={trip.data()?.first_name} />
+function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
+	if (listOfTripsMembers !== null) {
+		return listOfTripsMembers.map((trip: DocumentSnapshot) => {
+			return <ToadMember name={trip.get("first_name")} />
 		});
 	} else {
 		return <Loading />;
@@ -20,39 +18,42 @@ function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
-	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+	console.log("TOAD COUNT RERENDERING");
 
 	const navigate = useNavigate();
 
-	const [tripMemberDbDocList, setTripMemberDbDocList] = useState<DocumentSnapshot[] | null>(null);
+	const [listOfTripsMembers, setListOfTripMembers] = useState<DocumentSnapshot[] | null>(null);
 	useEffect(
 		() => {
 			if (props.tripDbDoc !== null) {
-				retrieveTripMemberDbDocList(props.tripDbDoc).then(
+				dbRetrieveTripsListOfMembers(props.tripDbDoc).then(
 					(result: DocumentSnapshot[] | null) => {
-						setTripMemberDbDocList(result);
+						setListOfTripMembers(result);
 					}
 				);
-			} else {
-				console.log("Bad doc.");
 			}
 		},
-		[ props.tripDbDoc ] // TODO: made it actually update on real state changes
+		[ props.tripDbDoc ]
 	);
 
 	const [email, setEmail] = useState("");
 
 	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
+		// const user = await getDoc(doc(firebaseDb, "users", email));
+		// await dbAddUserToTrip(props.tripDbDoc as DocumentSnapshot, user);
 
-		const user = await getDoc(doc(firebaseDb, "users", email));
-		await addUserToTrip(props.tripDbDoc as DocumentSnapshot, user);
+		console.log("yeeeeeeeeee");
+		if (props.tripDbDoc !== null) {
+			console.log("yaaaaaaaaa");
+			await dbAddUserToTrip(props.tripDbDoc.ref, await dbRetrieveUser(email));
+		}
+
+		setEmail("");
 	}
 
-	async function handleDeleteTripButton(tripDbDoc: DocumentSnapshot | null) {
-		if (tripDbDoc != null) {
-			console.log(`Trip id = ${tripDbDoc.id}`);
-			await deleteTripDbDoc(tripDbDoc);
+	async function handleDeleteTrip(tripDbDoc: DocumentSnapshot | null) {
+		if (tripDbDoc !== null) {
+			await dbDeleteTrip(tripDbDoc);
 			navigate("/");
 		} else {
 			console.log("Trying to delete an invalid trip.");
@@ -72,14 +73,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 			{/* Member List */}
 			<div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
-				{/* Can add members to the trip by calling <ToadMembers name="name" /> */}
-				{/* <ToadMember name="Angelina" />
-				<ToadMember name="Billiam" />
-				<ToadMember name="Sophie" />
-				<ToadMember name="Arnav" />
-				<ToadMember name="Jiggy" />
-				<ToadMember name="Angelina" /> */}
-				{ turnTripMemberDbDocListIntoElems(tripMemberDbDocList) }
+				{ turnListOfTripsMembersIntoElems(listOfTripsMembers) }
 			</div>
 
 			{/* Email Input and Invite Button */}
@@ -102,7 +96,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			{/* Delete Trip Button */}
 			<div className="mt-10 flex flex-col items-center">
 				<button
-					onClick={ () => handleDeleteTripButton(props.tripDbDoc) }
+					onClick={ () => handleDeleteTrip(props.tripDbDoc) }
 					className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
 				>
 					Delete Trip

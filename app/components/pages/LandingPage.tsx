@@ -4,6 +4,8 @@ import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 
 export default function Landing() {
 
+	console.log("LANDING PAGE RERENDERING");
+
 	// const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
 	return (

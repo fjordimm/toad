@@ -4,14 +4,15 @@ import {firebaseDb} from "../../src/toadFirebase";
 import { collection, addDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useNavigate } from "react-router";
+import { dbCreateTrip } from "~/src/databaseUtil";
 
 // TODO: error handling
 
 const CreateTrip = () => {
 
-	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+	console.log("CREATE TRIP RERENDERING");
 
-	const emailId: string = mainLayoutContext.userDbDoc.data()?.email;
+	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
 	const navigate = useNavigate();
 
@@ -21,51 +22,14 @@ const CreateTrip = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try{
-
-            // Add a trip to the 'trips' collection
-            const tripRef = await addDoc(collection(firebaseDb, "trips"), {
-                tripName: tripName,
-                startDate: startDate,
-                endDate: endDate,
-                createdAt: new Date(), 
-                tripOwner: emailId,
-                days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
-				trip_users: [ emailId ]
-              });
-            
-			// Removed the collection 'trip_users' to instead use an attribute 'trip_users'.
-            // // Users Field
-            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_users"), {
-            //     placeholder: "",      
-            // });
-
-			// Temporarily removed all subcollections from trips
-            // // Invited Users Field
-            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "invited_users"), {
-            //     placeholder: "",      
-            // });
-
-            // // Itinerary
-            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "trip_itinerary"), {
-            //     placeholder: "",      
-            // });
-
-            // // Expenses
-            // await addDoc(collection(firebaseDb, "trips", tripRef.id, "expenses"), {
-            //     placeholder: "",  
-            // });
-
-			// Adds this trip to the owner's trips
-			await updateDoc(doc(firebaseDb, "users", emailId), {
-				trips: arrayUnion(tripRef.id)
-			});
+        try {
+			const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
 
             setTripName('');
             setStartDate('');
             setEndDate('');
 
-			navigate(`/trip/${tripRef.id}`);
+			navigate(`/trip/${tripDbDocRef.id}`);
         }
         catch (error) {
             console.error("Error adding trip: ", error);

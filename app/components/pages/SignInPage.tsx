@@ -9,7 +9,7 @@ import { Form, useNavigate } from 'react-router';
 
 const SignInPage = () => {
 
-	console.log("SIGN IN RERENDERING");
+	console.log("SIGN IN PAGE RERENDERING");
 
 	const navigate = useNavigate();
 

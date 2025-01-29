@@ -2,7 +2,7 @@ import { Outlet, useOutletContext } from "react-router";
 import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
 import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot } from "firebase/firestore";
-import { checkAndGetUserAuthentication } from "~/src/databaseUtil";
+import { dbCheckAndGetUserAuthentication } from "~/src/databaseUtil";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
@@ -18,13 +18,11 @@ export default function TopLevelLayout() {
 	const [userDbDocRef, setUserDbDocRef] = useState<DocumentReference | null>(null);
 	useEffect(
 		() => {
-			checkAndGetUserAuthentication(
+			dbCheckAndGetUserAuthentication(
 				(result: DocumentReference) => {
-					console.log("authenticate positive");
 					setUserDbDocRef(result);
 				},
 				() => {
-					console.log("authenticate negative");
 					setUserDbDocRef(null);
 				}
 			);
