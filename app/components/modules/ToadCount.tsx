@@ -5,6 +5,7 @@ import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
 import { addUserToTrip, deleteTripDbDoc, retrieveTripMemberDbDocList } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
 import Loading from "./Loading";
+import { useMainLayoutContext, type MainLayoutContext } from "../pages/MainLayout";
 
 function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[] | null) {
 	if (tripMemberDbDocList !== null) {
@@ -18,6 +19,8 @@ function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[
 }
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
+
+	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
 	const navigate = useNavigate();
 
@@ -50,6 +53,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		if (tripDbDoc != null) {
 			console.log(`Trip id = ${tripDbDoc.id}`);
 			await deleteTripDbDoc(tripDbDoc);
+			mainLayoutContext.forceUpdate();
 			navigate("/");
 		} else {
 			console.log("Trying to delete an invalid trip.");

@@ -25,7 +25,7 @@ function turnTripDbDocListIntoElems(tripDbDocList: DocumentSnapshot[] | null): R
 	}
 }
 
-export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
+export default function MenuBar(props: { userDbDoc: DocumentSnapshot, forceUpdateState: boolean }) {
 
 	console.log("MENU BAR RERENDERING");
     
@@ -40,7 +40,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 				}
 			);
 		},
-		[] // TODO: made it actually update on real state changes
+		[ props.forceUpdateState ] // TODO: made it actually update on real state changes
 	);
 
     return (
