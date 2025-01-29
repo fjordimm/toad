@@ -9,7 +9,8 @@ import Loading from "./Loading";
 function turnTripMemberDbDocListIntoElems(tripMemberDbDocList: DocumentSnapshot[] | null) {
 	if (tripMemberDbDocList !== null) {
 		return tripMemberDbDocList.map((trip: DocumentSnapshot) => {
-			return <p>{trip.data()?.first_name}</p>;
+			// return <p>{trip.data()?.first_name}</p>;
+			return <ToadMember name={trip.data()?.first_name} />
 		});
 	} else {
 		return <Loading />;
