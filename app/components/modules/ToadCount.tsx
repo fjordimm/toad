@@ -6,16 +6,6 @@ import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieve
 import { firebaseDb } from "~/src/toadFirebase";
 import Loading from "./Loading";
 
-function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
-	if (listOfTripsMembers !== null) {
-		return listOfTripsMembers.map((trip: DocumentSnapshot) => {
-			return <ToadMember name={trip.get("first_name")} />
-		});
-	} else {
-		return <Loading />;
-	}
-}
-
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
 	console.log("TOAD COUNT RERENDERING");
@@ -33,22 +23,29 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 				);
 			}
 		},
-		[ props.tripDbDoc ]
+		[props.tripDbDoc]
 	);
+
+	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
+		if (listOfTripsMembers !== null) {
+			return listOfTripsMembers.map((member: DocumentSnapshot) => {
+				return <ToadMember tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
+			});
+		} else {
+			return <Loading />;
+		}
+	}
 
 	const [email, setEmail] = useState("");
 
 	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
-		// const user = await getDoc(doc(firebaseDb, "users", email));
-		// await dbAddUserToTrip(props.tripDbDoc as DocumentSnapshot, user);
 
-		console.log("yeeeeeeeeee");
-		if (props.tripDbDoc !== null) {
-			console.log("yaaaaaaaaa");
-			await dbAddUserToTrip(props.tripDbDoc.ref, await dbRetrieveUser(email));
-		}
-
+		const emailId: string = email;
 		setEmail("");
+
+		if (props.tripDbDoc !== null) {
+			await dbAddUserToTrip(props.tripDbDoc.ref, emailId);
+		}
 	}
 
 	async function handleDeleteTrip(tripDbDoc: DocumentSnapshot | null) {
@@ -61,24 +58,30 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 	}
 
 	return (
-		<div className="relative">
-			{/* Positioning the container closer to the top-left */}
+		<div className="absolute top-2 right-2">
+			{/* Main Container */}
 			<div
-			className="absolute top-2 right-2 max-w-[271px] w-full max-h-[330px] bg-[#EAFFB9] p-6 rounded-lg shadow-lg"
+				className="max-w-[271px] w-full bg-[#EAFFB9] p-6 rounded-lg shadow-lg flex flex-col justify-between"
 			>
-			{/* Toad Count */}
-			<div className="flex flex-col items-center text-[24px] font-sunflower text-[#3C533A]">
-				Toad Count: #
-			</div>
+				{/* Toad Count */}
+				<div className="flex flex-col items-center text-[24px] font-sunflower text-[#3C533A]">
+					Toad Count: #
+				</div>
 
-			{/* Member List */}
-			<div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
-				{ turnListOfTripsMembersIntoElems(listOfTripsMembers) }
-			</div>
+				{/* Member List */}
+				<div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
+					{/* Can add members to the trip by calling <ToadMembers name="name" /> */}
+					{/* <ToadMember name="Angelina" />
+					<ToadMember name="Billiam" />
+					<ToadMember name="Sophie" />
+					<ToadMember name="Arnav" />
+					<ToadMember name="Jiggy" />
+					<ToadMember name="Angelina" /> */}
+					{ turnListOfTripsMembersIntoElems(listOfTripsMembers) }
+				</div>
 
-			{/* Email Input and Invite Button */}
-			<div className="mt-2 flex flex-col items-center space-y-3">
-				<Form onSubmit={handleInviteSubmit}>
+				{/* Email Input and Invite Button */}
+				<Form onSubmit={handleInviteSubmit} className="mt-4 flex flex-col items-center space-y-3">
 					<input
 						type="email"
 						placeholder="Enter member email"
@@ -93,15 +96,15 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 					</button>
 				</Form>
 			</div>
+
 			{/* Delete Trip Button */}
-			<div className="mt-10 flex flex-col items-center">
+			<div className="mt-2">
 				<button
-					onClick={ () => handleDeleteTrip(props.tripDbDoc) }
+					onClick={() => handleDeleteTrip(props.tripDbDoc)}
 					className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
 				>
 					Delete Trip
 				</button>
-				</div>
 			</div>
 		</div>
 	);

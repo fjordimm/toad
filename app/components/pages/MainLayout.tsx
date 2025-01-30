@@ -1,5 +1,4 @@
 import { Link, Navigate, Outlet, redirect, useNavigate, useOutletContext } from "react-router";
-import Sidebar from "../modules/sidebar";
 import MenuBar from "../modules/MenuBar";
 import { useState } from "react";
 import type { DocumentReference, DocumentSnapshot } from "firebase/firestore";

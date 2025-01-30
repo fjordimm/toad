@@ -28,20 +28,24 @@ export async function dbRetrieveUsersListOfTrips(userDbDoc: DocumentSnapshot): P
 	return ret;
 }
 
-export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot | null> {
-	return await getDoc(doc(firebaseDb, "trips", tripId));
+export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
+	const tripDbDocRef: DocumentReference = await addDoc(collection(firebaseDb, "trips"), {
+		trip_name: tripName,
+		start_date: startDate,
+		end_date: endDate,
+		created_at: new Date(),
+		trip_owner: tripOwner,
+		days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
+		trip_users: []
+	});
+
+	await dbAddUserToTrip(tripDbDocRef, tripOwner);
+
+	return tripDbDocRef;
 }
 
-export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
-	// TODO: better error handling and null handling
-
-	const ret: DocumentSnapshot[] = [];
-
-	for (const item of tripDbDoc.data()?.trip_users) {
-		ret.push(await getDoc(doc(firebaseDb, "users", item)));
-	}
-
-	return ret;
+export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot | null> {
+	return await getDoc(doc(firebaseDb, "trips", tripId));
 }
 
 export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
@@ -55,28 +59,38 @@ export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
 	await deleteDoc(tripDbDoc.ref);
 }
 
-export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
-	const tripDbDocRef: DocumentReference = await addDoc(collection(firebaseDb, "trips"), {
-		trip_name: tripName,
-		start_date: startDate,
-		end_date: endDate,
-		created_at: new Date(),
-		trip_owner: tripOwner,
-		days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
-		trip_users: []
-	});
+export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
+	// TODO: better error handling and null handling
 
-	await dbAddUserToTrip(tripDbDocRef, await dbRetrieveUser(tripOwner));
+	const ret: DocumentSnapshot[] = [];
 
-	return tripDbDocRef;
+	for (const item of tripDbDoc.get("trip_users")) {
+		ret.push(await getDoc(doc(firebaseDb, "users", item)));
+	}
+
+	return ret;
 }
 
-export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userDbDoc: DocumentSnapshot) {
+// TODO: be more consistent/deliberate with DocumentReference vs. DocumentSnapshot
+
+export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userEmailId: string) {
+	const userDbDoc: DocumentSnapshot = await getDoc(doc(firebaseDb, "users", userEmailId));
+	
 	await updateDoc(tripDbDocRef, {
 		trip_users: arrayUnion(userDbDoc.id)
 	});
 
 	await updateDoc(userDbDoc.ref, {
 		trips: arrayUnion(tripDbDocRef.id)
+	});
+}
+
+export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDoc: DocumentSnapshot) {
+	await updateDoc(userDbDoc.ref, {
+		trips: arrayRemove(tripDbDoc.id)
+	});
+
+	await updateDoc(tripDbDoc.ref, {
+		trip_users: arrayRemove(userDbDoc.id)
 	});
 }
