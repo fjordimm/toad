@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import emailicon from '../../../public/mail.svg'
-import lock from '../../../public/lock.svg'
-import globe from '../../../public/globe.svg'
-import person from '../../../public/person.svg'
+import emailicon from '/mail.svg';
+import lock from '/lock.svg';
+import globe from '/globe.svg';
+import person from '/person.svg';
+import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, addDoc, setDoc, collection} from 'firebase/firestore';
-import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
+import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router';
+
 const SignUpPage = () => {
+
+	console.log("SIGN UP RERENDERING");
+
+	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fname, setFName] = useState('');
     const [lname, setLName] = useState('');
     const [error, setError] = useState('');
+
+	// TODO: handle weak password error (and any other errors from createUserWithEmailAndPassword)
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -22,22 +30,25 @@ const SignUpPage = () => {
 
             const emailLower = email.toLowerCase();
             /* Creates a user with their email as the identifier*/
-            const userDocRef = doc(firebaseDb, 'users', emailLower);
-            setDoc(userDocRef, {
+            const userDocRef = doc(firebaseDb, "users", emailLower);
+            await setDoc(userDocRef, {
                 email: email,
                 first_name: fname,
                 last_name: lname,
-                // trips: [], 
-                // trip_invites: []
+                trips: [], 
+                trip_invites: []
             });
 
+			// Removed this in place of arrays
             /*This creates new empty collections for user trips and invited trips. Can also do with an array, but did with a collection for now*/
-            await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
-                placeholder: "",      
-            });
-            await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
-                placeholder: "",      
-            });
+            // await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
+            //     placeholder: "",      
+            // });
+            // await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
+            //     placeholder: "",      
+            // });
+
+			navigate("/sign-in");
             
         } catch(err: any) {
             if(err.code === 'auth/email-already-in-use') {
@@ -86,7 +97,7 @@ const SignUpPage = () => {
             }}>To Outline A Destination</p>
         <div style={{justifyItems: "center", alignItems: "center", marginTop: "-30px"}}>
             {/*already have account link to sign in page*/}
-            <p className="font-maven text-white">Already have an account?{" "} <a href="your-link-here" className="font-bold text-white underline">Sign In.</a></p>
+            <p className="font-maven text-white">Already have an account?{" "} <a href="/sign-in" className="font-bold text-white underline">Sign In.</a></p>
             {/*form*/}
             <form style={{
                 display: "flex",

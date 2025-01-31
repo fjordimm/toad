@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import emailicon from '../../../public/mail.svg'
-import lock from '../../../public/lock.svg'
-import globe from '../../../public/globe.svg'
+import emailicon from '/mail.svg'
+import lock from '/lock.svg'
+import globe from '/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
+import { Form, useNavigate } from 'react-router';
 
 const SignInPage = () => {
+
+	console.log("SIGN IN PAGE RERENDERING");
+
+	const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +36,8 @@ const SignInPage = () => {
             setEmail('');
             setPassword('');
             setError('');
+
+			navigate("/");
         } catch (err: any) {
             if(err.code === 'auth/user-not-found') {
                 setError('The email you entered does not belong to any account!');
@@ -104,7 +111,7 @@ const SignInPage = () => {
             <p className="font-maven" style={{ color: "white"}}>
               Don't have an account?{" "}
               <a
-                href="your-link-here"
+                href="/sign-up"
                 style={{
                   fontWeight: "bold",
                   color: "white",
@@ -215,10 +222,10 @@ const SignInPage = () => {
                   }}
                 />
               </div>
-      
+
               {/* login button */}
               <button
-                type="submit"
+				type="submit"
                 style={{
                   width: "300px",
                   height: "50px",
