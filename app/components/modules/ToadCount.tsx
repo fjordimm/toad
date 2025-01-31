@@ -57,6 +57,11 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		}
 	}
 
+	const toadCount: string = props.tripDbDoc !== null
+		? props.tripDbDoc.get("trip_users").length
+		: "?"
+		;
+
 	return (
 		<div className="absolute top-2 right-2">
 			{/* Main Container */}
@@ -65,7 +70,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			>
 				{/* Toad Count */}
 				<div className="flex flex-col items-center text-[24px] font-sunflower text-[#3C533A]">
-					Toad Count: #
+					Toad Count: {toadCount}
 				</div>
 
 				{/* Member List */}
@@ -77,7 +82,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 					<ToadMember name="Arnav" />
 					<ToadMember name="Jiggy" />
 					<ToadMember name="Angelina" /> */}
-					{ turnListOfTripsMembersIntoElems(listOfTripsMembers) }
+					{turnListOfTripsMembersIntoElems(listOfTripsMembers)}
 				</div>
 
 				{/* Email Input and Invite Button */}

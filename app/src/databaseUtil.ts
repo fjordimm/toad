@@ -44,10 +44,6 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
 	return tripDbDocRef;
 }
 
-export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot | null> {
-	return await getDoc(doc(firebaseDb, "trips", tripId));
-}
-
 export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
 	for (const emailId of tripDbDoc.get("trip_users"))
 	{
@@ -57,6 +53,10 @@ export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
 	}
 	
 	await deleteDoc(tripDbDoc.ref);
+}
+
+export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot | null> {
+	return await getDoc(doc(firebaseDb, "trips", tripId));
 }
 
 export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
