@@ -74,7 +74,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 				</div>
 
 				{/* Member List */}
-				<div className="mt-4 max-h-40 overflow-y-auto scrollbar-none space-y-3">
+				<div className="mt-4 h-[150px] overflow-y-auto scrollbar-none space-y-3">
 					{/* Can add members to the trip by calling <ToadMembers name="name" /> */}
 					{/* <ToadMember name="Angelina" />
 					<ToadMember name="Billiam" />
