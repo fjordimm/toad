@@ -29,14 +29,34 @@ export async function dbRetrieveUsersListOfTrips(userDbDoc: DocumentSnapshot): P
 }
 
 export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
+	//let itin:Array<Map<string, any>> = [];
+	let itin = [];
+	let num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))
+	for(let i = 0; i < num_days; i++) {
+		// let temp_dict = new Map<string, any>();
+		const currentDay = new Date(new Date(startDate).getTime());
+		currentDay.setDate(currentDay.getDate() + i);
+		// temp_dict.set("day", currentDay);
+		// temp_dict.set("activities", []);
+		// temp_dict.set("stay_at", "");
+		// temp_dict.set("additional_notes", "");
+		let temp_dict = {"day": currentDay,
+					 "activities": [],
+					 "stay_at": "",
+					 "additional_notes": ""
+		};
+		itin.push(temp_dict);
+	}
 	const tripDbDocRef: DocumentReference = await addDoc(collection(firebaseDb, "trips"), {
 		trip_name: tripName,
 		start_date: startDate,
 		end_date: endDate,
 		created_at: new Date(),
 		trip_owner: tripOwner,
-		days: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)),
-		trip_users: []
+		days: num_days,
+		trip_users: [],
+		itinerary: itin,
+		destinations: {}
 	});
 
 	await dbAddUserToTrip(tripDbDocRef, tripOwner);
