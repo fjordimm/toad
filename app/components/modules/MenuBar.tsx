@@ -1,4 +1,4 @@
-import calendarIcon from '/calendarIcon.svg';
+import toadLogo from "/toadLogo.png";
 import TripButton from './MenuBar/TripsButton'
 import InvitationButton from './MenuBar/InvitationButton';
 import { useEffect, useState, type ReactNode } from 'react';
@@ -66,7 +66,9 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
           <div className="flex flex-col h-full">
             {/* Fixed Logo and Welcome Section */}
             <div className="flex-shrink-0">
-              <h1 className="text-center">Insert Logo Here :3</h1>
+			  <Link to="/">
+			  	<img src={toadLogo} width={50} height={50} alt="toadLogo" className="justify-self-center mt-3"></img>
+			  </Link>
               <h1 className="text-center text-white font-sunflower text-lg py-4 px-4 pb-6">
                 Welcome Back, {`${userFirstName} ${userLastName}`}
               </h1>
