@@ -29,10 +29,12 @@ export default function ToadMember(props: { tripDbDoc: DocumentSnapshot | null, 
 				className="w-[18.86px] h-[18.86px] bg-white rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2"
 			></div>
 
-			{/* Name */}
-			<span className="text-[#3C533A] font-sunflower text-sm ml-[50px] leading-[30px]">
-				{memberName}
-			</span>
+			{/* Name (wrapped inside overflow-hidden div) */}
+			<div className="absolute left-[45px] right-0 h-full overflow-hidden whitespace-nowrap text-ellipsis">
+        		<span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
+            		{memberName}
+        		</span>
+    		</div>
 
 			{/* Delete Button */}
 			<button
