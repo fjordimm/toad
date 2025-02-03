@@ -93,6 +93,25 @@ export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot):
 
 // TODO: be more consistent/deliberate with DocumentReference vs. DocumentSnapshot
 
+export class DbNoUserFoundError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "DbNoUserFoundError";
+	}
+}
+
+export async function dbInviteUser(tripDbDocRef: DocumentReference, userEmailId: string) {
+	const userDbDoc: DocumentSnapshot = await getDoc(doc(firebaseDb, "users", userEmailId));
+
+	if (!userDbDoc.exists()) {
+		throw new DbNoUserFoundError("User does not exist.");
+	}
+
+	await updateDoc(userDbDoc.ref, {
+		trip_invites: arrayUnion(tripDbDocRef.id)
+	});
+}
+
 export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userEmailId: string) {
 	const userDbDoc: DocumentSnapshot = await getDoc(doc(firebaseDb, "users", userEmailId));
 	

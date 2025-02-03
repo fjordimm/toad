@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
+import { dbAddUserToTrip, dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
 import Loading from "./Loading";
 
@@ -36,7 +36,8 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		}
 	}
 
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState<string>("");
+	const [inviteError, setInviteError] = useState<string | null>(null);
 
 	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
 
@@ -44,7 +45,17 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		setEmail("");
 
 		if (props.tripDbDoc !== null) {
-			await dbAddUserToTrip(props.tripDbDoc.ref, emailId);
+			try {
+				await dbInviteUser(props.tripDbDoc.ref, emailId);
+
+				setInviteError(null);
+			} catch (err) {
+				if (err instanceof DbNoUserFoundError) {
+					setInviteError("The user inputted does not exist.");
+				} else {
+					throw err;
+				}
+			}
 		}
 	}
 
@@ -99,6 +110,10 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 					>
 						+ Invite Member
 					</button>
+					{ inviteError !== null
+						? <p className="font-maven text-red-400 width-2">{inviteError}</p>
+						: <></>
+					}
 				</Form>
 			</div>
 
