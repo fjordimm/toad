@@ -28,6 +28,29 @@ export async function dbRetrieveUsersListOfTrips(userDbDoc: DocumentSnapshot): P
 	return ret;
 }
 
+export async function dbRetrieveUsersListOfInvitations(userDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[] | null> {
+	const ret: DocumentSnapshot[] = [];
+
+	for (const item of userDbDoc.get("trip_invites")) {
+		ret.push(await getDoc(doc(firebaseDb, "trips", item)));
+	}
+
+	return ret;
+}
+
+export async function dbAcceptInvitation(userDbDoc: DocumentSnapshot, tripId: string) {
+	await updateDoc(userDbDoc.ref, {
+		trip_invites: arrayRemove(tripId),
+		trips: arrayUnion(tripId)
+	});
+}
+
+export async function dbDeclineInvitation(userDbDoc: DocumentSnapshot, tripId: string) {
+	await updateDoc(userDbDoc.ref, {
+		trip_invites: arrayRemove(tripId)
+	});
+}
+
 export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
 	//let itin:Array<Map<string, any>> = [];
 	let itin = [];
