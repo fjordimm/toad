@@ -5,6 +5,7 @@ import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useEffect, useState } from "react";
 import { dbRetrieveTrip } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
+import CalendarCard from "../modules/Itinerary/CalendarCard";
 
 export default function TripPage({ params }: Route.ComponentProps) {
 
@@ -36,12 +37,17 @@ export default function TripPage({ params }: Route.ComponentProps) {
 	const tripName = tripDbDoc?.get("trip_name");
 
 	return (
-		<div className="grow flex flex-col bg-dashboard_lime">
-			<div className="bg-dashboard_component_bg rounded-lg p-5">
-				<h1 className="text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripName}</h1>
+		<div className="grow flex justify-between bg-dashboard_lime gap-6">
+			<div className="flex flex-col w-full gap-4">
+				<h1 className="w-full rounded-lg p-5 bg-dashboard_component_bg text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripName}</h1>
+				<CalendarCard date={new Date("2025-02-03")} />
 			</div>
 
-			<ToadCount tripDbDoc={tripDbDoc} />
+			<div className="max-w-2xl items-end">
+				<ToadCount tripDbDoc={tripDbDoc} />
+			</div>
+			
+
 		</div>
 	);
 }
