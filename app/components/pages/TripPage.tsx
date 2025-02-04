@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { dbRetrieveTrip } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
 import CalendarCard from "../modules/Itinerary/CalendarCard";
+import Itinerary from "../modules/PlanPage/Itinerary";
 
 export default function TripPage({ params }: Route.ComponentProps) {
 
@@ -40,7 +41,7 @@ export default function TripPage({ params }: Route.ComponentProps) {
 		<div className="grow flex justify-between bg-dashboard_lime gap-6">
 			<div className="flex flex-col w-full gap-4">
 				<h1 className="w-full rounded-lg p-5 bg-dashboard_component_bg text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripName}</h1>
-				<CalendarCard date={new Date("2025-02-03")} />
+				<Itinerary tripDbDoc={tripDbDoc} />
 			</div>
 
 			<div className="max-w-2xl items-end">

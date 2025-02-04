@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { Timestamp } from "firebase/firestore";
 
 // Type declarations for 'date' parameter
 type CalendarCardProps = {
-    date: Date
+    activities: any[];  
+    day: Timestamp;
+    stay_at: string;
+    additional_notes: string;
 }
 
 // CalendarCard takes in an input - creates SINGULAR itinerary card representing a single day
-// date: of type Date (javascript date) -----> Extracted from start to end date in trip database
+// date: Timestamp day -----> Extracted from start to end date in trip database
 
-const CalendarCard: React.FC<CalendarCardProps> = ({ date }) => {
+const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes}) => {
 
-    const weekday = date.toLocaleDateString("en-US", { weekday: "short" })   // Monday
-    const month = date.toLocaleDateString( "en-US", { month: "short" })      // January
-    const day = date.getDate();                                             // 25
-    const year = date.getFullYear();                                        // 2025
+    //Converts FireStore timestamp to JS date object
+    const dateObject = day.toDate()
+
+    const weekday = dateObject.toLocaleDateString("en-US", { weekday: "short" })   // Monday
+    const month = dateObject.toLocaleDateString( "en-US", { month: "short" })      // January
+    const dayOfMonth = dateObject.getDate();                                       // 25
+    const year = dateObject.getFullYear();                                        // 2025
 
     return (
         <div className="w-full h-64 rounded-lg bg-itinerary_card_green p-2 flex">
@@ -23,7 +30,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ date }) => {
                 <h1 className="font-sunflower text-3xl" style={{ fontWeight: 900 }}>
                     <b>{weekday}</b>
                 </h1>
-                <p>{month} {day}, {year}</p>
+                <p>{month} {dayOfMonth}, {year}</p>
             </div>
 
             {/* Draggable activities column */}
