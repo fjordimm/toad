@@ -1,9 +1,9 @@
 import { Outlet, useOutletContext } from "react-router";
 import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
-import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot } from "firebase/firestore";
+import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot, type Unsubscribe } from "firebase/firestore";
 import { dbCheckAndGetUserAuthentication } from "~/src/databaseUtil";
-import { firebaseAuth } from "~/src/toadFirebase";
+import { debugLogComponentRerender, debugLogError, debugLogMessage, debugLogWarning } from "~/src/debugUtil";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
@@ -12,18 +12,27 @@ export function meta({ }: Route.MetaArgs) {
 	];
 }
 
+let userDbListenerUnsub: Unsubscribe | null = null;
+function unsubFromUserDbListener() {
+	if (userDbListenerUnsub !== null) {
+		userDbListenerUnsub();
+	}
+}
+
 export default function TopLevelLayout() {
 
-	console.log("TOP LEVEL LAYOUT RERENDERING");
+	debugLogComponentRerender("TopLevelLayout");
 
 	const [userDbDocRef, setUserDbDocRef] = useState<DocumentReference | null>(null);
 	useEffect(
 		() => {
 			dbCheckAndGetUserAuthentication(
 				(result: DocumentReference) => {
+					unsubFromUserDbListener();
 					setUserDbDocRef(result);
 				},
 				() => {
+					unsubFromUserDbListener();
 					setUserDbDocRef(null);
 				}
 			);
@@ -35,9 +44,11 @@ export default function TopLevelLayout() {
 	useEffect(
 		() => {
 			if (userDbDocRef !== null) {
-				onSnapshot(userDbDocRef, async () => {
+				const unsub: Unsubscribe = onSnapshot(userDbDocRef, async () => {
 					setUserDbDoc(await getDoc(userDbDocRef));
 				});
+
+				userDbListenerUnsub = unsub;
 			}
 		},
 		[ userDbDocRef ]

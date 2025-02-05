@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
-import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
-import { firebaseDb } from "~/src/toadFirebase";
+import { type DocumentSnapshot } from "firebase/firestore";
+import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
-	console.log("TOAD COUNT RERENDERING");
+	debugLogComponentRerender("ToadCount");
 
 	const navigate = useNavigate();
 
@@ -36,15 +36,26 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		}
 	}
 
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState<string>("");
+	const [inviteError, setInviteError] = useState<string | null>(null);
 
-	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleInviteSubmit() {
 
 		const emailId: string = email;
 		setEmail("");
 
 		if (props.tripDbDoc !== null) {
-			await dbAddUserToTrip(props.tripDbDoc.ref, emailId);
+			try {
+				await dbInviteUser(props.tripDbDoc.ref, emailId);
+
+				setInviteError(null);
+			} catch (err) {
+				if (err instanceof DbNoUserFoundError) {
+					setInviteError("The user inputted does not exist.");
+				} else {
+					throw err;
+				}
+			}
 		}
 	}
 
@@ -53,7 +64,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			await dbDeleteTrip(tripDbDoc);
 			navigate("/");
 		} else {
-			console.log("Trying to delete an invalid trip.");
+			debugLogError("Trying to delete an invalid trip.");
 		}
 	}
 
@@ -99,6 +110,10 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 					>
 						+ Invite Member
 					</button>
+					{ inviteError !== null
+						? <p className="font-maven text-red-400 width-2">{inviteError}</p>
+						: <></>
+					}
 				</Form>
 			</div>
 

@@ -6,10 +6,11 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
 import { Form, useNavigate } from 'react-router';
+import { debugLogComponentRerender, debugLogMessage } from '~/src/debugUtil';
 
 const SignInPage = () => {
 
-	console.log("SIGN IN PAGE RERENDERING");
+	debugLogComponentRerender("SignInPage");
 
 	const navigate = useNavigate();
 
