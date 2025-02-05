@@ -47,11 +47,9 @@ export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot> 
 export function dbCheckAndGetUserAuthentication(onAuthenticated: (result: DocumentReference) => void, onNotAuthenticated: () => void) {
 	onAuthStateChanged(firebaseAuth, (authUser: User | null) => {
 		if (authUser !== null) {
-			console.log(`User is signed in: ${authUser.email}.`);
 			// TODO: better null checking and error handling. The 'as' shouldn't be there
 			onAuthenticated(doc(firebaseDb, "users", authUser.email as string));
 		} else {
-			console.log("User is not signed in.");
 			onNotAuthenticated();
 		}
 	});

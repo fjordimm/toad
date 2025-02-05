@@ -1,6 +1,7 @@
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbAcceptInvitation, dbDeclineInvitation } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 // When you call this component, give 2 paramenteters: NameOfTrip and TripNumber
 // Example: <TripButton name="Portland" num={0}></TripButton>
@@ -10,7 +11,7 @@ import { dbAcceptInvitation, dbDeclineInvitation } from "~/src/databaseUtil";
 
 function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: DocumentSnapshot }) {
 
-	console.log("INVITATION BUTTON RERENDERING");
+	debugLogComponentRerender("InvitationButton");
 
 	async function handleCheckButton() {
 		await dbAcceptInvitation(props.userDbDoc, props.tripDbDoc.id);

@@ -10,10 +10,11 @@ import { Link, Navigate, redirect, useNavigate } from 'react-router';
 import TripsButton from './MenuBar/TripsButton';
 import Loading from './Loading';
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
-	console.log("MENU BAR RERENDERING");
+	debugLogComponentRerender("MenuBar");
 
 	function turnUserListOfTripsIntoElems(userListOfTrips: DocumentSnapshot[] | null): ReactNode {
 		if (userListOfTrips !== null) {

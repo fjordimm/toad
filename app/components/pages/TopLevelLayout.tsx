@@ -3,6 +3,7 @@ import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
 import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot, type Unsubscribe } from "firebase/firestore";
 import { dbCheckAndGetUserAuthentication } from "~/src/databaseUtil";
+import { debugLogComponentRerender, debugLogError, debugLogMessage, debugLogWarning } from "~/src/debugUtil";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
@@ -20,7 +21,7 @@ function unsubFromUserDbListener() {
 
 export default function TopLevelLayout() {
 
-	console.log("TOP LEVEL LAYOUT RERENDERING");
+	debugLogComponentRerender("TopLevelLayout");
 
 	const [userDbDocRef, setUserDbDocRef] = useState<DocumentReference | null>(null);
 	useEffect(

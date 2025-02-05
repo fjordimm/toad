@@ -4,10 +4,11 @@ import ToadMember from "./ToadCount/ToadMember";
 import { type DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
-	console.log("TOAD COUNT RERENDERING");
+	debugLogComponentRerender("ToadCount");
 
 	const navigate = useNavigate();
 
@@ -46,7 +47,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		if (props.tripDbDoc !== null) {
 			try {
 				await dbInviteUser(props.tripDbDoc.ref, emailId);
-				// console.log("hehe");
 
 				setInviteError(null);
 			} catch (err) {
@@ -64,7 +64,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			await dbDeleteTrip(tripDbDoc);
 			navigate("/");
 		} else {
-			console.log("Trying to delete an invalid trip.");
+			debugLogError("Trying to delete an invalid trip.");
 		}
 	}
 
