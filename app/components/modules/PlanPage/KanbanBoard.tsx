@@ -55,28 +55,47 @@ function KanbanBoard() {
         setActiveColumn(null);
     }
 
-    function onDragOver(event: DragOverEvent){
+    function onDragOver(event: DragOverEvent) {
         const { active, over } = event;
         if (!over) return;
-
+    
         const activeId = active.id;
         const overId = over.id;
-
+    
         if (activeId === overId) return;
-
+    
         const isActiveATask = active.data.current?.type === "Task";
         const isOverATask = over.data.current?.type === "Task";
-
-        // dropping task on task
-        if(isActiveATask && isOverATask){
-            setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.id === active.id);
+        const isOverAColumn = over.data.current?.type === "Column";
+    
+        setTasks((tasks) => {
+            const activeIndex = tasks.findIndex((t) => t.id === activeId);
+            if (activeIndex === -1) return tasks;
+    
+            const updatedTasks = [...tasks];
+    
+            if (isOverATask) {
+                // Dropping task on task
                 const overIndex = tasks.findIndex((t) => t.id === overId);
-
-                return arrayMove(tasks, activeIndex, overIndex);
-           });
-        }
+                if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
+                    updatedTasks[activeIndex] = {
+                        ...updatedTasks[activeIndex],
+                        columnId: tasks[overIndex].columnId,
+                    };
+                }
+                return arrayMove(updatedTasks, activeIndex, overIndex);
+            } else if (isOverAColumn) {
+                // Dropping task directly on a column
+                updatedTasks[activeIndex] = {
+                    ...updatedTasks[activeIndex],
+                    columnId: overId, // Update columnId to the new column
+                };
+                return updatedTasks;
+            }
+            return tasks;
+        });
     }
+    
 
     return (
         <div
