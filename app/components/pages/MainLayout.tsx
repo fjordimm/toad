@@ -3,10 +3,11 @@ import MenuBar from "../modules/MenuBar";
 import { useState } from "react";
 import type { DocumentReference, DocumentSnapshot } from "firebase/firestore";
 import { useTopLevelLayoutContext, type TopLevelLayoutContext } from "./TopLevelLayout";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function MainLayout() {
 
-	console.log("MAIN LAYOUT RERENDERING");
+	debugLogComponentRerender("MainLayout");
 
 	const topLevelLayoutContext: TopLevelLayoutContext = useTopLevelLayoutContext();
 

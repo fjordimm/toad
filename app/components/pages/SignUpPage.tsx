@@ -7,10 +7,11 @@ import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
+import { debugLogComponentRerender } from '~/src/debugUtil';
 
 const SignUpPage = () => {
 
-	console.log("SIGN UP RERENDERING");
+	debugLogComponentRerender("SignUpPage");
 
 	const navigate = useNavigate();
 

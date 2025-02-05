@@ -5,10 +5,11 @@ import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useEffect, useState } from "react";
 import { dbRetrieveTrip } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function TripPage({ params }: Route.ComponentProps) {
 
-	console.log("TRIP PAGE RERENDERING");
+	debugLogComponentRerender("TripPage");
 
 	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 

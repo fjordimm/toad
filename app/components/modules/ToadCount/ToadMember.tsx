@@ -1,6 +1,7 @@
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
 {/* put names of members in trips here */ }
 interface ToadMemberProps {
@@ -9,11 +10,13 @@ interface ToadMemberProps {
 
 export default function ToadMember(props: { tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 
+	debugLogComponentRerender("ToadMember");
+
 	async function handleRemoveMember() {
 		if (props.tripDbDoc !== null && props.memberDbDoc !== null) {
 			await dbRemoveUserFromTrip(props.tripDbDoc, props.memberDbDoc);
 		} else {
-			console.log("Trying to remove a member from an invalid ToadMember component.");
+			debugLogError("Trying to remove a member from an invalid ToadMember component.");
 		}
 	}
 
