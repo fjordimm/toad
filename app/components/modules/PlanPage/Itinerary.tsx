@@ -17,7 +17,7 @@ returns: Array[{activities:... day:... stay_at: ... additional_notes:...}]
 async function retrieveItinerary(tripDbDoc: DocumentSnapshot){
     const ItineraryDaysList = await dbRetrieveTripItinerary(tripDbDoc);
     console.log(ItineraryDaysList);
-    return ItineraryDaysList;
+    return ItineraryDaysList || null;
 }
 
 export default function Itinerary({tripDbDoc}: ItineraryProps){
@@ -27,7 +27,8 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
         if (tripDbDoc){
             const fetchItinerary = async () => {
                 const itinerary = await retrieveItinerary(tripDbDoc);
-                setItineraryList(itinerary);
+                if(Array.isArray(itinerary))
+                    setItineraryList(itinerary || null);
             };
             fetchItinerary();
         }
@@ -40,7 +41,14 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
     return(
         <div className="flex flex-col gap-4 max-h-screen overflow-y-auto">
             {ItineraryList.map((item, index) =>(
-                <CalendarCard key={index} activities={item.activities} day={item.day} stay_at={item.stay_at} additional_notes={item.additional_notes} />
+                <CalendarCard 
+                    key={index} 
+                    activities={item.activities} 
+                    day={item.day} 
+                    stay_at={item.stay_at} 
+                    additional_notes={item.additional_notes} 
+                    tripDbDoc={tripDbDoc}
+                />
             ))}
         </div>
     )
