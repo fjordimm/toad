@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DocumentSnapshot, Timestamp , updateDoc} from "firebase/firestore";
 import { setAnalyticsCollectionEnabled } from "firebase/analytics";
 
@@ -29,10 +29,13 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
 // ADDITIONAL NOTES HANDLER ========================================
 // Interfaces with database itinerary to get and save additional notes
 
-    // React state to store and update AdditonalNotes content. Default Value: parameter additional_notes
+    // Stores/updates additional_notes content. State manages backend, Ref manages frontend
+    // Use REFs to avoid unecessary rerenders
+    // TODO: see if we can avoid using the state, just use Refs?
     const [ANcontent, setANcontent] = useState(additional_notes);
+    const contentRef = useRef<HTMLDivElement | null> (null);
 
-    // Extract text from the HTML div this is called from (user input text), sets ANcontent
+    // Sets ANcontent to div text on input
     const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
         setANcontent(e.currentTarget.innerText);
     }
@@ -46,7 +49,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             const tripData = tripDbDoc.data();
             try{
                 if(tripData && tripData.itinerary){
-
                     // Creates a soft copy of the `itinerary` array in database
                     const updatedItinerary = [...tripData.itinerary]
                     
@@ -68,8 +70,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                         await updateDoc(tripDbDoc.ref, {
                             itinerary: updatedItinerary,
                         });
-                        
-                        console.log("Firestore updated additional notes");
                     }
                 }
             }catch(e){
@@ -77,6 +77,9 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             }
         }
     };
+
+    // Updates in useEffect only happens when there is a change to tripDbDoc or day
+    // Updates current div only if new notes are saved - preventing unecessary rerenders
 
     useEffect(() =>{
         if (tripDbDoc != null){
@@ -86,10 +89,9 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     (item: {day: Timestamp}) => item.day.isEqual(day)
                 )?.additional_notes;
 
-                console.log(updatedNotes)
-
-                if(updatedNotes)
-                    setANcontent(updatedNotes);
+                // if additional_notes in database is updated - change content of div via ref
+                if(contentRef.current && updatedNotes)
+                    contentRef.current.innerText = updatedNotes;
             }
         }
     }, [tripDbDoc, day]);
@@ -108,6 +110,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             </div>
 
             {/* Draggable activities column */}
+            {/* whoever working on drag and drop insert your component here */}
             <div className="w-96 font-sunflower flex items-center justify-center ">
                 <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
             </div>
@@ -120,12 +123,12 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     {/* Editable textbox */}
                     <div 
                         contentEditable="true" 
+                        ref = {contentRef}
                         className="font-sunflower h-48 focus:outline-none"
                         onInput={handleInput}
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
-                        <p>{additional_notes}</p>
                     </div>
                 </div>
             </div>

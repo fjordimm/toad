@@ -9,10 +9,9 @@ type ItineraryProps = {
 }
 
 /*
-retrieveItinerary: retrieves itinerary field from trip database
+retrieveItinerary: retrieves itinerary field from trip database as array of dict days
 params: tripDbDoc: DocumentSnapshot of current trip
 returns: Array[{activities:... day:... stay_at: ... additional_notes:...}]
-
 */
 async function retrieveItinerary(tripDbDoc: DocumentSnapshot){
     const ItineraryDaysList = await dbRetrieveTripItinerary(tripDbDoc);
