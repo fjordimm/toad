@@ -5,7 +5,7 @@ import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
 import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
 import { firebaseDb } from "~/src/toadFirebase";
 import Loading from "./Loading";
-
+import AddDestination from './PlanPage/AddDestination'
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
 	console.log("TOAD COUNT RERENDERING");
@@ -62,6 +62,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		: "?"
 		;
 
+	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<div className="absolute top-2 right-2">
 			{/* Main Container */}
@@ -103,13 +104,20 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			</div>
 
 			{/* Delete Trip Button */}
-			<div className="mt-2">
+			<div className="mt-2 flex flex-col">
 				<button
 					onClick={() => handleDeleteTrip(props.tripDbDoc)}
 					className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
 				>
 					Delete Trip
 				</button>
+				<button 
+				onClick = {() => setIsOpen(true)}
+				className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
+				>
+					Open Modal
+				</button>
+				{isOpen && <AddDestination setIsOpen={setIsOpen} />}
 			</div>
 		</div>
 	);
