@@ -58,7 +58,6 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 		() => {
 			dbRetrieveUsersListOfInvitations(props.userDbDoc).then(
 				(result: DocumentSnapshot[] | null) => {
-					console.log("shamonah");
 					setUserListOfInvitations(result);
 				}
 			);

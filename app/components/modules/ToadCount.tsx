@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
-import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { dbAddUserToTrip, dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
-import { firebaseDb } from "~/src/toadFirebase";
+import { type DocumentSnapshot } from "firebase/firestore";
+import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
@@ -39,7 +38,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 	const [email, setEmail] = useState<string>("");
 	const [inviteError, setInviteError] = useState<string | null>(null);
 
-	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleInviteSubmit() {
 
 		const emailId: string = email;
 		setEmail("");
@@ -47,6 +46,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		if (props.tripDbDoc !== null) {
 			try {
 				await dbInviteUser(props.tripDbDoc.ref, emailId);
+				// console.log("hehe");
 
 				setInviteError(null);
 			} catch (err) {
