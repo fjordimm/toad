@@ -6,6 +6,22 @@ import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMe
 import Loading from "./Loading";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
+function stringHash(input: string) {
+	let hash: number = 0;
+
+	if (input.length === 0) {
+		return hash;
+	}
+
+	for (let i = 0; i < input.length; i++) {
+		const chr: number = input.charCodeAt(i);
+		hash = ((hash << 5) - hash) + chr;
+		hash |= 0;
+	}
+
+	return hash;
+}
+
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
 	debugLogComponentRerender("ToadCount");
@@ -28,8 +44,18 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
+			const memberColorAlreadyTaken: Set<number> = new Set();
+
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {
-				return <ToadMember tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
+				let colorNum: number = Math.abs(stringHash(member.id) % 15);
+				let loopCounter: number = 0;
+				while (memberColorAlreadyTaken.has(colorNum) && loopCounter < 15) {
+					colorNum = (colorNum + 1) % 15;
+					loopCounter++;
+				}
+				memberColorAlreadyTaken.add(colorNum);
+
+				return <ToadMember memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
 			});
 		} else {
 			return <Loading />;

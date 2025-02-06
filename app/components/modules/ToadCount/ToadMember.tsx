@@ -8,7 +8,25 @@ interface ToadMemberProps {
 	name: string;
 }
 
-export default function ToadMember(props: { tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
+const memberColorArray: string[] = [
+	"bg-trip_member_col_1",
+	"bg-trip_member_col_2",
+	"bg-trip_member_col_3",
+	"bg-trip_member_col_4",
+	"bg-trip_member_col_5",
+	"bg-trip_member_col_6",
+	"bg-trip_member_col_7",
+	"bg-trip_member_col_8",
+	"bg-trip_member_col_9",
+	"bg-trip_member_col_10",
+	"bg-trip_member_col_11",
+	"bg-trip_member_col_12",
+	"bg-trip_member_col_13",
+	"bg-trip_member_col_14",
+	"bg-trip_member_col_15"
+];
+
+export default function ToadMember(props: { memberColorIndex: number, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 
 	debugLogComponentRerender("ToadMember");
 
@@ -24,12 +42,14 @@ export default function ToadMember(props: { tripDbDoc: DocumentSnapshot | null, 
 		? `${props.memberDbDoc.get("first_name")} ${props.memberDbDoc.get("last_name")}`
 		: "Invalid Member"
 		;
+	
+	const userColor: string = memberColorArray[props.memberColorIndex % 15];
 
 	return (
 		<div className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm">
 			{/* Circle representing the color icon */}
 			<div
-				className="w-[18.86px] h-[18.86px] bg-white rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2"
+				className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}
 			></div>
 
 			{/* Name (wrapped inside overflow-hidden div) */}
