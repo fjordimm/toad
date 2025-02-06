@@ -110,7 +110,7 @@ function KanbanBoard() {
             <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
                 <div className="m-auto flex gap-4">
                     <div className="flex gap-4">
-                        <SortableContext items={columnsId}>
+                        {/* <SortableContext items={columnsId}> */}
                             {columns.map(col => (
                                 <ColumnContainer
                                     key={col.id}
@@ -120,7 +120,7 @@ function KanbanBoard() {
                                     tasks={tasks.filter(task => task.columnId === col.id)}
                                 />
                             ))}
-                        </SortableContext>
+                        {/* </SortableContext> */}
                     </div>
                     <button
                         onClick={createNewColumn}
@@ -137,7 +137,7 @@ function KanbanBoard() {
                 {/* Drag Overlay should be here */}
                 <DragOverlay>
                     {activeTask && <TaskCard task={activeTask} />}
-                    {activeColumn && <ColumnContainer column={activeColumn} deleteColumn={() => {}} createTask={() => {}} tasks={[]} />}
+                    {/* {activeColumn && <ColumnContainer column={activeColumn} deleteColumn={() => {}} createTask={() => {}} tasks={[]} />} */}
                 </DragOverlay>
             </DndContext>
         </div>

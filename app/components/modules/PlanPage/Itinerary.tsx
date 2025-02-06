@@ -3,6 +3,7 @@ import { DocumentSnapshot } from "firebase/firestore";
 import CalendarCard from "../Itinerary/CalendarCard";
 import { dbRetrieveTripItinerary } from "~/src/databaseUtil";
 import { index } from "@react-router/dev/routes";
+import type { Column } from "./types";
 
 type ItineraryProps = {
     tripDbDoc: DocumentSnapshot | null;
@@ -36,6 +37,7 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
         }
     }, [tripDbDoc])
 
+    const [columns, setColumns] = useState<Column[]>([]);
 
     return(
         <div className="flex flex-col gap-4 max-h-screen overflow-y-auto">
@@ -47,6 +49,8 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
                     stay_at={item.stay_at} 
                     additional_notes={item.additional_notes} 
                     tripDbDoc={tripDbDoc}
+                    columns={columns}
+                    setColumns={setColumns}
                 />
             ))}
         </div>

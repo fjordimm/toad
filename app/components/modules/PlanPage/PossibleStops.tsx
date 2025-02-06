@@ -9,7 +9,7 @@ function PossibleStops() {
             <div className="flex justify-center">
                 <hr className="h-px my-4 border-sidebar_deep_green w-4/5 border-[1px]" />
             </div>
-    
+        
         </div>
 
     )
