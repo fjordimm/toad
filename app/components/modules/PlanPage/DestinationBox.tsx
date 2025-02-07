@@ -7,10 +7,9 @@ import NotCollapsed from "/NotCollapsed.svg";
 import Collapsed from "/Collapsed.svg";
 import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
-import { dbRetrieveTrip } from "~/src/databaseUtil";
 
 {/*take in a prop argument is a dictionary that looks like tree structure*/}
-export default function DestinationBox({ name = "Voodoo Donuts", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
+export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
@@ -62,6 +61,7 @@ export default function DestinationBox({ name = "Voodoo Donuts", details = "Some
             >
                 {/* Activity Description */}
                 <span className="text-black font-sunflower font-bold text-[11px]">Activity Description:</span>
+                {/*Put Activity Description here */}
                 <p className="text-black font-sunflower text-[10px]">{details}</p>
             </div>
            
