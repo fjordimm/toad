@@ -9,7 +9,7 @@ import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
 
 {/*take in a prop argument is a dictionary that looks like tree structure*/}
-export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
+export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss", cost = "5 bucks", duration = "1 hour", time = "1:00 - 2:00 PM", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
@@ -46,11 +46,11 @@ export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss
             {/*tags for cost, duration, and time below these elements*/}
             <div className="flex space-x-2 mt-2 ml-1">
                 {/*cost*/}
-                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">5 bucks</div>
+                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">{cost}</div>
                 {/*duration*/}
-                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">1 hour</div>
+                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">{duration}</div>
                 {/*time*/}
-                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">1:00 - 2:00 PM</div>
+                <div className="bg-[#B0E5DF] text-black font-sunflower font-bold px-2 py-1 rounded-lg text-[12px] shadow-sm">{time}</div>
             </div>
 
             {/* Collapsible Section */}
