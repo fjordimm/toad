@@ -26,6 +26,10 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
     const dayOfMonth = dateObject.getDate();                                       // 25
     const year = dateObject.getFullYear();                                          // 2025
 
+// ACCOMMADATION HANDLER ===========================================
+// Interfaces with database itinerary to get and save stay_at
+
+
 // ADDITIONAL NOTES HANDLER ========================================
 // Interfaces with database itinerary to get and save additional notes
 
@@ -102,11 +106,24 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
         <div className="w-full h-64 rounded-lg bg-itinerary_card_green p-2 flex">
 
             {/* Date and Accommadation Column */}
-            <div className="w-40 border-r-2 border-dashboard_component_bg text-sidebar_deep_green p-2">
-                <h1 className="font-sunflower text-3xl" style={{ fontWeight: 900 }}>
-                    <b>{weekday}</b>
-                </h1>
-                <p>{month} {dayOfMonth}, {year}</p>
+            <div className="flex flex-col justify-between w-40 border-r-2 border-dashboard_component_bg text-sidebar_deep_green p-2">
+                
+                <div>
+                    <h1 className="font-sunflower text-3xl" style={{ fontWeight: 900 }}>
+                        <b>{weekday}</b>
+                    </h1>
+                    <p>{month} {dayOfMonth}, {year}</p>
+                </div>
+
+                <div 
+                        contentEditable="true" 
+                        ref = {contentRef}
+                        className="bg-red-500 font-sunflower border-b-2 border-sidebar_deep_green focus:outline-none"
+                        onInput={handleInput}
+                        onBlur={handleSave}
+                        style={{ whiteSpace: "pre-wrap"}}
+                    >
+                </div>
             </div>
 
             {/* Draggable activities column */}
