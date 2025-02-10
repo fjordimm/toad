@@ -5,7 +5,7 @@ import type { Column, Id, Task } from "../PlanPage/types"
 import ColumnContainer from '../PlanPage/ColumnContainer';
 import TaskCard from '../PlanPage/TaskCard';
 import { arrayMove } from "@dnd-kit/sortable";
-import type { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import { DndContext, DragOverlay, type DragOverEvent, type DragStartEvent } from "@dnd-kit/core";
 
 // Type declarations for CalendarCard
 type CalendarCardProps = {
@@ -16,11 +16,13 @@ type CalendarCardProps = {
     tripDbDoc: DocumentSnapshot | null;
     columns: Column[];
     setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+    tasks: Task[];
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
-const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc, columns, setColumns}) => {
+const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc, columns, setColumns, tasks, setTasks}) => {
 
 // DATE HANDLER ===================================================
 // Interfaces with databse itinerary to get the display date of each card
@@ -105,11 +107,11 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
 
     // const [columns, setColumns] = useState<Column[]>([]);
     // console.log(columns);
-    const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
+    // const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
 
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [activeTask, setActiveTask] = useState<Task | null>(null);
-    const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+    // const [tasks, setTasks] = useState<Task[]>([]);
+    // const [activeTask, setActiveTask] = useState<Task | null>(null);
+    // const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 
     function createTask(columnId: Id) {
         const newTask: Task = {
@@ -136,63 +138,67 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
         setColumns(filteredColumns);
     }
 
-    function onDragStart(event: DragStartEvent) {
-        if (event.active.data.current?.type === 'Column') {
-            setActiveColumn(event.active.data.current.column);
-            return;
-        }
+    // function onDragStart(event: DragStartEvent) {
+    //     if (event.active.data.current?.type === 'Column') {
+    //         setActiveColumn(event.active.data.current.column);
+    //         return;
+    //     }
 
-        if (event.active.data.current?.type === 'Task') {
-            setActiveTask(event.active.data.current.task);
-            return;
-        }
-    }
+    //     if (event.active.data.current?.type === 'Task') {
+    //         setActiveTask(event.active.data.current.task);
+    //         return;
+    //     }
+    // }
 
-    function onDragEnd() {
-        setActiveTask(null);
-        setActiveColumn(null);
-    }
+    // function onDragEnd() {
+    //     setActiveTask(null);
+    //     setActiveColumn(null);
+    // }
 
-    function onDragOver(event: DragOverEvent) {
-        const { active, over } = event;
-        if (!over) return;
+    // function onDragOver(event: DragOverEvent) {
+    //     const { active, over } = event;
+    //     if (!over) return;
     
-        const activeId = active.id;
-        const overId = over.id;
+    //     const activeId = active.id;
+    //     const overId = over.id;
     
-        if (activeId === overId) return;
+    //     if (activeId === overId) return;
     
-        const isActiveATask = active.data.current?.type === "Task";
-        const isOverATask = over.data.current?.type === "Task";
-        const isOverAColumn = over.data.current?.type === "Column";
+    //     const isActiveATask = active.data.current?.type === "Task";
+    //     const isOverATask = over.data.current?.type === "Task";
+    //     const isOverAColumn = over.data.current?.type === "Column";
     
-        setTasks((tasks) => {
-            const activeIndex = tasks.findIndex((t) => t.id === activeId);
-            if (activeIndex === -1) return tasks;
+    //     setTasks((tasks) => {
+    //         const activeIndex = tasks.findIndex((t) => t.id === activeId);
+    //         if (activeIndex === -1) return tasks;
     
-            const updatedTasks = [...tasks];
+    //         const updatedTasks = [...tasks];
     
-            if (isOverATask) {
-                // Dropping task on task
-                const overIndex = tasks.findIndex((t) => t.id === overId);
-                if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
-                    updatedTasks[activeIndex] = {
-                        ...updatedTasks[activeIndex],
-                        columnId: tasks[overIndex].columnId,
-                    };
-                }
-                return arrayMove(updatedTasks, activeIndex, overIndex);
-            } else if (isOverAColumn) {
-                // Dropping task directly on a column
-                updatedTasks[activeIndex] = {
-                    ...updatedTasks[activeIndex],
-                    columnId: overId, // Update columnId to the new column
-                };
-                return updatedTasks;
-            }
-            return tasks;
-        });
-    }
+    //         if (isOverATask) {
+    //             // Dropping task on task
+    //             const overIndex = tasks.findIndex((t) => t.id === overId);
+    //             if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
+    //                 updatedTasks[activeIndex] = {
+    //                     ...updatedTasks[activeIndex],
+    //                     columnId: tasks[overIndex].columnId,
+    //                 };
+    //             }
+    //             return arrayMove(updatedTasks, activeIndex, overIndex);
+    //         } else if (isOverAColumn) {
+    //             // Dropping task directly on a column
+    //             console.log("OVER COL");
+    //             console.log(overId);
+    //             console.log("Tasks Array")
+    //             console.log(tasks);
+    //             updatedTasks[activeIndex] = {
+    //                 ...updatedTasks[activeIndex],
+    //                 columnId: overId, // Update columnId to the new column
+    //             };
+    //             return updatedTasks;
+    //         }
+    //         return tasks;
+    //     });
+    // }
 
     function generateId() {
         return Math.floor(Math.random() * 10001);
@@ -219,14 +225,14 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             </div>
 
             {/* Draggable activities column */}
-            <ColumnContainer 
-                key={col.id}
-                column={col}
-                deleteColumn={deleteColumn}
-                createTask={createTask}
-                tasks={tasks.filter(task => task.columnId === col.id)}
-            />
-
+            
+                <ColumnContainer 
+                    key={col.id}
+                    column={col}
+                    deleteColumn={deleteColumn}
+                    createTask={createTask}
+                    tasks={tasks.filter(task => task.columnId === col.id)}
+                />
             {/* Drag-and-drop instruction */}
             <div className="w-96 font-sunflower flex items-center justify-center ">
                 <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
