@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
-import { doc, getDoc, type DocumentSnapshot } from "firebase/firestore";
-import { dbAddUserToTrip, dbDeleteTrip, dbRetrieveTripsListOfMembers, dbRetrieveUser } from "~/src/databaseUtil";
-import { firebaseDb } from "~/src/toadFirebase";
+import { type DocumentSnapshot } from "firebase/firestore";
+import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
+import { stringHash } from "~/src/miscUtil";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
-	console.log("TOAD COUNT RERENDERING");
+	debugLogComponentRerender("ToadCount");
 
 	const navigate = useNavigate();
 
@@ -28,23 +29,47 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
+			
+			// The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
+			// It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
+			const memberColorsAlreadyTaken: Set<number> = new Set<number>();
+
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {
-				return <ToadMember tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
+				let colorNum: number = Math.abs(stringHash(member.id) % 15);
+				let loopCounter: number = 0;
+				while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+					colorNum = (colorNum + 1) % 15;
+					loopCounter++;
+				}
+				memberColorsAlreadyTaken.add(colorNum);
+
+				return <ToadMember memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
 			});
 		} else {
 			return <Loading />;
 		}
 	}
 
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState<string>("");
+	const [inviteError, setInviteError] = useState<string | null>(null);
 
-	async function handleInviteSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleInviteSubmit() {
 
 		const emailId: string = email;
 		setEmail("");
 
 		if (props.tripDbDoc !== null) {
-			await dbAddUserToTrip(props.tripDbDoc.ref, emailId);
+			try {
+				await dbInviteUser(props.tripDbDoc.ref, emailId);
+
+				setInviteError(null);
+			} catch (err) {
+				if (err instanceof DbNoUserFoundError) {
+					setInviteError("The user inputted does not exist.");
+				} else {
+					throw err;
+				}
+			}
 		}
 	}
 
@@ -53,7 +78,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 			await dbDeleteTrip(tripDbDoc);
 			navigate("/");
 		} else {
-			console.log("Trying to delete an invalid trip.");
+			debugLogError("Trying to delete an invalid trip.");
 		}
 	}
 
@@ -63,7 +88,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		;
 
 	return (
-		<div className=" top-2 right-2">
+		<div className="">
 			{/* Main Container */}
 			<div
 				className="max-w-[271px] w-full bg-[#EAFFB9] p-6 rounded-lg shadow-lg flex flex-col justify-between"
@@ -99,6 +124,10 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 					>
 						+ Invite Member
 					</button>
+					{ inviteError !== null
+						? <p className="font-maven text-red-400 width-2">{inviteError}</p>
+						: <></>
+					}
 				</Form>
 			</div>
 

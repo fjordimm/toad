@@ -1,10 +1,11 @@
 import type { DocumentSnapshot } from "firebase/firestore";
 import { useOutletContext } from "react-router";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function Landing() {
 
-	console.log("LANDING PAGE RERENDERING");
+	debugLogComponentRerender("LandingPage");
 
 	// const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
