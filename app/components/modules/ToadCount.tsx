@@ -5,22 +5,7 @@ import { type DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-
-function stringHash(input: string) {
-	let hash: number = 0;
-
-	if (input.length === 0) {
-		return hash;
-	}
-
-	for (let i = 0; i < input.length; i++) {
-		const chr: number = input.charCodeAt(i);
-		hash = ((hash << 5) - hash) + chr;
-		hash |= 0;
-	}
-
-	return hash;
-}
+import { stringHash } from "~/src/miscUtil";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
