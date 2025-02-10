@@ -29,16 +29,16 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
-			const memberColorAlreadyTaken: Set<number> = new Set();
+			const memberColorsAlreadyTaken: Set<number> = new Set();
 
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {
 				let colorNum: number = Math.abs(stringHash(member.id) % 15);
 				let loopCounter: number = 0;
-				while (memberColorAlreadyTaken.has(colorNum) && loopCounter < 15) {
+				while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
 					colorNum = (colorNum + 1) % 15;
 					loopCounter++;
 				}
-				memberColorAlreadyTaken.add(colorNum);
+				memberColorsAlreadyTaken.add(colorNum);
 
 				return <ToadMember memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
 			});
