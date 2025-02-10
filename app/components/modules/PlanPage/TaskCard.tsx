@@ -9,10 +9,6 @@ interface Props {
 
 }
 
-
-
-
-
 function TaskCard({task} : Props) {
     const [mouseIsOver, setMouseIsOver] = useState(false);
   
