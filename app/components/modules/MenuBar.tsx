@@ -10,7 +10,8 @@ import { Link, Navigate, redirect, useNavigate } from 'react-router';
 import TripsButton from './MenuBar/TripsButton';
 import Loading from './Loading';
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
-import { debugLogComponentRerender } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogMessage } from "~/src/debugUtil";
+import { stringHash } from "~/src/miscUtil";
 
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
@@ -18,8 +19,25 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
 	function turnUserListOfTripsIntoElems(userListOfTrips: DocumentSnapshot[] | null): ReactNode {
 		if (userListOfTrips !== null) {
+
+			// The code using tripColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each trip.
+			// It uses stringHash() on each trip's id, but if two trips have the same hash output, this algorithm will try to give them different colors.
+			const tripColorsAlreadyTaken: Set<number> = new Set<number>();
+
 			return userListOfTrips.map((trip: DocumentSnapshot) => {
-				return <TripsButton tripDbDoc={trip} num={0} />
+				debugLogMessage(`trip id = ${trip.id}`);
+
+				let colorNum: number = Math.abs(stringHash(trip.id) % 15);
+				let loopCounter: number = 0;
+				while (tripColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+					debugLogMessage(`num ${colorNum} did not work`);
+					colorNum = (colorNum + 1) % 15;
+					loopCounter++;
+				}
+				tripColorsAlreadyTaken.add(colorNum);
+				debugLogMessage(`decided on ${colorNum}`);
+
+				return <TripsButton tripDbDoc={trip} tripColorIndex={colorNum} />
 			});
 		} else {
 			return <Loading />;
