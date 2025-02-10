@@ -25,6 +25,9 @@ export default {
 				sidebar_button_bg: "#4E6A55",
 				dashboard_component_bg: "#9DBD7A",
 
+				itinerary_card_green: "#D7F297",
+				toad_count_lime: "#EAFFB9",
+				
 				trip_member_col_1: "#E4BF3B",
 				trip_member_col_2: "#DA934C",
 				trip_member_col_3: "#D66A38",
@@ -40,8 +43,6 @@ export default {
 				trip_member_col_13: "#97CA7B",
 				trip_member_col_14: "#6AAC4A",
 				trip_member_col_15: "#335735",
-				itinerary_card_green: "#D7F297",
-				toad_count_lime: "#EAFFB9",
 			},
 			backgroundImage: {
 				"background-green-gradient": 'linear-gradient(180deg, #87A26A 0%, #3D5941 89%, #2B4737 100%)'
