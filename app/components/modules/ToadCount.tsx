@@ -29,6 +29,9 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
+			
+			// The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
+			// It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
 			const memberColorsAlreadyTaken: Set<number> = new Set<number>();
 
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {

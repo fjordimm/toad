@@ -2,29 +2,12 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
+import { indexTo15UniqueColor } from "~/src/miscUtil";
 
 {/* put names of members in trips here */ }
 interface ToadMemberProps {
 	name: string;
 }
-
-const memberColorArray: string[] = [
-	"bg-trip_member_col_1",
-	"bg-trip_member_col_2",
-	"bg-trip_member_col_3",
-	"bg-trip_member_col_4",
-	"bg-trip_member_col_5",
-	"bg-trip_member_col_6",
-	"bg-trip_member_col_7",
-	"bg-trip_member_col_8",
-	"bg-trip_member_col_9",
-	"bg-trip_member_col_10",
-	"bg-trip_member_col_11",
-	"bg-trip_member_col_12",
-	"bg-trip_member_col_13",
-	"bg-trip_member_col_14",
-	"bg-trip_member_col_15"
-];
 
 export default function ToadMember(props: { memberColorIndex: number, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 
@@ -43,7 +26,7 @@ export default function ToadMember(props: { memberColorIndex: number, tripDbDoc:
 		: "Invalid Member"
 		;
 	
-	const userColor: string = memberColorArray[props.memberColorIndex % 15];
+	const userColor: string = indexTo15UniqueColor(props.memberColorIndex);
 
 	return (
 		<div className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm">
