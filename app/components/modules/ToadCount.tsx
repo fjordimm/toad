@@ -29,7 +29,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
-			const memberColorsAlreadyTaken: Set<number> = new Set();
+			const memberColorsAlreadyTaken: Set<number> = new Set<number>();
 
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {
 				let colorNum: number = Math.abs(stringHash(member.id) % 15);
