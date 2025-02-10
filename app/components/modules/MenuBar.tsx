@@ -25,17 +25,13 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 			const tripColorsAlreadyTaken: Set<number> = new Set<number>();
 
 			return userListOfTrips.map((trip: DocumentSnapshot) => {
-				debugLogMessage(`trip id = ${trip.id}`);
-
 				let colorNum: number = Math.abs(stringHash(trip.id) % 15);
 				let loopCounter: number = 0;
 				while (tripColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
-					debugLogMessage(`num ${colorNum} did not work`);
 					colorNum = (colorNum + 1) % 15;
 					loopCounter++;
 				}
 				tripColorsAlreadyTaken.add(colorNum);
-				debugLogMessage(`decided on ${colorNum}`);
 
 				return <TripsButton tripDbDoc={trip} tripColorIndex={colorNum} />
 			});
