@@ -5,6 +5,7 @@ import { type DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import Loading from "./Loading";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
+import { stringHash } from "~/src/miscUtil";
 
 import AddDestination from './PlanPage/AddDestination'
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
@@ -29,8 +30,21 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
 		if (listOfTripsMembers !== null) {
+			
+			// The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
+			// It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
+			const memberColorsAlreadyTaken: Set<number> = new Set<number>();
+
 			return listOfTripsMembers.map((member: DocumentSnapshot) => {
-				return <ToadMember tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
+				let colorNum: number = Math.abs(stringHash(member.id) % 15);
+				let loopCounter: number = 0;
+				while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+					colorNum = (colorNum + 1) % 15;
+					loopCounter++;
+				}
+				memberColorsAlreadyTaken.add(colorNum);
+
+				return <ToadMember memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
 			});
 		} else {
 			return <Loading />;
@@ -76,7 +90,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 
 	const [isOpen, setIsOpen] = useState(false);
 	return (
-		<div className="absolute top-2 right-2">
+		<div className="">
 			{/* Main Container */}
 			<div
 				className="max-w-[271px] w-full bg-[#EAFFB9] p-6 rounded-lg shadow-lg flex flex-col justify-between"
