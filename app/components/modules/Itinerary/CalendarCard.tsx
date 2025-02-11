@@ -31,24 +31,14 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
 
 // ACCOMMADATION HANDLER ===========================================
 // Interfaces with database itinerary to get and save stay_at
+    const stayAtRef = useRef<HTMLDivElement | null> (null);
 
 
 // ADDITIONAL NOTES HANDLER ========================================
 // Interfaces with database itinerary to get and save additional notes
 
-    // Stores/updates additional_notes content. State manages backend, Ref manages frontend
     // Use REFs to avoid unecessary rerenders
-    // TODO: see if we can avoid using the state, just use Refs?
-    const [ANcontent, setANcontent] = useState("");
     const contentRef = useRef<HTMLDivElement | null> (null);
-
-    // Sets ANcontent to div text on input
-    const handleInput = () => {
-        if (contentRef.current) {
-            setANcontent(contentRef.current.innerText);
-        }
-    };
-
     /*  
     SAVE: When user clicks out of the input box, save updated content to 
     additional_notes in the corresponding day in database 
@@ -72,7 +62,8 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                         // All other fields stay the same, but additional_notes is replaced with new content (ANcontent)
                         updatedItinerary[itineraryIndex] = {
                             ...updatedItinerary[itineraryIndex],
-                            additional_notes: ANcontent,
+                            additional_notes: contentRef.current?.innerText,
+                            stay_at: stayAtRef.current?.innerText,
                         };
 
                         // Update database by replacing old itinerary with new copied array
@@ -98,11 +89,18 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     (item: {day: Timestamp}) => item.day.isEqual(day)
                 )?.additional_notes;
 
+                const updatedStayAt = tripData.itinerary.find(
+                    (item: {day: Timestamp}) => item.day.isEqual(day)
+                )?.stay_at;
+                
+
                 // if additional_notes in database is updated - change content of div via ref
-                if(contentRef.current && updatedNotes ){
-                    console.log("Updating Text: " + updatedNotes + " On ID: " + tripId);
+                if(contentRef.current && updatedNotes){
                     contentRef.current.innerText = updatedNotes;
-                    // setANcontent(updatedNotes);
+                }
+
+                if(stayAtRef.current && updatedStayAt){
+                    stayAtRef.current.innerText = updatedStayAt;
                 }
             }
         }
@@ -122,15 +120,15 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     <p>{month} {dayOfMonth}, {year}</p>
                 </div>
 
-                {/* <div 
+                <div 
                         contentEditable="true" 
-                        // ref = {contentRef}
-                        className="bg-red-500 font-sunflower border-b-2 border-sidebar_deep_green focus:outline-none"
-                        onInput={handleInput}
+                        ref = {stayAtRef}
+                        className="font-sunflower border-b-2 border-sidebar_deep_green focus:outline-none"
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
-                </div> */}
+                        {stay_at}
+                </div>
             </div>
 
             {/* Draggable activities column */}
@@ -149,7 +147,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                         contentEditable="true" 
                         ref = {contentRef}
                         className="font-sunflower h-48 focus:outline-none"
-                        onInput={handleInput}
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
