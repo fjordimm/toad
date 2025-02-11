@@ -5,12 +5,13 @@ import { collection, addDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useNavigate } from "react-router";
 import { dbCreateTrip } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 // TODO: error handling
 
 const CreateTrip = () => {
 
-	console.log("CREATE TRIP RERENDERING");
+	debugLogComponentRerender("CreateTrip");
 
 	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
