@@ -125,22 +125,22 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
 
         {/* Form Container */}
         <form className="w-full flex flex-col justify-center items-center" onSubmit = {handleSubmitDestination}>
-          {/* Destination Name Input */}
-          <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-            <input
-              type="text"
-              id="destinationName"
-              name="destinationName"
-              onChange={(e) => setDestinationName(e.target.value)}
-              required
-              placeholder="Destination Name"
-              className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
-            />
-          </div>
+            {/* Destination Name Input */}
+            <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
+                <input
+                type="text"
+                id="destinationName"
+                name="destinationName"
+                onChange={(e) => setDestinationName(e.target.value)}
+                required
+                placeholder="Destination Name"
+                className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
+                />
+            </div>
           {/* Container Div for the three row inputs */}
-          <div className="flex flex-row gap-4 w-11/12 py-4 px-4 justify-center">
-            <div className="bg-sidebar_deep_green/15 w-1/3 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-              <input
+          <div className="w-full grid grid-cols-3 gap-y-4 gap-x-4 py-4 px-8">
+            <div className="bg-sidebar_deep_green/15 left-0 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
+            <input
                 type="text"
                 id="price"
                 name="price"
@@ -148,9 +148,9 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
                 maxLength={14}
                 placeholder="Price"
                 className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
-              />
+            />
             </div>
-            <div className="bg-sidebar_deep_green/15 py-4 px-8 w-1/3 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
+            <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
               <input
                 type="text"
                 id="length"
@@ -161,7 +161,7 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
                 className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
               />
             </div>
-            <div className="bg-sidebar_deep_green/15 py-4 px-8 w-1/3 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
+            <div className="bg-sidebar_deep_green/15 right-0 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
               <input
                 type="text"
                 id="timeOfDay"
@@ -184,11 +184,13 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
             />
           </div>
           {/* Save/Submit Button */}
-        <button 
-            type="submit" 
-            className="gap-4 w-11/12 bg-sidebar_deep_green/50 font-sunflower text-[#FFF]/80 py-4 rounded-2xl">
-            Save
-        </button>
+          <div className="flex justify-center w-11/12 mt-4">
+            <button 
+                type="submit" 
+                className="w-full bg-sidebar_deep_green/50 font-sunflower text-[#FFF]/80 py-4 rounded-2xl">
+                Save
+            </button>
+          </div>
         </form>
 
       </div>
