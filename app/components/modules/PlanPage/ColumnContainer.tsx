@@ -40,10 +40,9 @@ function ColumnContainer(props: Props) {
         ref={setNodeRef}
         style={style}
         className="
-            bg-white
-            w-[350px]
-            h-[500px]
-            max-h-[500px]
+            h-full
+            min-h-full
+            w-4/5
             rounded-md
             flex
             flex-col

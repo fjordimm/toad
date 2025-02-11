@@ -225,7 +225,9 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             </div>
 
             {/* Draggable activities column */}
-            
+            {/* Drag-and-drop instruction */}
+            <div className="w-96 font-sunflower flex items-center justify-center ">
+                {/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
                 <ColumnContainer 
                     key={col.id}
                     column={col}
@@ -233,9 +235,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     createTask={createTask}
                     tasks={tasks.filter(task => task.columnId === col.id)}
                 />
-            {/* Drag-and-drop instruction */}
-            <div className="w-96 font-sunflower flex items-center justify-center ">
-                <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
             </div>
 
             {/* Additional Notes column */}

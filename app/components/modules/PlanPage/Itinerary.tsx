@@ -7,6 +7,7 @@ import type { Column, Task } from "./types";
 import { DndContext, DragOverlay, type DragOverEvent, type DragStartEvent } from "@dnd-kit/core";
 import TaskCard from "./TaskCard";
 import { arrayMove } from "@dnd-kit/sortable";
+import PossibleStops from "./PossibleStops";
 
 type ItineraryProps = {
     tripDbDoc: DocumentSnapshot | null;
@@ -128,6 +129,12 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
                     setTasks={setTasks}
                 />
             ))}
+            <PossibleStops
+                columns={columns}
+                setColumns={setColumns}
+                tasks={tasks}
+                setTasks={setTasks}
+            />
                 <DragOverlay>
                         {activeTask && <TaskCard task={activeTask} />}
                         {/* {activeColumn && <ColumnContainer column={activeColumn} deleteColumn={() => {}} createTask={() => {}} tasks={[]} />} */}

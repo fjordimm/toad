@@ -1,20 +1,67 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import ColumnContainer from './ColumnContainer';
+import type { Column, Id, Task } from './types';
 
-function PossibleStops() {
+type PossibleStopsProps = {
+    columns: Column[];
+    setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+    tasks: Task[];
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+};
 
-    return(
-        // remove border from outer div when implemented
-        <div className="absolute right-4 top-8 bottom-8 border border-black w-1/6"> 
+const PossibleStops: React.FC<PossibleStopsProps> = ({ columns, setColumns, tasks, setTasks }) => {
+
+    function createTask(columnId: Id) {
+        const newTask: Task = {
+            id: generateId(),
+            columnId,
+            content: `Task ${tasks.length + 1}`,
+        };
+
+        setTasks([...tasks, newTask]);
+    }
+
+    const createNewColumn = () => {
+        const newColumn: Column = { id: "PossibleStops", title: `PossibleStops` };
+        setColumns(prevColumns => [...prevColumns, newColumn]);
+        console.log(columns);
+        return newColumn;
+    };
+
+    function deleteColumn(id: Id) {
+        setColumns(prevColumns => prevColumns.filter(col => col.id !== id));
+    }
+
+    function generateId() {
+        return Math.floor(Math.random() * 10001);
+    }
+
+    const [col, setCol] = useState<Column | null>(null);
+
+    useEffect(() => {
+        const newColumn = createNewColumn(); // Generates a unique ID
+        setCol(newColumn);
+    }, []); // Empty dependency array ensures it runs only once
+
+    if (!col) return null;
+
+    return (
+        <div className="absolute right-4 top-8 bottom-8 border border-black w-1/6 h-full overflow-auto">
             <h1 className='text-center font-[sunflower] mt-8 text-2xl text-sidebar_deep_green'>Possible Stops</h1>
             <div className="flex justify-center">
                 <hr className="h-px my-4 border-sidebar_deep_green w-4/5 border-[1px]" />
             </div>
-        
+            <div className="flex justify-center">
+                <ColumnContainer 
+                    key={col.id}
+                    column={col}
+                    deleteColumn={deleteColumn}
+                    createTask={createTask}
+                    tasks={tasks.filter(task => task.columnId === col.id)}
+                />
+            </div>
         </div>
+    );
+};
 
-    )
-
-}
-
-export default PossibleStops
-
+export default PossibleStops;
