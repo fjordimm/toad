@@ -10,3 +10,13 @@ body {
 	@apply bg-white;
 	height: 100%;
 }
+
+/* Eliminates scrollbar for the stayAt field in Plan Page */
+.custom-scrollbar::-webkit-scrollbar {
+	display: none; 
+  }
+  
+  .custom-scrollbar {
+	-ms-overflow-style: none; 
+	scrollbar-width: none;
+  }

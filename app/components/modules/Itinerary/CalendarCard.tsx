@@ -123,11 +123,11 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                 <div 
                     contentEditable="true" 
                     ref = {stayAtRef}
-                    className="font-sunflower border-b-2 break-words max-h-24 overflow-scroll border-sidebar_deep_green focus:outline-none"
+                    className="custom-scrollbar font-sunflower border-b-2 max-h-24 overflow-x-auto border-sidebar_deep_green focus:outline-none"
                     onBlur={handleSave}
                     style={{ whiteSpace: "pre-wrap"}}
                 >
-                        {stay_at}
+                    {stay_at}
                 </div> 
             </div>
 
