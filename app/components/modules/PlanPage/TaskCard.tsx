@@ -39,7 +39,7 @@ function TaskCard({task} : Props) {
             ></div>
         )
     }
-
+    const [isCollapsed, setIsCollapsed] = useState(false);
     return (
         <div 
             ref={setNodeRef}
@@ -55,6 +55,7 @@ function TaskCard({task} : Props) {
             }}
         >
             <DestinationBox/>
+
         </div>
   )
 }

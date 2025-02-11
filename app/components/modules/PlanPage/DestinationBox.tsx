@@ -12,7 +12,7 @@ import { dbRetrieveTrip } from "~/src/databaseUtil";
 {/*take in a prop argument is a dictionary that looks like tree structure*/}
 export default function DestinationBox({ name = "Voodoo Donuts", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
-
+    const [mouseIsOver, setMouseIsOver] = useState(false);
     return (
         <div className="w-full max-w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
             {/* Top Section - Flex for responsive layout */}
@@ -26,7 +26,7 @@ export default function DestinationBox({ name = "Voodoo Donuts", details = "Some
 
                 {/* Right Side - Buttons */}
 
-                <div className="flex flex-wrap justify-end gap-1">
+                <div className="flex flex-wrap justify-end gap-1" onPointerDown={(e) => e.stopPropagation()}>
                     {/* Edit Button */}
                     <button className="w-6 h-6" aria-label="Edit destination">
                         <img src={EditBox} alt="Edit Box" />
