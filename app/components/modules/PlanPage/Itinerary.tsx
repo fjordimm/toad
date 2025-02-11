@@ -97,10 +97,6 @@ export default function Itinerary({tripDbDoc}: ItineraryProps){
                 return arrayMove(updatedTasks, activeIndex, overIndex);
             } else if (isOverAColumn) {
                 // Dropping task directly on a column
-                console.log("OVER COL");
-                console.log(overId);
-                console.log("Tasks Array")
-                console.log(tasks);
                 updatedTasks[activeIndex] = {
                     ...updatedTasks[activeIndex],
                     columnId: overId, // Update columnId to the new column

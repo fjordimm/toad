@@ -60,6 +60,14 @@ const PossibleStops: React.FC<PossibleStopsProps> = ({ columns, setColumns, task
                     tasks={tasks.filter(task => task.columnId === col.id)}
                 />
             </div>
+            <div className="flex-shrink-0 flex justify-center my-4">
+                <button className="relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
+                    <span className="absolute rounded-lg inset-0 bg-[#3C533A] opacity-75"></span>
+                    <span className="relative text-center text-white font-sunflower text-lg">
+                        Add A Destination
+                    </span>
+                </button>
+            </div>
         </div>
     );
 };
