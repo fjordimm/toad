@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DocumentSnapshot, Timestamp , updateDoc} from "firebase/firestore";
 import { setAnalyticsCollectionEnabled } from "firebase/analytics";
+import { useParams } from "react-router";
 
 // Type declarations for CalendarCard
 type CalendarCardProps = {
@@ -14,6 +15,8 @@ type CalendarCardProps = {
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
 const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc}) => {
+    const { tripId } = useParams();
+    // console.log("DBDoc ID: " + tripDbDoc?.id);
 
 // DATE HANDLER ===================================================
 // Interfaces with databse itinerary to get the display date of each card
@@ -36,20 +39,22 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
     // Stores/updates additional_notes content. State manages backend, Ref manages frontend
     // Use REFs to avoid unecessary rerenders
     // TODO: see if we can avoid using the state, just use Refs?
-    const [ANcontent, setANcontent] = useState(additional_notes);
+    const [ANcontent, setANcontent] = useState("");
     const contentRef = useRef<HTMLDivElement | null> (null);
 
     // Sets ANcontent to div text on input
-    const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-        setANcontent(e.currentTarget.innerText);
-    }
+    const handleInput = () => {
+        if (contentRef.current) {
+            setANcontent(contentRef.current.innerText);
+        }
+    };
 
     /*  
     SAVE: When user clicks out of the input box, save updated content to 
     additional_notes in the corresponding day in database 
     */
     const handleSave = async () => {
-        if (tripDbDoc != null){
+        if (tripDbDoc != null ){
             const tripData = tripDbDoc.data();
             try{
                 if(tripData && tripData.itinerary){
@@ -86,7 +91,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
     // Updates current div only if new notes are saved - preventing unecessary rerenders
 
     useEffect(() =>{
-        if (tripDbDoc != null){
+        if (tripDbDoc != null && tripDbDoc.id == tripId){
             const tripData = tripDbDoc.data();
             if(tripData && tripData.itinerary){
                 const updatedNotes = tripData.itinerary.find(
@@ -94,12 +99,14 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                 )?.additional_notes;
 
                 // if additional_notes in database is updated - change content of div via ref
-                if(contentRef.current && updatedNotes)
+                if(contentRef.current && updatedNotes ){
+                    console.log("Updating Text: " + updatedNotes + " On ID: " + tripId);
                     contentRef.current.innerText = updatedNotes;
+                    // setANcontent(updatedNotes);
+                }
             }
         }
-    }, [tripDbDoc, day]);
-
+    }, [tripDbDoc]);
 
 
     return (
@@ -115,15 +122,15 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     <p>{month} {dayOfMonth}, {year}</p>
                 </div>
 
-                <div 
+                {/* <div 
                         contentEditable="true" 
-                        ref = {contentRef}
+                        // ref = {contentRef}
                         className="bg-red-500 font-sunflower border-b-2 border-sidebar_deep_green focus:outline-none"
                         onInput={handleInput}
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
-                </div>
+                </div> */}
             </div>
 
             {/* Draggable activities column */}
@@ -146,6 +153,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
+                        {additional_notes}
                     </div>
                 </div>
             </div>

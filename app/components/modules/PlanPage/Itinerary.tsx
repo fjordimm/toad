@@ -15,7 +15,7 @@ returns: Array[{activities:... day:... stay_at: ... additional_notes:...}]
 */
 async function retrieveItinerary(tripDbDoc: DocumentSnapshot){
     const ItineraryDaysList = await dbRetrieveTripItinerary(tripDbDoc);
-    console.log(ItineraryDaysList);
+    console.log("Retrieving Trip: " + tripDbDoc.id + "Content: "+ ItineraryDaysList);
     return ItineraryDaysList || null;
 }
 
