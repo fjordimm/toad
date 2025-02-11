@@ -121,14 +121,14 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                 </div>
 
                 <div 
-                        contentEditable="true" 
-                        ref = {stayAtRef}
-                        className="font-sunflower border-b-2 border-sidebar_deep_green focus:outline-none"
-                        onBlur={handleSave}
-                        style={{ whiteSpace: "pre-wrap"}}
-                    >
+                    contentEditable="true" 
+                    ref = {stayAtRef}
+                    className="font-sunflower border-b-2 break-words max-h-24 overflow-scroll border-sidebar_deep_green focus:outline-none"
+                    onBlur={handleSave}
+                    style={{ whiteSpace: "pre-wrap"}}
+                >
                         {stay_at}
-                </div>
+                </div> 
             </div>
 
             {/* Draggable activities column */}
@@ -146,7 +146,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     <div 
                         contentEditable="true" 
                         ref = {contentRef}
-                        className="font-sunflower h-48 focus:outline-none"
+                        className="font-sunflower h-48 focus:outline-none break-words max-h-48 overflow-scroll"
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
