@@ -39,7 +39,6 @@ function TaskCard({task} : Props) {
             ></div>
         )
     }
-    const [isCollapsed, setIsCollapsed] = useState(false);
     return (
         <div 
             ref={setNodeRef}
