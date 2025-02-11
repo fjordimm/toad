@@ -2,6 +2,7 @@ import ToadCount from "../modules/ToadCount";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
+import Itinerary from "../modules/PlanPage/Itinerary";
 
 export default function TripPagePlan() {
 
@@ -18,7 +19,10 @@ export default function TripPagePlan() {
 			</div>
 
 			<div className="grow flex flex-row gap-5 justify-between">
-				<p className="grow bg-slate-600">Calendar</p>
+				{/* Insert Itinerary Here */}
+				<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc}/>
+
+				{/* Insert Possible Stops Column Here */}
 				<p className="bg-slate-600">Possible Stops</p>
 			</div>
 		</div>
