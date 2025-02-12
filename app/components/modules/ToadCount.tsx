@@ -7,7 +7,6 @@ import Loading from "./Loading";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import { stringHash } from "~/src/miscUtil";
 
-import AddDestination from './PlanPage/AddDestination'
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
 
 	debugLogComponentRerender("ToadCount");
@@ -141,13 +140,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 				>
 					Delete Trip
 				</button>
-				<button 
-				onClick = {() => setIsOpen(true)}
-				className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
-				>
-					Open Modal
-				</button>
-				{isOpen && <AddDestination setIsOpen={setIsOpen} />}
 			</div>
 		</div>
 	);
