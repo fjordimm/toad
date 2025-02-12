@@ -76,10 +76,13 @@ export async function dbRetrieveUsersListOfInvitations(userDbDoc: DocumentSnapsh
 }
 
 export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
-	const itin = [];
-	const num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24));
-	for (let i = 0; i < num_days; i++) {
-		const currentDay = new Date(new Date(startDate).getTime());
+	//let itin:Array<Map<string, any>> = [];
+	let itin = [];
+
+	let num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))
+	for(let i = 0; i <= num_days; i++) {
+		// let temp_dict = new Map<string, any>();
+		const currentDay = new Date(startDate + "T00:00:00");
 		currentDay.setDate(currentDay.getDate() + i);
 		let temp_dict = {
 			"day": currentDay,
@@ -128,6 +131,27 @@ export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot):
 	}
 
 	return ret;
+}
+
+export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Promise<Record<string, any>| null>{
+	try{
+
+		// checks if the trip exists
+		if (tripDbDoc.exists()){
+			const data = tripDbDoc.data();
+
+			// if itinerary does not exist, return [] as itineraryList
+			const itineraryList = data?.itinerary || [];
+			return itineraryList
+
+		}else{
+			console.log("Trip Document Does Not Exist");
+			return [];
+		}
+	} catch(error){
+		console.error("Error fetching document:", error);
+        return [];
+	}
 }
 
 // TODO: be more consistent/deliberate with DocumentReference vs. DocumentSnapshot

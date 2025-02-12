@@ -88,7 +88,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		;
 
 	return (
-		<div className="">
+		<div className=" top-2 right-2">
 			{/* Main Container */}
 			<div
 				className="max-w-[271px] w-full bg-[#EAFFB9] p-6 rounded-lg shadow-lg flex flex-col justify-between"

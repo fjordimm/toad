@@ -24,6 +24,8 @@ export default {
 				sidebar_deep_green: "#3D5846",
 				sidebar_button_bg: "#4E6A55",
 				dashboard_component_bg: "#9DBD7A",
+				itinerary_card_green: "#D7F297",
+				toad_count_lime: "#EAFFB9",
 
 				trip_member_col_1: "#E4BF3B",
 				trip_member_col_2: "#DA934C",
