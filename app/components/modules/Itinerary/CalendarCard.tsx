@@ -25,7 +25,7 @@ type CalendarCardProps = {
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
 const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc, columns, setColumns, tasks, setTasks}) => {
-
+	const { tripId } = useParams();
 // DATE HANDLER ===================================================
 // Interfaces with databse itinerary to get the display date of each card
 
@@ -159,7 +159,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
     }, [month, dayOfMonth, year]);
 
     if (!col) return null;
-    }, [tripDbDoc]);
 
 
     return (
@@ -215,7 +214,6 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                         contentEditable="true" 
                         ref={contentRef}
                         className="font-sunflower h-48 focus:outline-none"
-                        onInput={handleInput}
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
