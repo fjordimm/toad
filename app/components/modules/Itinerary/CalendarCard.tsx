@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { DocumentSnapshot, Timestamp , updateDoc} from "firebase/firestore";
 import { setAnalyticsCollectionEnabled } from "firebase/analytics";
 import { useParams } from "react-router";
+import stayAtIcon from "../../../../public/stayAt.svg"
 
 // Type declarations for CalendarCard
 type CalendarCardProps = {
@@ -120,14 +121,21 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     <p>{month} {dayOfMonth}, {year}</p>
                 </div>
 
-                <div 
-                    contentEditable="true" 
-                    ref = {stayAtRef}
-                    className="custom-scrollbar font-sunflower border-b-2 max-h-24 overflow-x-auto border-sidebar_deep_green focus:outline-none"
-                    onBlur={handleSave}
-                    style={{ whiteSpace: "pre-wrap"}}
-                >
-                    {stay_at}
+                <div className="flex flex-col gap-4">
+                    <div className="flex gap-2 items-center">
+                        <img src={stayAtIcon} alt="stayAt Icon" className="w-1/5 self-center"></img>
+                        <p className="font-sunflower text-sidebar_deep_green align-middle"> Staying At: </p>
+                    </div>
+                    
+                    <div 
+                        contentEditable="true" 
+                        ref = {stayAtRef}
+                        className="custom-scrollbar font-sunflower border-b-2 max-h-24 overflow-x-auto border-sidebar_deep_green focus:outline-none"
+                        onBlur={handleSave}
+                        style={{ whiteSpace: "pre-wrap"}}
+                    >
+                        {stay_at}
+                    </div>
                 </div> 
             </div>
 
@@ -146,7 +154,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     <div 
                         contentEditable="true" 
                         ref = {contentRef}
-                        className="font-sunflower h-48 focus:outline-none break-words max-h-48 overflow-scroll"
+                        className="custom-scrollbar font-sunflower h-48 focus:outline-none break-words max-h-48 overflow-scroll"
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
