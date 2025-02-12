@@ -1,6 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DocumentSnapshot, Timestamp , updateDoc} from "firebase/firestore";
 import { setAnalyticsCollectionEnabled } from "firebase/analytics";
+import type { Column, Id, Task } from "../PlanPage/types"
+import ColumnContainer from '../PlanPage/ColumnContainer';
+import TaskCard from '../PlanPage/TaskCard';
+import { arrayMove } from "@dnd-kit/sortable";
+import { DndContext, DragOverlay, type DragOverEvent, type DragStartEvent } from "@dnd-kit/core";
 import { useParams } from "react-router";
 import stayAtIcon from "../../../../public/stayAt.svg"
 
@@ -11,13 +16,15 @@ type CalendarCardProps = {
     stay_at: string;
     additional_notes: string;
     tripDbDoc: DocumentSnapshot | null;
+    columns: Column[];
+    setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+    tasks: Task[];
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
-const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc}) => {
-    const { tripId } = useParams();
-    // console.log("DBDoc ID: " + tripDbDoc?.id);
+const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, additional_notes, tripDbDoc, columns, setColumns, tasks, setTasks}) => {
 
 // DATE HANDLER ===================================================
 // Interfaces with databse itinerary to get the display date of each card
@@ -105,13 +112,59 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                 }
             }
         }
+    }, [tripDbDoc, day]);
+
+    // const [columns, setColumns] = useState<Column[]>([]);
+    // console.log(columns);
+    // const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
+
+    // const [tasks, setTasks] = useState<Task[]>([]);
+    // const [activeTask, setActiveTask] = useState<Task | null>(null);
+    // const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+
+    function createTask(columnId: Id) {
+        const newTask: Task = {
+            id: generateId(),
+            columnId,
+            content: `Task ${tasks.length + 1}`,
+        };
+
+        setTasks([...tasks, newTask]);
+    }
+
+    const createNewColumn = (date: string) => {
+        const existingColumn = columns.find(col => col.id === date);
+        if (existingColumn) return existingColumn;
+
+        const newColumn: Column = { id: date, title: `${date}` };
+        setColumns(prevColumns => [...prevColumns, newColumn]);
+        console.log(columns);
+        return newColumn;
+    };
+
+    function deleteColumn(id: Id) {
+        const filteredColumns = columns.filter(col => col.id !== id);
+        setColumns(filteredColumns);
+    }
+
+    function generateId() {
+        return Math.floor(Math.random() * 10001);
+    }
+
+    const [col, setCol] = useState<Column | null>(null);
+
+    useEffect(() => {
+        const newColumn = createNewColumn(`${month},${dayOfMonth},${year}`);
+        setCol(newColumn);
+    }, [month, dayOfMonth, year]);
+
+    if (!col) return null;
     }, [tripDbDoc]);
 
 
     return (
         <div className="w-full h-64 rounded-lg bg-itinerary_card_green p-2 flex">
-
-            {/* Date and Accommadation Column */}
+            {/* Date and Accommodation Column */}
             <div className="flex flex-col justify-between w-40 border-r-2 border-dashboard_component_bg text-sidebar_deep_green p-2">
                 
                 <div>
@@ -140,9 +193,16 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
             </div>
 
             {/* Draggable activities column */}
-            {/* whoever working on drag and drop insert your component here */}
+            {/* Drag-and-drop instruction */}
             <div className="w-96 font-sunflower flex items-center justify-center ">
-                <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
+                {/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
+                <ColumnContainer 
+                    key={col.id}
+                    column={col}
+                    deleteColumn={deleteColumn}
+                    createTask={createTask}
+                    tasks={tasks.filter(task => task.columnId === col.id)}
+                />
             </div>
 
             {/* Additional Notes column */}
@@ -153,8 +213,9 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                     {/* Editable textbox */}
                     <div 
                         contentEditable="true" 
-                        ref = {contentRef}
-                        className="custom-scrollbar font-sunflower h-48 focus:outline-none break-words max-h-48 overflow-scroll"
+                        ref={contentRef}
+                        className="font-sunflower h-48 focus:outline-none"
+                        onInput={handleInput}
                         onBlur={handleSave}
                         style={{ whiteSpace: "pre-wrap"}}
                     >
@@ -163,7 +224,8 @@ const CalendarCard: React.FC<CalendarCardProps> = ({activities, day, stay_at, ad
                 </div>
             </div>
         </div>
-    )
+    );
+        
 }
 
 export default CalendarCard

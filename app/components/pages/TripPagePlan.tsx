@@ -3,6 +3,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
 import Itinerary from "../modules/PlanPage/Itinerary";
+import Itinerary from "../modules/PlanPage/Itinerary";
 
 export default function TripPagePlan() {
 
