@@ -87,7 +87,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
 		: "?"
 		;
 
-	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<div className="">
 			{/* Main Container */}
