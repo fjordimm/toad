@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import stayAtIcon from "../../../../public/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
+import { DraggableDestinationContainer } from "~/components/pages/TripPagePlan";
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
@@ -103,15 +104,17 @@ export default function CalendarCard(props: { activities: any[], day: Timestamp,
 
 	function turnActivitiesIntoElems(activities: any[]): ReactNode {
 		return (
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col w-full gap-2">
 				{
 					activities.map((activityId: string) => {
-						console.log("ACTIVITY");
-						console.log(props.listOfDestinations[activityId]);
+						// console.log("ACTIVITY");
+						// console.log(props.listOfDestinations[activityId]);
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
-							<DestinationBox name={activityObj.name} cost={activityObj.cost} duration={activityObj.time} time={"todo"} details={"todo"}/>
+							<DraggableDestinationContainer id={activityObj.name}>
+								<DestinationBox name={activityObj.name} cost={activityObj.cost} duration={activityObj.time} time={"todo"} details={"todo"}/>
+							</DraggableDestinationContainer>
 						);
 					})
 				}
@@ -152,7 +155,7 @@ export default function CalendarCard(props: { activities: any[], day: Timestamp,
 
 			{/* Draggable activities column */}
 			{/* whoever working on drag and drop insert your component here */}
-			<div className="w-96 font-sunflower flex items-center justify-center bg-red-800">
+			<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
 				{
 					props.activities.length > 0
 					? turnActivitiesIntoElems(props.activities)

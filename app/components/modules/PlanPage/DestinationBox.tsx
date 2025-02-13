@@ -13,7 +13,7 @@ export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [mouseIsOver, setMouseIsOver] = useState(false);
     return (
-        <div className="w-full w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
+        <div className="w-full max-w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
             {/* Top Section - Flex for responsive layout */}
             <div className="flex items-center justify-between">
                 {/* Left Side - Movable Icon & Name */}

@@ -39,6 +39,22 @@ import PossibleStops from "../modules/PlanPage/PossibleStops";
 // 	);
 // }
 
+export function DraggableDestinationContainer(props: { id: string, children: ReactNode }) {
+	const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: props.id });
+
+	return (
+		<div
+			ref={setNodeRef} {...listeners} {...attributes} className="bg-violet-300 p-1 flex justify-center items-center"
+			style={ {
+				transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
+				cursor: "auto"
+			} }
+		>
+			{props.children}
+		</div>
+	);
+}
+
 export default function TripPagePlan() {
 
 	debugLogComponentRerender("TripPagePlan");
@@ -65,6 +81,10 @@ export default function TripPagePlan() {
 	// const myDraggableElem = (
 	// 	<MyDraggable id="draggable">Drag Me</MyDraggable>
 	// );
+
+	function handleDragEnd(e: DragEndEvent) {
+
+	}
 
 	return (
 		<div className="grow flex flex-col gap-5 bg-dashboard_lime">
@@ -98,7 +118,9 @@ export default function TripPagePlan() {
 				</DndContext> */}
 
 				{/* Insert Itinerary Here */}
-				<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations}/>
+				<DndContext onDragEnd={handleDragEnd}>
+					<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
+				</DndContext>
 
 				{/* Insert Possible Stops Column Here */}
 			</div>
