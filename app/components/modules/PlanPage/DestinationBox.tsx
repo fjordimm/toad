@@ -8,11 +8,18 @@ import Collapsed from "/Collapsed.svg";
 import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
 import type { DocumentSnapshot } from "firebase/firestore";
+import { dbDeleteDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
 
 {/*take in a prop argument is a dictionary that looks like tree structure*/}
-export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, name: string, price: string, length: string, time: string, description: string }) {
+export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, destinationId: string, name: string, price: string, length: string, time: string, description: string }) {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [mouseIsOver, setMouseIsOver] = useState(false);
+
+	async function handleDelete(destinationId: string) {
+		await dbRemoveDestinationFromAllItineraryDays(props.tripDbDoc.ref, destinationId);
+		await dbDeleteDestination(props.tripDbDoc.ref, destinationId);
+	}
+
     return (
         <div className="w-full max-w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
             {/* Top Section - Flex for responsive layout */}
@@ -33,7 +40,7 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, nam
                     </button>
 
                     {/*Trash Button*/}
-                    <button className="w-6 h-6" aria-label="Delete destination">
+                    <button onClick={() => handleDelete(props.destinationId)} className="w-6 h-6" aria-label="Delete destination">
                         <img src={Cancel} alt="Delete" />
                     </button>
 

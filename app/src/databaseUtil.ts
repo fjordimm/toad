@@ -230,3 +230,13 @@ export async function dbRemoveDestinationFromAllItineraryDays(tripDbDocRef: Docu
 		destinations: destinationsObj
 	});
 }
+
+export async function dbDeleteDestination(tripDbDocRef: DocumentReference, destinationId: string) {
+	const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+	const destinationsObj = tripDbDoc.get("destinations");
+	delete destinationsObj[destinationId];
+	await updateDoc(tripDbDoc.ref, {
+		destinations: destinationsObj
+	});
+}

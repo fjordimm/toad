@@ -13,7 +13,7 @@ export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, list
 			if (!val.is_in_itinerary) {
 				destinationsAsElems.push(
 					<DestinationDraggable id={key}>
-						<DestinationBox tripDbDoc={props.tripDbDoc} name={val.name} price={val.price} length={val.length} time={val.time} description={val.description} />
+						<DestinationBox tripDbDoc={props.tripDbDoc} destinationId={key} name={val.name} price={val.price} length={val.length} time={val.time} description={val.description} />
 					</DestinationDraggable>
 				);
 			}

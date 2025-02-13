@@ -110,7 +110,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
 						return (
 							<DestinationDraggable id={activityId}>
-								<DestinationBox tripDbDoc={props.tripDbDoc} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
+								<DestinationBox tripDbDoc={props.tripDbDoc} destinationId={activityId} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
 							</DestinationDraggable>
 						);
 					})
