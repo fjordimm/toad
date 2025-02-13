@@ -38,6 +38,7 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
 			{itineraryList.map((item, index) => (
 				<CalendarCard
 					key={index}
+					dbIndex={index}
 					activities={item.activities}
 					day={item.day}
 					stay_at={item.stay_at}

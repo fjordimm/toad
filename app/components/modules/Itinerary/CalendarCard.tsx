@@ -5,12 +5,11 @@ import { useParams } from "react-router";
 import stayAtIcon from "../../../../public/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
-import { DraggableDestinationContainer } from "~/components/pages/TripPagePlan";
+import { DraggableDestinationContainer, DroppableCalendarCardSpot } from "~/components/pages/TripPagePlan";
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
-export default function CalendarCard(props: { activities: any[], day: Timestamp, stay_at: string, additional_notes: string, tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any } }) {
-
+export default function CalendarCard(props: { dbIndex: number, activities: any[], day: Timestamp, stay_at: string, additional_notes: string, tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any } }) {
 	const { tripId } = useParams();
 	// console.log("DBDoc ID: " + tripDbDoc?.id);
 
@@ -112,7 +111,7 @@ export default function CalendarCard(props: { activities: any[], day: Timestamp,
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
-							<DraggableDestinationContainer id={activityObj.name}>
+							<DraggableDestinationContainer id={activityId}>
 								<DestinationBox name={activityObj.name} cost={activityObj.cost} duration={activityObj.time} time={"todo"} details={"todo"}/>
 							</DraggableDestinationContainer>
 						);
@@ -154,16 +153,17 @@ export default function CalendarCard(props: { activities: any[], day: Timestamp,
 			</div>
 
 			{/* Draggable activities column */}
-			{/* whoever working on drag and drop insert your component here */}
-			<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
-				{
-					props.activities.length > 0
-					? turnActivitiesIntoElems(props.activities)
-					: <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
-				}
-				{/* { turnActivitiesIntoElems(props.activities) } */}
-				{/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
-			</div>
+			<DroppableCalendarCardSpot id={props.dbIndex.toString()}>
+				<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
+					{
+						props.activities.length > 0
+						? turnActivitiesIntoElems(props.activities)
+						: <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
+					}
+					{/* { turnActivitiesIntoElems(props.activities) } */}
+					{/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
+				</div>
+			</DroppableCalendarCardSpot>
 
 			{/* Additional Notes column */}
 			<div className="bg-toad_count_lime w-72 rounded-lg text-sidebar_deep_green">

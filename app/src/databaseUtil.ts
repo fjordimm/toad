@@ -196,3 +196,29 @@ export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDo
 		trip_users: arrayRemove(userDbDoc.id)
 	});
 }
+
+export async function dbAddDestinationToItineraryDay(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
+	const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+	
+	const itineraryObj = tripDbDoc.get("itinerary");
+
+	itineraryObj[dayIndex]["activities"].push(destinationId);
+
+	await updateDoc(tripDbDoc.ref, {
+		itinerary: itineraryObj
+	})
+}
+
+export async function dbRemoveDestinationFromAllItineraryDays(tripDbDocRef: DocumentReference, destinationId: string) {
+	const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+	
+	const itineraryObj = tripDbDoc.get("itinerary");
+
+	for (let i = 0; i < itineraryObj.length; i++) {
+		itineraryObj[i]["activities"] = itineraryObj[i]["activities"].filter((item: string) => item !== destinationId);
+	}
+
+	await updateDoc(tripDbDoc.ref, {
+		itinerary: itineraryObj
+	});
+}
