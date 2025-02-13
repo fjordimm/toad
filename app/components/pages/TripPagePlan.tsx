@@ -3,7 +3,7 @@ import { debugLogComponentRerender, debugLogMessage } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
 import Itinerary from "../modules/PlanPage/Itinerary";
-import { DndContext, useDraggable, useDroppable, type DragEndEvent } from "@dnd-kit/core";
+import { DndContext, useDraggable, useDroppable, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
 import { useState, type ReactNode } from "react";
 import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { dbAddDestinationToItineraryDay, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
@@ -42,9 +42,11 @@ export default function TripPagePlan() {
 
 	const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
-	const tripName = tripPageLayoutContext.tripDbDoc.get("trip_name");
-
 	const listOfDestinations: { [key: string]: any } = tripPageLayoutContext.tripDbDoc.get("destinations");
+
+	function handleDragStart(e: DragStartEvent) {
+
+	}
 
 	async function handleDragEnd(e: DragEndEvent) {
 		if (e.over !== null) {
@@ -66,7 +68,7 @@ export default function TripPagePlan() {
 			</div>
 
 			<div className="grow flex flex-row gap-5">
-				<DndContext onDragEnd={handleDragEnd}>
+				<DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
 					<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
 					<PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
 				</DndContext>

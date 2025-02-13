@@ -6,6 +6,7 @@ import stayAtIcon from "/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
 import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";
+import { DragOverlay } from "@dnd-kit/core";
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
