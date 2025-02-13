@@ -201,24 +201,32 @@ export async function dbAddDestinationToItineraryDay(tripDbDocRef: DocumentRefer
 	const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 	
 	const itineraryObj = tripDbDoc.get("itinerary");
-
 	itineraryObj[dayIndex]["activities"].push(destinationId);
-
 	await updateDoc(tripDbDoc.ref, {
 		itinerary: itineraryObj
-	})
+	});
+
+	const destinationsObj = tripDbDoc.get("destinations");
+	destinationsObj[destinationId].is_in_itinerary = true;
+	await updateDoc(tripDbDoc.ref, {
+		destinations: destinationsObj
+	});
 }
 
 export async function dbRemoveDestinationFromAllItineraryDays(tripDbDocRef: DocumentReference, destinationId: string) {
 	const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 	
 	const itineraryObj = tripDbDoc.get("itinerary");
-
 	for (let i = 0; i < itineraryObj.length; i++) {
 		itineraryObj[i]["activities"] = itineraryObj[i]["activities"].filter((item: string) => item !== destinationId);
 	}
-
 	await updateDoc(tripDbDoc.ref, {
 		itinerary: itineraryObj
+	});
+
+	const destinationsObj = tripDbDoc.get("destinations");
+	destinationsObj[destinationId].is_in_itinerary = false;
+	await updateDoc(tripDbDoc.ref, {
+		destinations: destinationsObj
 	});
 }

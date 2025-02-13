@@ -8,50 +8,18 @@ import { useState, type ReactNode } from "react";
 import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { dbAddDestinationToItineraryDay, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
 
-// export function MyDroppable(props: { id: string, children: ReactNode }) {
-
-// 	const { setNodeRef } = useDroppable({ id: props.id });
-
-// 	return (
-// 		<div ref={setNodeRef} className="bg-emerald-950 flex flex-col p-5 gap-5">
-// 			{props.children}
-// 		</div>
-// 	);
-// }
-
-// export function MyDraggable(props: { id: string, children: ReactNode }) {
-
-// 	const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: props.id });
-
-// 	return (
-// 		<div
-// 			ref={setNodeRef}
-// 			{...listeners}
-// 			{...attributes}
-// 			className="bg-violet-300"
-// 			style={
-// 				transform
-// 				? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-// 				: undefined
-// 			}
-// 		>
-// 			{props.children}
-// 		</div>
-// 	);
-// }
-
-export function DroppableCalendarCardSpot(props: { id: string, children: ReactNode }) {
+export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
 	const { setNodeRef } = useDroppable({ id: props.id });
 
 	return (
-		<div ref={setNodeRef} className="bg-emerald-950 flex items-stretch justify-stretch">
+		<div ref={setNodeRef} className="grow bg-blue-800 p-1 flex items-stretch justify-stretch">
 			{props.children}
 		</div>
 	);
 }
 
-export function DraggableDestinationContainer(props: { id: string, children: ReactNode }) {
+export function DestinationDraggable(props: { id: string, children: ReactNode }) {
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: props.id });
 
 	return (
@@ -77,27 +45,21 @@ export default function TripPagePlan() {
 
 	const listOfDestinations: { [key: string]: any } = tripPageLayoutContext.tripDbDoc.get("destinations");
 
-	// const containers = ['A', 'B', 'C'];
-	// const [parent, setParent] = useState<string | null>(null);
-
-	// function handleDragEnd(e: DragEndEvent) {
-	// 	const { over } = e;
-
-	// 	if (over !== null) {
-	// 		setParent(over.id.toString());
-	// 	} else {
-	// 		setParent(null);
-	// 	}
-	// }
-
-	// const myDraggableElem = (
-	// 	<MyDraggable id="draggable">Drag Me</MyDraggable>
-	// );
-
 	async function handleDragEnd(e: DragEndEvent) {
 		if (e.over !== null) {
-			await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
-			await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, parseInt(e.over.id.toString()), e.active.id.toString());
+			if (e.over.id.toString().includes("calendarcard_")) {
+				const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));
+				debugLogMessage("dayIndex =");
+				console.log(dayIndex);
+
+				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
+				await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, dayIndex, e.active.id.toString());
+			} else if (e.over.id.toString() === "possiblestops") {
+				debugLogMessage("possible stops");
+				
+				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
+			}
+			
 		}
 	}
 
@@ -132,12 +94,10 @@ export default function TripPagePlan() {
 					</div>
 				</DndContext> */}
 
-				{/* Insert Itinerary Here */}
 				<DndContext onDragEnd={handleDragEnd}>
 					<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
+					<PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
 				</DndContext>
-
-				{/* Insert Possible Stops Column Here */}
 			</div>
 		</div>
 	);

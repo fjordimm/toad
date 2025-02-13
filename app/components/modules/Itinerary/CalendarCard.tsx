@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import stayAtIcon from "../../../../public/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
-import { DraggableDestinationContainer, DroppableCalendarCardSpot } from "~/components/pages/TripPagePlan";
+import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
@@ -111,9 +111,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
-							<DraggableDestinationContainer id={activityId}>
+							<DestinationDraggable id={activityId}>
 								<DestinationBox name={activityObj.name} cost={activityObj.cost} duration={activityObj.time} time={"todo"} details={"todo"}/>
-							</DraggableDestinationContainer>
+							</DestinationDraggable>
 						);
 					})
 				}
@@ -153,7 +153,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 			</div>
 
 			{/* Draggable activities column */}
-			<DroppableCalendarCardSpot id={props.dbIndex.toString()}>
+			<DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
 				<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
 					{
 						props.activities.length > 0
@@ -163,7 +163,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 					{/* { turnActivitiesIntoElems(props.activities) } */}
 					{/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
 				</div>
-			</DroppableCalendarCardSpot>
+			</DestinationDroppable>
 
 			{/* Additional Notes column */}
 			<div className="bg-toad_count_lime w-72 rounded-lg text-sidebar_deep_green">
