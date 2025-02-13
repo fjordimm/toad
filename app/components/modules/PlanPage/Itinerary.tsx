@@ -34,7 +34,7 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
 
 
 	return (
-		<div className="flex flex-col gap-4 overflow-y-auto">
+		<div className="flex flex-col gap-4">
 			{itineraryList.map((item, index) => (
 				<CalendarCard
 					key={index}

@@ -13,7 +13,7 @@ export default function MainLayout() {
 
 	if (topLevelLayoutContext.userDbDoc !== null) {
 		return (
-			<div className="grow flex flex-row">
+			<div className="grow flex flex-row overflow-hidden">
 				<MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
 				<div className="p-5 grow flex">
 					<Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }}/>
