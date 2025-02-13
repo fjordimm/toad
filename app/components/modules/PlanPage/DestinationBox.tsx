@@ -10,10 +10,10 @@ import Cancel from "/Cancel.svg";
 
 {/*take in a prop argument is a dictionary that looks like tree structure*/}
 export default function DestinationBox({ name = "Voodoo Donutsssssssssssssssssss", cost = "5 bucks", duration = "1 hour", time = "1:00 - 2:00 PM", details = "Some additional info. i love pizza. it is the best thing in the whole world. i love cheese pizza. peperroni pizza. all pizzas really. it's just so good. i wish everyone enjoys pizza like I do" }) {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [mouseIsOver, setMouseIsOver] = useState(false);
     return (
-        <div className="w-full max-w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
+        <div className="w-full w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
             {/* Top Section - Flex for responsive layout */}
             <div className="flex items-center justify-between">
                 {/* Left Side - Movable Icon & Name */}

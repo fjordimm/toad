@@ -80,7 +80,7 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
 	let itin = [];
 
 	let num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))
-	for(let i = 0; i <= num_days; i++) {
+	for (let i = 0; i <= num_days; i++) {
 		// let temp_dict = new Map<string, any>();
 		const currentDay = new Date(startDate + "T00:00:00");
 		currentDay.setDate(currentDay.getDate() + i);
@@ -111,15 +111,14 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
 }
 
 export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
-	for (const emailId of tripDbDoc.get("trip_users"))
-	{
+	for (const emailId of tripDbDoc.get("trip_users")) {
 		await updateDoc((await dbRetrieveUser(emailId)).ref, {
 			trips: arrayRemove(tripDbDoc.id)
 		});
 	}
 
 	// TODO: what if someone was invited to a trip, then the trip was deleted, then they accept the invitation
-	
+
 	await deleteDoc(tripDbDoc.ref);
 }
 
@@ -133,24 +132,24 @@ export async function dbRetrieveTripsListOfMembers(tripDbDoc: DocumentSnapshot):
 	return ret;
 }
 
-export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Promise<Record<string, any>| null>{
-	try{
+export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Promise<Record<string, any> | null> {
+	try {
 
 		// checks if the trip exists
-		if (tripDbDoc.exists()){
+		if (tripDbDoc.exists()) {
 			const data = tripDbDoc.data();
 
 			// if itinerary does not exist, return [] as itineraryList
 			const itineraryList = data?.itinerary || [];
-			return itineraryList
+			return itineraryList;
 
-		}else{
+		} else {
 			console.log("Trip Document Does Not Exist");
 			return [];
 		}
-	} catch(error){
+	} catch (error) {
 		console.error("Error fetching document:", error);
-        return [];
+		return [];
 	}
 }
 
