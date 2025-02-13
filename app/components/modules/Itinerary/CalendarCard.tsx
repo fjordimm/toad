@@ -106,13 +106,11 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 			<div className="flex flex-col w-full gap-2">
 				{
 					activities.map((activityId: string) => {
-						// console.log("ACTIVITY");
-						// console.log(props.listOfDestinations[activityId]);
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
 							<DestinationDraggable id={activityId}>
-								<DestinationBox name={activityObj.name} cost={activityObj.cost} duration={activityObj.time} time={"todo"} details={"todo"}/>
+								<DestinationBox tripDbDoc={props.tripDbDoc} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
 							</DestinationDraggable>
 						);
 					})
