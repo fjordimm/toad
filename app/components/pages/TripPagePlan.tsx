@@ -49,17 +49,12 @@ export default function TripPagePlan() {
 		if (e.over !== null) {
 			if (e.over.id.toString().includes("calendarcard_")) {
 				const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));
-				debugLogMessage("dayIndex =");
-				console.log(dayIndex);
 
 				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
 				await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, dayIndex, e.active.id.toString());
 			} else if (e.over.id.toString() === "possiblestops") {
-				debugLogMessage("possible stops");
-				
 				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
 			}
-			
 		}
 	}
 
