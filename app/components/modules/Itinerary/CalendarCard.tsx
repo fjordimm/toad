@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { DocumentSnapshot, Timestamp, updateDoc } from "firebase/firestore";
 import { setAnalyticsCollectionEnabled } from "firebase/analytics";
 import { useParams } from "react-router";
-import stayAtIcon from "../../../../public/stayAt.svg"
+import stayAtIcon from "/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
 import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";

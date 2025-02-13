@@ -61,35 +61,11 @@ export default function TripPagePlan() {
 
 	return (
 		<div className="grow flex flex-col gap-5 bg-dashboard_lime">
-			<div className="">
-				<Link to="./.." className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Back</Link>
+			<div className="py-1 px-4 bg-dashboard_component_bg rounded-lg w-min h-min">
+				<Link to="./.." className="font-sunflower text-sidebar_deep_green underline">Back</Link>
 			</div>
 
-			<div className="grow flex flex-row gap-5 justify-between">
-				{/* <DndContext onDragEnd={handleDragEnd}>
-					<div className="bg-slate-100 flex flex-row p-5 gap-5">
-						<div className="bg-emerald-700 flex flex-col p-5 gap-5">
-							{
-								parent === null
-								? myDraggableElem
-								: null
-							}
-						</div>
-
-						{
-							containers.map((id: string) => (
-								<MyDroppable key={id} id={id}>
-									{
-										id === parent
-										? myDraggableElem
-										: <p>Drop Here</p>
-									}
-								</MyDroppable>
-							))
-						}
-					</div>
-				</DndContext> */}
-
+			<div className="grow flex flex-row gap-5">
 				<DndContext onDragEnd={handleDragEnd}>
 					<Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
 					<PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} />
