@@ -21,7 +21,7 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, des
 	}
 
     return (
-        <div className="w-full max-w-[280px] bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
+        <div className="w-full max-w-96 bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
             {/* Top Section - Flex for responsive layout */}
             <div className="flex items-center justify-between">
                 {/* Left Side - Movable Icon & Name */}

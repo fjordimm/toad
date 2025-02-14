@@ -14,7 +14,7 @@ export function DestinationDroppable(props: { id: string, children: ReactNode })
 	const { setNodeRef } = useDroppable({ id: props.id });
 
 	return (
-		<div ref={setNodeRef} className="grow bg-blue-800 p-1 flex items-stretch justify-stretch">
+		<div ref={setNodeRef} className="grow flex items-stretch justify-stretch">
 			{props.children}
 		</div>
 	);
@@ -25,7 +25,7 @@ export function DestinationDraggable(props: { id: string, children: ReactNode })
 
 	return (
 		<div
-			ref={setNodeRef} {...listeners} {...attributes} className="bg-violet-300 p-1 flex justify-center items-center"
+			ref={setNodeRef} {...listeners} {...attributes} className="flex justify-center items-center"
 			style={ {
 				transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
 				zIndex: transform ? 1 : 0,
