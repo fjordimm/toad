@@ -7,6 +7,7 @@ import { DndContext, useDraggable, useDroppable, type DragEndEvent, type DragSta
 import { useState, type ReactNode } from "react";
 import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { dbAddDestinationToItineraryDay, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
+import { useSortable } from "@dnd-kit/sortable";
 
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
@@ -27,6 +28,24 @@ export function DestinationDraggable(props: { id: string, children: ReactNode })
 			ref={setNodeRef} {...listeners} {...attributes} className="bg-violet-300 p-1 flex justify-center items-center"
 			style={ {
 				transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
+				zIndex: transform ? 1 : 0,
+				cursor: "auto"
+			} }
+		>
+			{props.children}
+		</div>
+	);
+}
+
+export function DestinationSortable(props: { id: string, children: ReactNode }) {
+	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
+
+	return (
+		<div
+			ref={setNodeRef} {...listeners} {...attributes} className="bg-violet-300 p-1 flex justify-center items-center"
+			style={ {
+				transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
+				transition,
 				zIndex: transform ? 1 : 0,
 				cursor: "auto"
 			} }
@@ -58,6 +77,8 @@ export default function TripPagePlan() {
 			} else if (e.over.id.toString() === "possiblestops") {
 				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
 			}
+
+			// console.log("yipeeeee");
 		}
 	}
 

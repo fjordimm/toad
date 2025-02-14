@@ -5,8 +5,9 @@ import { useParams } from "react-router";
 import stayAtIcon from "/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
-import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";
+import { DestinationDraggable, DestinationDroppable, DestinationSortable } from "~/components/pages/TripPagePlan";
 import { DragOverlay } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
@@ -152,17 +153,26 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 			</div>
 
 			{/* Draggable activities column */}
-			<DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
+			{/* <DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
 				<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
 					{
 						props.activities.length > 0
 						? turnActivitiesIntoElems(props.activities)
 						: <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
 					}
-					{/* { turnActivitiesIntoElems(props.activities) } */}
-					{/* <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p> */}
 				</div>
-			</DestinationDroppable>
+			</DestinationDroppable> */}
+			{/* <SortableContext items={props.activities} strategy={verticalListSortingStrategy}> */}
+				<DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
+					<div className="w-96 font-sunflower flex items-center justify-center p-2 bg-red-800">
+						{
+							props.activities.length > 0
+							? turnActivitiesIntoElems(props.activities)
+							: <p className="text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
+						}
+					</div>
+				</DestinationDroppable>
+			{/* </SortableContext> */}
 
 			{/* Additional Notes column */}
 			<div className="bg-toad_count_lime w-72 rounded-lg text-sidebar_deep_green">
