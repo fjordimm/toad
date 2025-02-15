@@ -111,9 +111,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
-							<DestinationDraggable id={activityId}>
+							<DestinationSortable id={activityId}>
 								<DestinationBox tripDbDoc={props.tripDbDoc} destinationId={activityId} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
-							</DestinationDraggable>
+							</DestinationSortable>
 						);
 					})
 				}
@@ -152,7 +152,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 				</div>
 			</div>
 
-			{/* <SortableContext items={props.activities} strategy={verticalListSortingStrategy}> */}
+			<SortableContext items={props.activities} strategy={verticalListSortingStrategy}>
 				<DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
 					<div className="w-96 px-3 font-sunflower flex items-start justify-center">
 						{
@@ -162,7 +162,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 						}
 					</div>
 				</DestinationDroppable>
-			{/* </SortableContext> */}
+			</SortableContext>
 
 			{/* Additional Notes column */}
 			<div className="bg-toad_count_lime w-72 rounded-lg text-sidebar_deep_green">
