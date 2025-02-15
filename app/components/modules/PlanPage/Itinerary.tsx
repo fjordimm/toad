@@ -15,7 +15,7 @@ async function retrieveItinerary(tripDbDoc: DocumentSnapshot) {
 	return itineraryDaysList || null;
 }
 
-export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any } }) {
+export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
 	const [itineraryList, setItineraryList] = useState<any[]>([]);
 
 	useEffect(() => {
@@ -45,6 +45,7 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
 					additional_notes={item.additional_notes}
 					tripDbDoc={props.tripDbDoc}
 					listOfDestinations={props.listOfDestinations}
+					activeDraggableId={props.activeDraggableId}
 				/>
 			))}
 		</div>
