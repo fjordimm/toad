@@ -77,9 +77,9 @@ export default function TripPagePlan() {
 			} else if (e.over.id.toString() === "possiblestops") {
 				await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
 			}
-
-			// console.log("yipeeeee");
 		}
+		
+		console.log("yipeeeee");
 	}
 
 	return (
