@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import stayAtIcon from "/stayAt.svg"
 import { debugLogMessage } from "~/src/debugUtil";
 import DestinationBox from "../PlanPage/DestinationBox";
-import { DestinationDraggable, DestinationDroppable, DestinationSortable } from "~/components/pages/TripPagePlan";
+import { DestinationDraggable, DestinationDroppable, SortableDestinationBox } from "~/components/pages/TripPagePlan";
 import { DragOverlay } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
@@ -111,9 +111,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 						const activityObj = props.listOfDestinations[activityId];
 
 						return (
-							<DestinationSortable id={activityId}>
-								<DestinationBox tripDbDoc={props.tripDbDoc} destinationId={activityId} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
-							</DestinationSortable>
+							<SortableDestinationBox tripDbDoc={props.tripDbDoc} activeDraggableId={props.activeDraggableId} destinationId={activityId} destinationObj={activityObj}/>
 						);
 					})
 				}

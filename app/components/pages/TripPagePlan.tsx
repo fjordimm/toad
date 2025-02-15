@@ -9,6 +9,7 @@ import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { dbAddDestinationToItineraryDay, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
 import { useSortable } from "@dnd-kit/sortable";
 import DestinationBox from "../modules/PlanPage/DestinationBox";
+import type { DocumentSnapshot } from "firebase/firestore";
 
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
@@ -49,7 +50,7 @@ export function DestinationDraggable(props: { id: string, children: ReactNode })
 	);
 }
 
-export function DestinationSortable(props: { id: string, children: ReactNode }) {
+function DndSortable(props: { id: string, children: ReactNode }) {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
 
 	return (
@@ -65,6 +66,30 @@ export function DestinationSortable(props: { id: string, children: ReactNode }) 
 			{props.children}
 		</div>
 	);
+}
+
+export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any } ) {
+	if (props.activeDraggableId !== props.destinationId) {
+		return (
+			<DndSortable id={props.destinationId}>
+				<DestinationBox
+					tripDbDoc={props.tripDbDoc}
+					destinationId={props.destinationId}
+					name={props.destinationObj.name}
+					price={props.destinationObj.price}
+					length={props.destinationObj.length}
+					time={props.destinationObj.time}
+					description={props.destinationObj.description}
+				/>
+			</DndSortable>
+		);
+	} else {
+		return (
+			<DndSortable id={props.destinationId}>
+				<p>ahhhhhhhh</p>
+			</DndSortable>
+		);
+	}
 }
 
 export default function TripPagePlan() {
