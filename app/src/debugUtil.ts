@@ -2,7 +2,7 @@
 export const DEBUG_SUPPRESS_ALL_MESSAGES: boolean = false;
 export const DEBUG_SUPPRESS_ALL_WARNINGS: boolean = false;
 
-export const DEBUG_DO_RERENDER_LOGS: boolean = true;
+export const DEBUG_DO_RERENDER_LOGS: boolean = false;
 
 export function debugLogMessage(message: string) {
 	if (!DEBUG_SUPPRESS_ALL_MESSAGES) {
