@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import type { Task } from "./types";
 import { useSortable } from "@dnd-kit/sortable";

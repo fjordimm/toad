@@ -1,3 +1,4 @@
+import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";

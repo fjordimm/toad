@@ -1,3 +1,4 @@
+import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { Link } from "react-router";
 import { indexTo15UniqueColor } from "~/src/miscUtil";

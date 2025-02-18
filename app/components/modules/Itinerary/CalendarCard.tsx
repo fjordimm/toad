@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, type ReactNode } from "react";
+import React from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { DocumentSnapshot, Timestamp, updateDoc } from "firebase/firestore";
 import { useParams } from "react-router";
 import stayAtIcon from "/stayAt.svg"

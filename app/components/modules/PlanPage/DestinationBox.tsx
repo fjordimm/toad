@@ -1,7 +1,8 @@
 {/*Takes in 5 prop arguments: Destination name, cost, duration, time, and activity description
     I put comments where these arguments will be called. */}
 
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import MovableIcon from "/MovableIcon.svg";
 import NotCollapsed from "/NotCollapsed.svg";
 import Collapsed from "/Collapsed.svg";

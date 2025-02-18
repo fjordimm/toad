@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, Outlet, useOutletContext } from "react-router";
 import MenuBar from "../modules/MenuBar";
 import type { DocumentSnapshot } from "firebase/firestore";

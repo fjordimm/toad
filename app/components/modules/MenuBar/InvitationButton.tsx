@@ -1,5 +1,5 @@
-import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import type { DocumentSnapshot } from "firebase/firestore";
 import { dbAcceptInvitation, dbDeclineInvitation } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 

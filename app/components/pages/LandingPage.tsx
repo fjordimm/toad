@@ -1,3 +1,4 @@
+import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function Landing() {

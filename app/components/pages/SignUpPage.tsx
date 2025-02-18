@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from "react";
+import { useState } from 'react';
 import emailicon from '/mail.svg';
 import lock from '/lock.svg';
 import globe from '/globe.svg';

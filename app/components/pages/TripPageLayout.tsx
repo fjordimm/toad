@@ -1,3 +1,4 @@
+import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import type { Route } from "./+types/TripPageLayout";
 import { useEffect, useState } from "react";

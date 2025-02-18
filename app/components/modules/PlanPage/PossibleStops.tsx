@@ -1,3 +1,4 @@
+import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { useState, type ReactNode } from "react";
 import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";

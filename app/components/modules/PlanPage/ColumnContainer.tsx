@@ -1,3 +1,4 @@
+import React from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import type { Column, Id, Task } from "./types"
 import { CSS } from "@dnd-kit/utilities"
