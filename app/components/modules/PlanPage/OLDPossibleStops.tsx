@@ -52,7 +52,7 @@ const PossibleStops: React.FC<PossibleStopsProps> = ({ columns, setColumns, task
                 <hr className="h-px my-4 border-sidebar_deep_green w-4/5 border-[1px]" />
             </div>
             <div className="flex justify-center">
-                <ColumnContainer 
+                <ColumnContainer
                     key={col.id}
                     column={col}
                     deleteColumn={deleteColumn}

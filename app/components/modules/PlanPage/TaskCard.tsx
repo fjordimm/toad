@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Task } from "./types";
 import { useSortable } from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities"
+import { CSS } from "@dnd-kit/utilities"
 import DestinationBox from "./DestinationBox";
 
 interface Props {
@@ -9,11 +9,11 @@ interface Props {
 
 }
 
-function TaskCard({task} : Props) {
+function TaskCard({ task }: Props) {
     const [mouseIsOver, setMouseIsOver] = useState(false);
-  
-    const { setNodeRef, attributes, listeners, transform, transition, isDragging} 
-    = 
+
+    const { setNodeRef, attributes, listeners, transform, transition, isDragging }
+        =
         useSortable({
             id: task.id,
             data: {
@@ -28,8 +28,8 @@ function TaskCard({task} : Props) {
 
     };
 
-    if (isDragging){
-        return(
+    if (isDragging) {
+        return (
 
             <div
                 ref={setNodeRef}
@@ -40,7 +40,7 @@ function TaskCard({task} : Props) {
         )
     }
     return (
-        <div 
+        <div
             ref={setNodeRef}
             style={style}
             {...attributes}
@@ -53,10 +53,10 @@ function TaskCard({task} : Props) {
                 setMouseIsOver(false)
             }}
         >
-            <DestinationBox/>
+            <DestinationBox />
 
         </div>
-  )
+    )
 }
 
 export default TaskCard
