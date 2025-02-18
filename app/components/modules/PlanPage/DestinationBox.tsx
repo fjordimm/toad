@@ -14,7 +14,7 @@ import { dbDeleteDestination, dbRemoveDestinationFromAllItineraryDays } from "~/
 {/*take in a prop argument is a dictionary that looks like tree structure*/ }
 export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, destinationId: string, name: string, price: string, length: string, time: string, description: string }) {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [mouseIsOver, setMouseIsOver] = useState(false);
+    // const [mouseIsOver, setMouseIsOver] = useState(false);
 
     async function handleDelete(destinationId: string) {
         await dbRemoveDestinationFromAllItineraryDays(props.tripDbDoc.ref, destinationId);

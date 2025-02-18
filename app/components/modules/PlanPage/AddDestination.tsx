@@ -66,24 +66,21 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
         });
     }
 
-    let [destinationName, setDestinationName] = useState('');
-    let [price, setPrice] = useState('');
-    let [length, setLength] = useState('');
-    let [timeOfDay, setTimeOfDay] = useState('');
-    let [description, setDescription] = useState('');
+    const [destinationName, setDestinationName] = useState('');
+    const [price, setPrice] = useState('');
+    const [length, setLength] = useState('');
+    const [timeOfDay, setTimeOfDay] = useState('');
+    const [description, setDescription] = useState('');
 
 
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (price == null || price == "" || price == " ") {
-            price = "Free";
-        }
         if (tripDbDoc !== null) {
             const destKey = uuidv4();
             const newDestination = {
                 is_in_itinerary: false,
                 name: destinationName,
-                price: price,
+                price: (price === null || price === "" || price === " ") ? "Free" : price,
                 length: length,
                 time: timeOfDay,
                 description: description

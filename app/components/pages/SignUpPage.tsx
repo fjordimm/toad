@@ -27,8 +27,7 @@ const SignUpPage = () => {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-            const user = userCredential.user;
+            await createUserWithEmailAndPassword(firebaseAuth, email, password);
 
             const emailLower = email.toLowerCase();
             /* Creates a user with their email as the identifier*/

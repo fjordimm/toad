@@ -3,7 +3,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
 import Itinerary from "../modules/PlanPage/Itinerary";
-import { DndContext, DragOverlay, useDraggable, useDroppable, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
+import { DndContext, DragOverlay, useDraggable, useDroppable, type DragStartEvent } from "@dnd-kit/core";
 import { useState, type ReactNode } from "react";
 import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { useSortable } from "@dnd-kit/sortable";
@@ -105,7 +105,7 @@ export default function TripPagePlan() {
         setActiveDraggableId(e.active.id.toString());
     }
 
-    async function handleDragEnd(e: DragEndEvent) {
+    async function handleDragEnd(/*e: DragEndEvent*/) {
         // if (e.over !== null) {
         // 	if (e.over.id.toString().includes("calendarcard_")) {
         // 		const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));

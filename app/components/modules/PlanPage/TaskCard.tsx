@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import type { Task } from "./types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities"
@@ -11,7 +10,7 @@ interface Props {
 }
 
 function TaskCard({ task }: Props) {
-    const [mouseIsOver, setMouseIsOver] = useState(false);
+    // const [mouseIsOver, setMouseIsOver] = useState(false);
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         =

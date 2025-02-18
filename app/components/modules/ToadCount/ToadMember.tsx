@@ -4,11 +4,6 @@ import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import { indexTo15UniqueColor } from "~/src/miscUtil";
 
-{/* put names of members in trips here */ }
-interface ToadMemberProps {
-	name: string;
-}
-
 export default function ToadMember(props: { memberColorIndex: number, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 
 	debugLogComponentRerender("ToadMember");

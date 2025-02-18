@@ -4,8 +4,7 @@ import emailicon from '/mail.svg'
 import lock from '/lock.svg'
 import globe from '/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { firebaseAuth, firebaseDb } from '../../src/toadFirebase'
+import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
 
@@ -22,19 +21,9 @@ const SignInPage = () => {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
-            const user = userCredential.user;
+            // TODO: Unused code here? I commented it out.
+            await signInWithEmailAndPassword(firebaseAuth, email, password);
 
-            const normalizedEmail = email.toLowerCase(); // Ensure email matches Firestore document ID format
-            const userDocRef = doc(firebaseDb, 'users', normalizedEmail);
-            const userDocSnap = await getDoc(userDocRef);
-
-            // if (userDocSnap.exists()) {
-            //     const userData = userDocSnap.data();
-            //     console.log(`First Name: ${userData.first_name}, Last Name: ${userData.last_name}`);
-            // } else {
-            //     console.error('No user data found in Firestore for this email.');
-            // }
             setEmail('');
             setPassword('');
             setError('');
@@ -111,7 +100,7 @@ const SignInPage = () => {
             >
                 {/* already have account link */}
                 <p className="font-maven" style={{ color: "white" }}>
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <a
                         href="/sign-up"
                         style={{

@@ -1,12 +1,11 @@
 import React from "react";
 import { Outlet, useOutletContext } from "react-router";
-import type { Route } from "./+types/TopLevelLayout";
 import { useEffect, useState } from "react";
 import { getDoc, onSnapshot, type DocumentReference, type DocumentSnapshot, type Unsubscribe } from "firebase/firestore";
 import { dbCheckAndGetUserAuthentication } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta() {
     return [
         { title: "TOAD" },
         { name: "description", content: "To Outline A Destination" },

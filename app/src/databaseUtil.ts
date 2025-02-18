@@ -77,14 +77,14 @@ export async function dbRetrieveUsersListOfInvitations(userDbDoc: DocumentSnapsh
 
 export async function dbCreateTrip(tripName: string, startDate: string, endDate: string, tripOwner: string): Promise<DocumentReference> {
     //let itin:Array<Map<string, any>> = [];
-    let itin = [];
+    const itin = [];
 
-    let num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))
+    const num_days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))
     for (let i = 0; i <= num_days; i++) {
         // let temp_dict = new Map<string, any>();
         const currentDay = new Date(startDate + "T00:00:00");
         currentDay.setDate(currentDay.getDate() + i);
-        let temp_dict = {
+        const temp_dict = {
             "day": currentDay,
             "activities": [],
             "stay_at": "",
