@@ -105,7 +105,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
 	function turnActivitiesIntoElems(activities: any[]): ReactNode {
 		return (
-			<div className="flex flex-col w-full gap-2">
+			<div className="flex flex-col w-full">
 				{
 					activities.map((activityId: string) => {
 						const activityObj = props.listOfDestinations[activityId];
