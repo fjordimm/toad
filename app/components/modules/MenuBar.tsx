@@ -31,7 +31,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                 }
                 tripColorsAlreadyTaken.add(colorNum);
 
-                return <TripsButton tripDbDoc={trip} tripColorIndex={colorNum} />
+                return <TripsButton key={trip.id} tripDbDoc={trip} tripColorIndex={colorNum} />
             });
         } else {
             return <Loading />;
@@ -43,7 +43,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
             return userListOfInvitations.map((trip: DocumentSnapshot) => {
                 // return <TripsButton tripDbDoc={trip} num={0} />
                 // return <p>Yippity skippity {trip.id}</p>
-                return <InvitationButton userDbDoc={props.userDbDoc} tripDbDoc={trip} />;
+                return <InvitationButton key={trip.id} userDbDoc={props.userDbDoc} tripDbDoc={trip} />;
             });
         } else {
             return <Loading />;

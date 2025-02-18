@@ -44,7 +44,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
                 }
                 memberColorsAlreadyTaken.add(colorNum);
 
-                return <ToadMember memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
+                return <ToadMember key={member.id} memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
             });
         } else {
             return <Loading />;

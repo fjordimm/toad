@@ -108,7 +108,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                         const activityObj: any = props.listOfDestinations[activityId];
 
                         return (
-                            <SortableDestinationBox tripDbDoc={props.tripDbDoc} activeDraggableId={props.activeDraggableId} destinationId={activityId} destinationObj={activityObj} />
+                            <SortableDestinationBox key={activityId} tripDbDoc={props.tripDbDoc} activeDraggableId={props.activeDraggableId} destinationId={activityId} destinationObj={activityObj} />
                         );
                     })
                 }
