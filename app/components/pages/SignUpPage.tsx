@@ -10,7 +10,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
 
-const SignUpPage = () => {
+export default function SignUpPage() {
 
     debugLogComponentRerender("SignUpPage");
 
@@ -186,5 +186,3 @@ const SignUpPage = () => {
         </div>
     );
 }
-
-export default SignUpPage

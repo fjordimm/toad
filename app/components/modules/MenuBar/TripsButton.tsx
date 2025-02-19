@@ -3,7 +3,7 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import { Link } from "react-router";
 import { indexTo15UniqueColor } from "~/src/miscUtil";
 
-function TripsButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
+export default function TripsButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
 
     const color = indexTo15UniqueColor(props.tripColorIndex);
 
@@ -20,4 +20,3 @@ function TripsButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: numbe
     )
 
 }
-export default TripsButton

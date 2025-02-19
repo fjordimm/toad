@@ -8,7 +8,7 @@ import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
 
-const SignInPage = () => {
+export default function SignInPage() {
 
     debugLogComponentRerender("SignInPage");
 
@@ -237,6 +237,3 @@ const SignInPage = () => {
         </div>
     );
 }
-
-
-export default SignInPage

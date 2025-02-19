@@ -9,7 +9,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 
 
 
-function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: DocumentSnapshot }) {
+export default function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: DocumentSnapshot }) {
 
     debugLogComponentRerender("InvitationButton");
 
@@ -43,4 +43,3 @@ function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: Docum
     )
 
 }
-export default InvitationButton

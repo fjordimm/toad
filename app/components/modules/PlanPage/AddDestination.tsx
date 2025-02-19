@@ -47,13 +47,7 @@ import { useRef, useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
 import cross from "/cross.svg";
 
-type AddDestinationProps = {
-    tripDbDoc: DocumentSnapshot | null;
-    onClose: () => void;
-};
-
-
-const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) => {
+export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | null, onClose: () => void }) {
 
     const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +69,7 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
 
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (tripDbDoc !== null) {
+        if (props.tripDbDoc !== null) {
             const destKey = uuidv4();
             const newDestination = {
                 is_in_itinerary: false,
@@ -85,16 +79,16 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
                 time: timeOfDay,
                 description: description
             };
-            await updateDoc(tripDbDoc.ref, {
+            await updateDoc(props.tripDbDoc.ref, {
                 [`destinations.${destKey}`]: newDestination,
             });
         }
-        onClose();
+        props.onClose();
     }
 
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
-            onClose();
+            props.onClose();
         }
     };
 
@@ -115,7 +109,7 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
                     <p className="font-sunflower text-sidebar_deep_green text-2xl">
                         Add a Potential Destination
                     </p>
-                    <div className="absolute -right-36 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={onClose}>
+                    <div className="absolute -right-36 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
                         <img src={cross} className="w-7 h-7"></img>
                     </div>
                 </div>
@@ -194,6 +188,4 @@ const AddDestination: React.FC<AddDestinationProps> = ({ tripDbDoc, onClose }) =
             </div>
         </div>
     );
-};
-
-export default AddDestination;
+}

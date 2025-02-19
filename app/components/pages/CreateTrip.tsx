@@ -8,7 +8,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 
 // TODO: error handling
 
-const CreateTrip = () => {
+export default function CreateTrip() {
 
     debugLogComponentRerender("CreateTrip");
 
@@ -105,5 +105,3 @@ const CreateTrip = () => {
         </div>
     )
 }
-
-export default CreateTrip
