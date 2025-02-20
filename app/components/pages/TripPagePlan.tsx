@@ -1,5 +1,5 @@
 import React from "react";
-import { debugLogComponentRerender, debugLogError, debugLogMessage } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogMessage } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
 import Itinerary from "../modules/PlanPage/Itinerary";
@@ -9,6 +9,7 @@ import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { useSortable } from "@dnd-kit/sortable";
 import DestinationBox from "../modules/PlanPage/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
+import { dbAddDestinationToItineraryDay, dbMoveDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
 
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
@@ -68,13 +69,9 @@ function DndSortable(props: { id: string, children: ReactNode }) {
 }
 
 export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any }) {
-    console.log("activeDraggableId");
-    console.log(props.activeDraggableId);
-    console.log("destinationId");
-    console.log(props.destinationId);
-    if (props.activeDraggableId !== `activity_${props.destinationId}`) {
+    if (props.activeDraggableId !== props.destinationId) {
         return (
-            <DndSortable id={`activity_${props.destinationId}`}>
+            <DndSortable id={props.destinationId}>
                 <div className="w-full my-1">
                     <DestinationBox
                         tripDbDoc={props.tripDbDoc}
@@ -90,7 +87,7 @@ export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, act
         );
     } else {
         return (
-            <DndSortable id={`activity_${props.destinationId}`}>
+            <DndSortable id={props.destinationId}>
                 <div className="w-full my-1 max-w-96 h-[86px] rounded-lg bg-[#00000020]"></div>
             </DndSortable>
         );
@@ -107,6 +104,8 @@ export default function TripPagePlan() {
 
     const [activeDraggableId, setActiveDraggableId] = useState<string | null>(null);
 
+    let activityMoveAction: {id: string, day: number}|null = null;
+
     function handleDragStart(e: DragStartEvent) {
         setActiveDraggableId(e.active.id.toString());
     }
@@ -114,36 +113,47 @@ export default function TripPagePlan() {
     async function handleDragEnd(e: DragEndEvent) {
         debugLogMessage("drag end");
 
-        if (e.over !== null) {
-        	if (e.over.id.toString().includes("calendarcard_")) {
-        		const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));
+        if (activityMoveAction !== null) {
+            // console.log(activityMoveAction);
+            await dbMoveDestination(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.day, activityMoveAction.id);
+            // await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.id);
+            // await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.day, activityMoveAction.id);
+        } 
+        // else if (e.over !== null) {
+        //     // console.log(e.over.id.toString());
+        // 	if (e.over.id.toString().includes("calendarcard_")) {
+        //         // console.log("thing");
+        //         // console.log(e.over.id.toString());
+        // 		const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));
 
-        		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
-        		// await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, dayIndex, e.active.id.toString());
-        	} else if (e.over.id.toString() === "possiblestops") {
-        		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
-        	}
-        }
+        // 		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
+        // 		// await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, dayIndex, e.active.id.toString());
+        // 	} else if (e.over.id.toString() === "possiblestops") {
+        // 		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
+        // 	}
+        // }
 
         setActiveDraggableId(null);
     }
 
-    function handleDragOver(e: DragOverEvent) {
-        // console.log(e.over);
+    async function handleDragOver(e: DragOverEvent) {
+        if (e.collisions !== null) {
+            for (let i = e.collisions.length - 1; i >= 0; i--) { // Important that this is in reverse order
+                if (e.collisions[i].id.toString().includes("calendarcard_")) {
+                    const dayIndex: number = parseInt(e.collisions[i].id.toString().slice("calendarcard_".length));
+
+                    activityMoveAction = {id: e.active.id.toString(), day: dayIndex};
+                }
+            }
+        }
     }
 
-    function turnDraggableIdIntoDragOverlay(draggableId: string) {
-        if (draggableId.includes("activity_")) {
-            const activityId: string = draggableId.slice("activity_".length);
+    function TEMPTHING(activityId: string) {
+        const activityObj = listOfDestinations[activityId];
 
-            const activityObj = listOfDestinations[activityId];
-
-            return (
-                <DestinationBox tripDbDoc={tripPageLayoutContext.tripDbDoc} destinationId={activityId} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
-            );
-        } else {
-            debugLogError("Tried and failed parsing activity id from the activeDraggableId.");
-        }
+        return (
+            <DestinationBox tripDbDoc={tripPageLayoutContext.tripDbDoc} destinationId={activityId} name={activityObj.name} price={activityObj.price} length={activityObj.length} time={activityObj.time} description={activityObj.description} />
+        );
     }
 
     return (
@@ -160,7 +170,7 @@ export default function TripPagePlan() {
                     <DragOverlay>
                         {
                             activeDraggableId !== null ? (
-                                turnDraggableIdIntoDragOverlay(activeDraggableId)
+                                TEMPTHING(activeDraggableId)
                             ) : null
                         }
                     </DragOverlay>
