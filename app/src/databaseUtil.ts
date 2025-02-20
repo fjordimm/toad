@@ -214,6 +214,31 @@ export async function dbMoveDestination(tripDbDocRef: DocumentReference, dayInde
     }
 }
 
+export async function dbSortDestinationWithinDay(tripDbDocRef: DocumentReference, draggedDestinationId: string, overDestinationId: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const itineraryObj = tripDbDoc.get("itinerary");
+
+    let dayIndex: number = -1;
+    let indexOfOverDestination: number = -1;
+    for (let i = 0; i < itineraryObj.length; i++) {
+        const possibleIndex = itineraryObj[i]["activities"].indexOf(overDestinationId);
+        if (possibleIndex !== -1) {
+            dayIndex = i;
+            indexOfOverDestination = possibleIndex;
+            break;
+        }
+    }
+
+    if (dayIndex !== -1 && indexOfOverDestination !== -1) {
+        itineraryObj[dayIndex]["activities"] = itineraryObj[dayIndex]["activities"].filter((item: string) => item !== draggedDestinationId);
+        itineraryObj[dayIndex]["activities"].splice(indexOfOverDestination, 0, draggedDestinationId);
+        await updateDoc(tripDbDoc.ref, {
+            itinerary: itineraryObj
+        });
+    }
+}
+
 export async function dbAddDestinationToItineraryDay(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 

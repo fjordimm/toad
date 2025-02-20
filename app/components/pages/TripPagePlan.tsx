@@ -9,7 +9,7 @@ import PossibleStops from "../modules/PlanPage/PossibleStops";
 import { useSortable } from "@dnd-kit/sortable";
 import DestinationBox from "../modules/PlanPage/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { dbAddDestinationToItineraryDay, dbMoveDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
+import { dbAddDestinationToItineraryDay, dbMoveDestination, dbRemoveDestinationFromAllItineraryDays, dbSortDestinationWithinDay } from "~/src/databaseUtil";
 
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
@@ -112,12 +112,16 @@ export default function TripPagePlan() {
     }
 
     async function handleDragEnd(e: DragEndEvent) {
-        debugLogMessage("drag end");
-
         if (activityMoveAction !== null) {
-            // console.log(activityMoveAction);
             await dbMoveDestination(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.day, activityMoveAction.id);
-        } 
+        }
+
+        if (e.over !== null) {
+            if (!e.over.id.toString().includes("calendarcard_") && e.over.id.toString() !== "possiblestops") { // This means it is a destination id
+                await dbSortDestinationWithinDay(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString(), e.over.id.toString());
+            }
+        }
+
         // else if (e.over !== null) {
         //     // console.log(e.over.id.toString());
         // 	if (e.over.id.toString().includes("calendarcard_")) {
