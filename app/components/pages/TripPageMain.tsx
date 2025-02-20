@@ -19,6 +19,9 @@ export default function TripPageMain() {
 				<div className="">
 					<Link to="./plan" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Plan</Link>
 				</div>
+				<div className="">
+					<Link to="./budget" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Budget</Link>
+				</div>
 			</div>
 
 			<ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} />
