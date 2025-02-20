@@ -104,6 +104,7 @@ export default function TripPagePlan() {
 
     const [activeDraggableId, setActiveDraggableId] = useState<string | null>(null);
 
+    // These will be done on drag end:
     let activityMoveAction: {id: string, day: number}|null = null;
 
     function handleDragStart(e: DragStartEvent) {
@@ -116,8 +117,6 @@ export default function TripPagePlan() {
         if (activityMoveAction !== null) {
             // console.log(activityMoveAction);
             await dbMoveDestination(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.day, activityMoveAction.id);
-            // await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.id);
-            // await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, activityMoveAction.day, activityMoveAction.id);
         } 
         // else if (e.over !== null) {
         //     // console.log(e.over.id.toString());
@@ -143,6 +142,8 @@ export default function TripPagePlan() {
                     const dayIndex: number = parseInt(e.collisions[i].id.toString().slice("calendarcard_".length));
 
                     activityMoveAction = {id: e.active.id.toString(), day: dayIndex};
+                } else if (e.collisions[i].id.toString() === "possiblestops") {
+                    activityMoveAction = {id: e.active.id.toString(), day: -1};
                 }
             }
         }
