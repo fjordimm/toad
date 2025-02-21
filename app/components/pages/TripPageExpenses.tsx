@@ -2,10 +2,12 @@ import { Link } from "react-router";
 import React, { useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
 import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
+import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 export default function BudgetPageMain(tripDbDoc: DocumentSnapshot| null) {
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
-    //const trips_sorted: any[] = tripDbDoc.data().trips_sorted;
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
 
     return(
         <div className="grow flex flex-col gap-5 bg-dashboard_lime">
