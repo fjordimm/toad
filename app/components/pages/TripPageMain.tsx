@@ -1,5 +1,6 @@
 import React from "react";
 import ToadCount from "../modules/ToadCount";
+import NewExpenseStepOne from "../modules/TripPageExpenses/NewExpense/NewExpenseStepOne";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
@@ -20,6 +21,9 @@ export default function TripPageMain() {
                 <div className="">
                     <Link to="./plan" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Plan</Link>
                 </div>
+
+                <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} />
+
             </div>
 
             <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} />
