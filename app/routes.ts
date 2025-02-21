@@ -12,7 +12,7 @@ export default [
 					layout("components/pages/TripPageLayout.tsx", [
 						index("components/pages/TripPageMain.tsx"),
 						route("plan", "components/pages/TripPagePlan.tsx"),
-						index("components/pages/BudgetPageOverview.tsx"),
+						// index("components/pages/BudgetPageOverview.tsx"),
 						route("budget", "components/pages/BudgetPageOverview.tsx")
 					])
 				]),
