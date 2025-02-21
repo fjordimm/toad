@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import calendarIcon from "/calendarIcon.svg";
-import {firebaseDb} from "../../src/toadFirebase";
-import { collection, addDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useNavigate } from "react-router";
 import { dbCreateTrip } from "~/src/databaseUtil";
@@ -9,13 +8,13 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 
 // TODO: error handling
 
-const CreateTrip = () => {
+export default function CreateTrip() {
 
-	debugLogComponentRerender("CreateTrip");
+    debugLogComponentRerender("CreateTrip");
 
-	const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+    const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -24,13 +23,13 @@ const CreateTrip = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-			const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
+            const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
 
             setTripName('');
             setStartDate('');
             setEndDate('');
 
-			navigate(`/trip/${tripDbDocRef.id}`);
+            navigate(`/trip/${tripDbDocRef.id}`);
         }
         catch (error) {
             console.error("Error adding trip: ", error);
@@ -38,23 +37,23 @@ const CreateTrip = () => {
     };
 
 
-    return(
+    return (
         <div className="mt-32 grow">
             <div className="flex flex-col justify-center items-center gap-12">
                 <p className="font-sunflower text-sidebar_deep_green text-3xl">Create Your Next Adventure</p>
 
                 <div className="flex flex-col justify-center items-center bg-dashboard_component_bg py-8 w-3/5 rounded-2xl min-w-36 gap-4">
                     <p className="font-sunflower text-sidebar_deep_green text-md">You are the owner of the trip</p>
-                    <form 
+                    <form
                         className="w-full px-12 flex flex-col gap-6"
                         onSubmit={handleSubmit}
                     >
                         {/* Name your trip */}
                         <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-                            <input 
-                                type="text" 
-                                id="TripName" 
-                                name="TripName" 
+                            <input
+                                type="text"
+                                id="TripName"
+                                name="TripName"
                                 value={tripName}
                                 required
                                 placeholder="Name Your Trip"
@@ -67,10 +66,10 @@ const CreateTrip = () => {
                         <div className='flex gap-4 items-center justify-center'>
                             <img src={calendarIcon} alt="calendarIcon"></img>
                             <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-                                <input 
-                                    type="date" 
-                                    id="startDate" 
-                                    name="startDate" 
+                                <input
+                                    type="date"
+                                    id="startDate"
+                                    name="startDate"
                                     required
                                     value={startDate}
                                     placeholder="Start Date"
@@ -80,10 +79,10 @@ const CreateTrip = () => {
                             </div>
                             <p className='font-sunflower text-sidebar_deep_green text-lg'>to</p>
                             <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-                                <input 
-                                    type="date" 
-                                    id="endDate" 
-                                    name="endDate" 
+                                <input
+                                    type="date"
+                                    id="endDate"
+                                    name="endDate"
                                     value={endDate}
                                     placeholder="End Date"
                                     required
@@ -94,7 +93,7 @@ const CreateTrip = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <button 
+                        <button
                             className='w-full bg-sidebar_deep_green/50 font-sunflower text-[#FFF]/80 py-4 rounded-2xl'
                             type='submit'
                         >
@@ -106,5 +105,3 @@ const CreateTrip = () => {
         </div>
     )
 }
-
-export default CreateTrip
