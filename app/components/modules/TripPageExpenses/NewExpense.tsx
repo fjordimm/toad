@@ -1,4 +1,4 @@
-import React, { useRef, useState }from "react";
+import React, { useRef, useState } from "react";
 
 
 export default function NewExpense(props: { onClose: () => void }) {
@@ -74,26 +74,26 @@ export default function NewExpense(props: { onClose: () => void }) {
                     </div>
                     {/* Container Div for the adding toads to expense and amount split components*/}
                     <div>
-                        
-                    {activeSection === 1 && (
-                        <div className="relative w-full">
-                            <div className="flex items-center space-x-4">
-                                <div className="rounded-full bg-[#8FAE72] h-10 w-10 flex items-center justify-center">
-                                    <h1>1.</h1>
+
+                        {activeSection === 1 && (
+                            <div className="relative w-full">
+                                <div className="flex items-center space-x-4">
+                                    <div className="rounded-full bg-[#8FAE72] h-10 w-10 flex items-center justify-center">
+                                        <h1>1.</h1>
+                                    </div>
+                                    <h1>Add Toads To Expense</h1>
                                 </div>
-                                <h1>Add Toads To Expense</h1>
+                                <div className="absolute bottom right">
+                                    <button onClick={() => setActiveSection(2)} className="bg-[#8FAE72] text-white py-2 px-6 rounded-lg">Next</button>
+                                </div>
                             </div>
-                            <div className="absolute bottom right">
-                                <button onClick={() => setActiveSection(2)} className="bg-[#8FAE72] text-white py-2 px-6 rounded-lg">Next</button>
+                        )}
+                        {activeSection === 2 && (
+                            <div>
+                                <h1>Component 2</h1>
+                                <button onClick={() => setActiveSection(1)}>Back</button>
                             </div>
-                        </div>
-                    )}
-                    {activeSection === 2 && (
-                        <div>
-                            <h1>Component 2</h1>
-                            <button onClick={() => setActiveSection(1)}>Back</button>
-                        </div>
-                    )}   
+                        )}
                     </div>
                 </form>
             </div>
