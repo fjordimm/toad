@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import React, { useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
-import ExpenseView from 'app/components/modules/TripPageExpenses/ExpenseView'
+import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
 export default function BudgetPageMain(tripDbDoc: DocumentSnapshot| null) {
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
@@ -39,6 +39,9 @@ export default function BudgetPageMain(tripDbDoc: DocumentSnapshot| null) {
                             <p className = "font-sunflower font-bold text-3xl text-sidebar_deep_green">Your fellow toads owe you</p>
                             <p className = "font-sunflower font-bold text-3xl text-red-800">$10.00</p>
                         </div>
+                        <button className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
+                            Add an Expense
+                        </button>
                 </div>
             </div>
         </div>
