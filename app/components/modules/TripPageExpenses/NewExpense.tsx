@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import cross from "/cross.svg";
+import { updateDoc } from 'firebase/firestore';
+import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
     const modalContentRef = useRef<HTMLDivElement>(null);
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
@@ -11,19 +14,56 @@ export default function NewExpense(props: { onClose: () => void }) {
         }
     };
 
-    // function uuidv4() {
-    //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    //         const r = Math.random() * 16 | 0,
-    //             v = c === 'x' ? r : (r & 0x3 | 0x8);
-    //         return v.toString(16);
-    //     });
-    // }
+    // Generate unique id for each expense
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0,
+                v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
 
     const [activeSection, setActiveSection] = useState(1);
 
     const [expenseName, setExpenseName] = useState('');
     const [date, setDate] = useState('');
     const [totalCost, setTotalCost] = useState('');
+    console.log(date);
+
+    let payees: string[] = [] // array to pass in for list of people in expense
+    let amount: number[] = [] // array to pass in for the amount people owe
+    let evenSplit: boolean = false; //change if sophie says so 
+    let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
+
+
+    // turn payees and ammount arrays into map
+    function makePayeesDictionary(payees: string[], amount: number[]): { [key: string]: [number, number] } {
+        const dictionary = payees.reduce((acc, name, index) => {
+            acc[name] = [amount[index], 0];
+            return acc;
+        }, {} as { [key: string]: [number, number] });
+
+        return dictionary;
+    }
+
+    async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (tripPageLayoutContext.tripDbDoc !== null) {
+            const expenseID = uuidv4();
+            const newExpense = {
+                name: expenseName,
+                total_amount: totalCost,
+                even_split: evenSplit,
+                date: date,
+                expense_owner: expenseOwner,
+                payers: makePayeesDictionary(payees, amount)
+            };
+            await updateDoc(tripPageLayoutContext.tripDbDoc.ref, {
+                [`expenses.${expenseID}`]: newExpense,
+            });
+        }
+        props.onClose();
+    }
 
     return (
         <div
@@ -53,7 +93,7 @@ export default function NewExpense(props: { onClose: () => void }) {
 
 
                 {/* Form Container */}
-                <form className="w-full flex flex-col justify-center items-center">
+                <form onSubmit={handleSubmitDestination} className="w-full flex flex-col justify-center items-center">
                     {/* Expense Name Input */}
                     <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                         <input
@@ -70,7 +110,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                     <div className="w-full grid grid-cols-2 gap-y-4 gap-x-4 py-4 px-8">
                         <div className="bg-sidebar_deep_green/15 left-0 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                             <input
-                                type="text"
+                                type="date"
                                 id="date"
                                 name="date"
                                 onChange={(e) => setDate(e.target.value)}
@@ -82,7 +122,9 @@ export default function NewExpense(props: { onClose: () => void }) {
                         <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                             {/* Change type to float later */}
                             <input
-                                type="text"
+                                type="number"
+                                step="0.01"
+                                min="0.00"
                                 id="totalCost"
                                 name="totalCost"
                                 onChange={(e) => setTotalCost(e.target.value)}
@@ -105,7 +147,10 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     <h1 className="text-white text-xl font-light">Add Toads To Expense</h1>
                                 </div>
                                 <div>
+                                    {/* -------------------------------- */}
                                     {/* Add Toads component here */}
+                                    {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
+                                    {/* -------------------------------- */}
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
@@ -129,7 +174,11 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     <h1 className="text-white text-xl font-light">Specify Payment Amount</h1>
                                 </div>
                                 <div>
-                                    {/* Payment breakdown component here */}
+                                    {/* -------------------------------- */}
+                                    {/* Payment Breakdown Component Here */}
+                                    {/* Use 'payees' for names and fill array 'amount' */}
+                                    {/* Don't change the order of the names or amounts becuase the order matters */}
+                                    {/* -------------------------------- */}
                                 </div>
                                 {/* Back Button */}
                                 <div className="absolute bottom-4 left-4">
@@ -143,6 +192,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                 {/* Submit Button */}
                                 <div className="absolute bottom-4 right-4">
                                     <button
+                                        type="submit"
                                         onClick={() => setActiveSection(2)}
                                         className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
                                     >
