@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-
+import cross from "/cross.svg";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
@@ -21,17 +21,22 @@ export default function NewExpense(props: { onClose: () => void }) {
             {/* Modal content container */}
             <div
                 ref={modalContentRef}
-                className="flex flex-col w-2/5 justify-center items-center bg-dashboard_component_bg py-8 rounded-2xl gap-6"
+                className="relative flex flex-col w-2/5 justify-center items-center bg-dashboard_component_bg py-8 rounded-2xl gap-6"
                 // Stop click events from bubbling to the overlay
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="relative flex items-center justify-center px-4 h-12">
+                <div className="flex items-center justify-center px-4 h-12">
                     <p className="font-sunflower text-sidebar_deep_green text-2xl">
                         Add an Expense
                     </p>
-                    <div className="absolute -right-36 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
-                        <h1>EXIT</h1>
-                    </div>
+                </div>
+
+                {/* Close (X) Button - Positioned to the Top Right of Modal */}
+                <div
+                    className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg cursor-pointer"
+                    onClick={props.onClose}
+                >
+                    <img src={cross} className="w-7 h-7" />
                 </div>
 
 
@@ -73,25 +78,62 @@ export default function NewExpense(props: { onClose: () => void }) {
                         </div>
                     </div>
                     {/* Container Div for the adding toads to expense and amount split components*/}
-                    <div>
-
+                    <div className="w-full">
+                        {/* Page 1 */}
                         {activeSection === 1 && (
-                            <div className="relative w-full">
+                            <div className="relative w-full p-4 h-96 justify-items-center">
+                                {/* Step Number & Title */}
                                 <div className="flex items-center space-x-4">
                                     <div className="rounded-full bg-[#8FAE72] h-10 w-10 flex items-center justify-center">
-                                        <h1>1.</h1>
+                                        <h1 className="text-white text-xl font-semibold">1.</h1>
                                     </div>
-                                    <h1>Add Toads To Expense</h1>
+                                    <h1 className="text-white text-xl font-light">Add Toads To Expense</h1>
                                 </div>
-                                <div className="absolute bottom right">
-                                    <button onClick={() => setActiveSection(2)} className="bg-[#8FAE72] text-white py-2 px-6 rounded-lg">Next</button>
+                                <div>
+                                    {/* Add Toads component here */}
+                                </div>
+                                {/* Next Button */}
+                                <div className="absolute bottom-4 right-4">
+                                    <button
+                                        onClick={() => setActiveSection(2)}
+                                        className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
+                                    >
+                                        Next
+                                    </button>
                                 </div>
                             </div>
+
                         )}
                         {activeSection === 2 && (
-                            <div>
-                                <h1>Component 2</h1>
-                                <button onClick={() => setActiveSection(1)}>Back</button>
+                            <div className="relative w-full p-4 h-96 justify-items-center">
+                                {/* Step Number & Title */}
+                                <div className="flex items-center space-x-4">
+                                    <div className="rounded-full bg-[#8FAE72] h-10 w-10 flex items-center justify-center">
+                                        <h1 className="text-white text-xl font-semibold">2.</h1>
+                                    </div>
+                                    <h1 className="text-white text-xl font-light">Specify Payment Amount</h1>
+                                </div>
+                                <div>
+                                    {/* Payment breakdown component here */}
+                                </div>
+                                {/* Back Button */}
+                                <div className="absolute bottom-4 left-4">
+                                    <button
+                                        onClick={() => setActiveSection(1)}
+                                        className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
+                                    >
+                                        Back
+                                    </button>
+                                </div>
+                                {/* Submit Button */}
+                                <div className="absolute bottom-4 right-4">
+                                    <button
+                                        onClick={() => setActiveSection(2)}
+                                        className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
+                                    >
+                                        Create Expense
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>

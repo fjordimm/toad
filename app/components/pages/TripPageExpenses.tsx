@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
 import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
+import NewExpense from "../modules/TripPageExpenses/NewExpense";
 export default function BudgetPageMain(tripDbDoc: DocumentSnapshot| null) {
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return(
         <div className="grow flex flex-col gap-5 bg-dashboard_lime">
@@ -41,9 +44,15 @@ export default function BudgetPageMain(tripDbDoc: DocumentSnapshot| null) {
                             <p className = "font-sunflower font-bold text-3xl text-sidebar_deep_green">Your fellow toads owe you</p>
                             <p className = "font-sunflower font-bold text-3xl text-red-800">$10.00</p>
                         </div>
-                        <button className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
+                        <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
                             Add an Expense
                         </button>
+
+                        {
+                            isModalOpen
+                                ? <NewExpense onClose={() => setIsModalOpen(false)} />
+                                : null
+                        }
                 </div>
             </div>
         </div>
