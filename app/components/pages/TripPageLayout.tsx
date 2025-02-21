@@ -6,10 +6,13 @@ import { doc, DocumentSnapshot, getDoc, onSnapshot, type DocumentReference } fro
 import { firebaseDb } from "~/src/toadFirebase";
 import { Outlet, useOutletContext } from "react-router";
 import Loading from "../modules/Loading";
+import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 
 export default function TripPageLayout({ params }: Route.ComponentProps) {
 
     debugLogComponentRerender("TripPageLayout");
+
+    const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
 
     const [tripDbDocRef, setTripDbDocRef] = useState<DocumentReference | null>(null);
     useEffect(
@@ -33,11 +36,11 @@ export default function TripPageLayout({ params }: Route.ComponentProps) {
 
     return (
         tripDbDoc !== null
-            ? <Outlet context={{ tripDbDoc: tripDbDoc }} />
+            ? <Outlet context={{ tripDbDoc: tripDbDoc, userDbDoc: mainLayoutContext.userDbDoc }} />
             : <Loading />
     );
 }
 
 // To be used by subroutes
-export type TripPageLayoutContext = { tripDbDoc: DocumentSnapshot };
+export type TripPageLayoutContext = { tripDbDoc: DocumentSnapshot, userDbDoc: DocumentSnapshot };
 export function useTripPageLayoutContext(): TripPageLayoutContext { return useOutletContext(); }
