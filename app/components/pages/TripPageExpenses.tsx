@@ -12,6 +12,7 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPage
 export default function BudgetPageMain() {
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
+    const [filter, setFilter] = useState<"all" | "paid" | "unpaid">("all");
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     //const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
@@ -72,9 +73,9 @@ export default function BudgetPageMain() {
                     <div className="bg-[#D7F297] h-full rounded-xl gap-0">
                         {/* Buttons to Sort */}
                         <div className="flex flex-row justify-center mt-2 w-full h-9">
-                            <button onClick={() => setView('all')} className="mx-3 w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">All Expenses</button>
-                            <button onClick={() => setView('owe')} className="w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">I Owe</button>
-                            <button onClick={() => setView('owed')} className="mx-3 w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">Owed to Me</button>
+                            <button onClick={() => setView('all')} className={`ml-3 w-1/3 rounded-l-lg h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'all' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
+                            <button onClick={() => setView('owe')} className={`w-1/3 h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'owe' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>I Owe</button>
+                            <button onClick={() => setView('owed')} className={`mr-3 w-1/3 rounded-r-lg h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'owed' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
                         <div>
