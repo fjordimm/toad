@@ -16,7 +16,13 @@ export default function BudgetPageMain() {
     const currUser:string = tripPageLayoutContext.userDbDoc.get("email");
     //const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
-    const expenses_sorted: string[] = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
+    //const expenses_sorted: string[] = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
+    const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
+        const dateA = new Date(expenses[a].date);
+        const dateB = new Date(expenses[b].date);
+        return dateB.getTime() - dateA.getTime();
+    });
+
     let peopleOweMe: string[] = [];
     let iOwePeople: string[] = [];
 
@@ -83,11 +89,11 @@ export default function BudgetPageMain() {
                             <p className = "font-sunflower text-3xl text-red-800">${i_owe_toads.toFixed(2)}</p>
                         </div>
                         <div className = "bg-[#D7F297] p-5 rounded-xl">
-                            <p className = "font-sunflower text-3xl text-sidebar_deep_green">Your fellow toads owe you</p>
+                            <p className = "font-sunflower text-3xl text-sidebar_deep_green"><b>Your fellow toads owe you</b></p>
                             <p className = "font-sunflower text-3xl text-red-800">${toads_owe_me.toFixed(2)}</p>
                         </div>
                         <div className = "bg-[#D7F297] p-5 rounded-xl">
-                            <p className = "font-sunflower text-3xl text-sidebar_deep_green">Your fellow toads have paid you</p>
+                            <p className = "font-sunflower text-3xl text-sidebar_deep_green"><b>Your fellow toads have paid you</b></p>
                             <p className = "font-sunflower text-3xl text-red-800">${toads_paid_me.toFixed(2)}</p>
                         </div>
                         <button className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
