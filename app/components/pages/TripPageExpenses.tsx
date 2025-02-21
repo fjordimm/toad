@@ -70,16 +70,50 @@ export default function BudgetPageMain() {
             <div className="flex flex-row gap-5 h-full">
                 {/* Main Div */}
                 <div className="grow flex flex-col w-4/5 gap-5 justify-between">
-                    <div className="bg-[#D7F297] h-full rounded-xl gap-0">
+                    <div className="bg-[#D7F297] h-full rounded-xl">
                         {/* Buttons to Sort */}
-                        <div className="flex flex-row justify-center mt-2 w-full h-9">
-                            <button onClick={() => setView('all')} className={`ml-3 w-1/3 rounded-l-lg h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'all' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
-                            <button onClick={() => setView('owe')} className={`w-1/3 h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'owe' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>I Owe</button>
-                            <button onClick={() => setView('owed')} className={`mr-3 w-1/3 rounded-r-lg h-full font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === 'owed' ? 'bg-sidebar_deep_green/25' : 'bg-sidebar_deep_green/10'} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
+                        <div className="flex flex-row justify-center -mt-2 w-full max-h-18">
+                        <div className="flex justify-center mt-2 w-full gap-x-0 max-h-18">
+                            {/* All Expenses Button and Filters */}
+                            <div className="relative w-1/3 h-18">
+                                <button onClick={() => setView("all")}className={`w-full h-9 rounded-tl-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
+                                {view === "all" && (
+                                <div className="absolute top-full left-0 w-full flex justify-center">
+                                    <button onClick={() => setFilter("all")}className={"w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25"}>All</button>
+                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                </div>
+                                )}
+                            </div>
+
+                            {/* I Owe Button and Filters */}
+                            <div className="relative w-1/3">
+                                <button onClick={() => setView("owe")}className={`w-full h-9 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owe" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>I Owe</button>
+                                {view === "owe" && (
+                                <div className="absolute top-full left-0 w-full flex justify-center">
+                                    <button onClick={() => setFilter("all")}className="w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">All</button>
+                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                </div>
+                                )}
+                            </div>
+
+                            {/* Owed to Me Button and Filters */}
+                            <div className="relative w-1/3">
+                                <button onClick={() => setView("owed")}className={`w-full h-9 rounded-tr-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owed" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
+                                {view === "owed" && (
+                                <div className="absolute top-full left-0 w-full flex justify-center">
+                                    <button onClick={() => setFilter("all")}className="w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">All</button>
+                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                </div>
+                                )}
+                            </div>
+                        </div>
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
-                        <div>
-                            <ExpenseView view={view} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc}></ExpenseView>
+                        <div className = "mt-9">
+                            <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc}></ExpenseView>
                         </div>
                     </div>
                 </div>

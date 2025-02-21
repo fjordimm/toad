@@ -9,7 +9,7 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 
 
-export default function ExpenseList(props: { view: "all" | "owe" | "owed", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null }) {
+export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null }) {
 
     if (props.view === "all") {
         // return (
@@ -19,7 +19,13 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", expen
         //   ))}
         //   </div>
         // );
-        return (<p>All Expenses View.</p>);
+        if(props.filter === "all") {
+            return (<p>All Expenses View ALL.</p>);
+        } else if(props.filter === "paid") {
+            return (<p>All Expenses View PAID.</p>);
+        } else if(props.filter === "unpaid") {
+            return (<p>All Expenses View UNPAID.</p>);
+        }
     } else if (props.view == "owe") {
         // return (
         //   <div className = "flex flex-col gap-5 mx-3">
@@ -28,7 +34,13 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", expen
         //   ))}
         //   </div>
         // );
-        return (<p>I Owe People View.</p>);
+        if(props.filter === "all") {
+            return (<p>I Owe People View ALL.</p>);
+        } else if(props.filter === "paid") {
+            return (<p>I Owe People View PAID.</p>);
+        } else if(props.filter === "unpaid") {
+            return (<p>I Owe People View UNPAID.</p>);
+        }
     } else if (props.view == "owed") {
         // return (
         //   <div className = "flex flex-col gap-5 mx-3">
@@ -37,6 +49,12 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", expen
         //   ))}
         //   </div>
         // );
-        return (<p>People Owe Me View.</p>);
+        if(props.filter === "all") {
+            return (<p>People Owe Me ALL.</p>);
+        } else if(props.filter === "paid") {
+            return (<p>People Owe Me PAID.</p>);
+        } else if(props.filter === "unpaid") {
+            return (<p>People Owe Me UNPAID.</p>);
+        }
     }
 }
