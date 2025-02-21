@@ -79,9 +79,9 @@ export default function BudgetPageMain() {
                                 <button onClick={() => setView("all")}className={`w-full h-9 rounded-tl-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
                                 {view === "all" && (
                                 <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className={"w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25"}>All</button>
-                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
                                 </div>
                                 )}
                             </div>
@@ -91,9 +91,9 @@ export default function BudgetPageMain() {
                                 <button onClick={() => setView("owe")}className={`w-full h-9 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owe" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>I Owe</button>
                                 {view === "owe" && (
                                 <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className="w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">All</button>
-                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
                                 </div>
                                 )}
                             </div>
@@ -103,9 +103,9 @@ export default function BudgetPageMain() {
                                 <button onClick={() => setView("owed")}className={`w-full h-9 rounded-tr-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owed" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
                                 {view === "owed" && (
                                 <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className="w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">All</button>
-                                    <button onClick={() => setFilter("paid")}className="w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className="w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl bg-sidebar_deep_green/10 hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25">Unpaid</button>
+                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
                                 </div>
                                 )}
                             </div>

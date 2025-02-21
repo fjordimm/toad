@@ -19,6 +19,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         //   ))}
         //   </div>
         // );
+        
         if(props.filter === "all") {
             return (<p>All Expenses View ALL.</p>);
         } else if(props.filter === "paid") {
