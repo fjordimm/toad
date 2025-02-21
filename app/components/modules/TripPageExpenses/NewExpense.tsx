@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cross from "/cross.svg";
 
 export default function NewExpense(props: { onClose: () => void }) {
@@ -11,7 +11,19 @@ export default function NewExpense(props: { onClose: () => void }) {
         }
     };
 
+    // function uuidv4() {
+    //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    //         const r = Math.random() * 16 | 0,
+    //             v = c === 'x' ? r : (r & 0x3 | 0x8);
+    //         return v.toString(16);
+    //     });
+    // }
+
     const [activeSection, setActiveSection] = useState(1);
+
+    const [expenseName, setExpenseName] = useState('');
+    const [date, setDate] = useState('');
+    const [totalCost, setTotalCost] = useState('');
 
     return (
         <div
@@ -48,18 +60,20 @@ export default function NewExpense(props: { onClose: () => void }) {
                             type="text"
                             id="expenseName"
                             name="expenseName"
+                            onChange={(e) => setExpenseName(e.target.value)}
                             required
                             placeholder="Expense Name"
                             className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
                         />
                     </div>
-                    {/* Container Div for the three row inputs */}
+                    {/* Container Div for the 2 row inputs */}
                     <div className="w-full grid grid-cols-2 gap-y-4 gap-x-4 py-4 px-8">
                         <div className="bg-sidebar_deep_green/15 left-0 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                             <input
                                 type="text"
                                 id="date"
                                 name="date"
+                                onChange={(e) => setDate(e.target.value)}
                                 maxLength={14}
                                 placeholder="Date"
                                 className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
@@ -71,6 +85,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                 type="text"
                                 id="totalCost"
                                 name="totalCost"
+                                onChange={(e) => setTotalCost(e.target.value)}
                                 maxLength={14}
                                 placeholder="Total Cost"
                                 className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none border-b-2 border-[#FFF]/50"
