@@ -2,12 +2,12 @@ import React from "react";
 import { debugLogComponentRerender, debugLogMessage } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
-import Itinerary from "../modules/PlanPage/Itinerary";
+import Itinerary from "../modules/TripPagePlan/Itinerary";
 import { DndContext, DragOverlay, useDraggable, useDroppable, type DragEndEvent, type DragOverEvent, type DragStartEvent } from "@dnd-kit/core";
 import { useState, type ReactNode } from "react";
-import PossibleStops from "../modules/PlanPage/PossibleStops";
+import PossibleStops from "../modules/TripPagePlan/PossibleStops";
 import { useSortable } from "@dnd-kit/sortable";
-import DestinationBox from "../modules/PlanPage/DestinationBox";
+import DestinationBox from "../modules/TripPagePlan/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbAddDestinationToItineraryDay, dbMoveDestination, dbRemoveDestinationFromAllItineraryDays, dbSortDestinationWithinDay } from "~/src/databaseUtil";
 
