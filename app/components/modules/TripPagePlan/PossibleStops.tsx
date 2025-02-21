@@ -1,11 +1,10 @@
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { useState, type ReactNode } from "react";
-import { DestinationDraggable, DestinationDroppable } from "~/components/pages/TripPagePlan";
-import DestinationBox from "./DestinationBox";
+import { DestinationDroppable, DraggableDestinationBox } from "~/components/pages/TripPagePlan";
 import AddDestination from "./AddDestination";
 
-export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any } }) {
+export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
 
     function turnUnusedDestinationsIntoElems(): ReactNode {
 
@@ -13,15 +12,18 @@ export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, list
         for (const [key, val] of Object.entries(props.listOfDestinations)) {
             if (!val.is_in_itinerary) {
                 destinationsAsElems.push(
-                    <DestinationDraggable id={key}>
-                        <DestinationBox tripDbDoc={props.tripDbDoc} destinationId={key} name={val.name} price={val.price} length={val.length} time={val.time} description={val.description} />
-                    </DestinationDraggable>
+                    <DraggableDestinationBox
+                        tripDbDoc={props.tripDbDoc}
+                        activeDraggableId={props.activeDraggableId}
+                        destinationId={key}
+                        destinationObj={val}
+                    />
                 );
             }
         }
 
         return (
-            <div className="flex flex-col w-full gap-2">
+            <div className="flex flex-col w-full">
                 {
                     destinationsAsElems.map((elem: ReactNode) => {
                         return elem;

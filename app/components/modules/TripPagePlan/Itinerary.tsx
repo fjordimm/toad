@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
-import CalendarCard from "../Itinerary/CalendarCard";
+import CalendarCard from "./Itinerary/CalendarCard";
 import { dbRetrieveTripItinerary } from "~/src/databaseUtil";
 
 /*

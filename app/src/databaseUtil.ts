@@ -197,6 +197,50 @@ export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDo
     });
 }
 
+// Use -1 for dayIndex to move it to Possible Stops
+export async function dbMoveDestination(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    if (dayIndex === -1) { // If caller wants to move it to Possible Stops
+        await dbRemoveDestinationFromAllItineraryDays(tripDbDocRef, destinationId);
+    } else {
+        const itineraryObj = tripDbDoc.get("itinerary");
+        if (itineraryObj[dayIndex]["activities"].includes(destinationId)) { // If it already is in that day
+            // Do nothing
+        } else {
+            await dbRemoveDestinationFromAllItineraryDays(tripDbDocRef, destinationId);
+            await dbAddDestinationToItineraryDay(tripDbDocRef, dayIndex, destinationId);
+        }
+    }
+}
+
+export async function dbSortDestinationWithinDay(tripDbDocRef: DocumentReference, draggedDestinationId: string, overDestinationId: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const itineraryObj = tripDbDoc.get("itinerary");
+
+    let dayIndex: number = -1;
+    let indexOfOverDestination: number = -1;
+    for (let i = 0; i < itineraryObj.length; i++) {
+        const possibleIndex = itineraryObj[i]["activities"].indexOf(overDestinationId);
+        if (possibleIndex !== -1) {
+            dayIndex = i;
+            indexOfOverDestination = possibleIndex;
+            break;
+        }
+    }
+
+    if (dayIndex !== -1 && indexOfOverDestination !== -1) {
+        if (itineraryObj[dayIndex]["activities"].includes(draggedDestinationId)) { // Only actually does it if it was already in the same day. This fixes a bug.
+            itineraryObj[dayIndex]["activities"] = itineraryObj[dayIndex]["activities"].filter((item: string) => item !== draggedDestinationId);
+            itineraryObj[dayIndex]["activities"].splice(indexOfOverDestination, 0, draggedDestinationId);
+            await updateDoc(tripDbDoc.ref, {
+                itinerary: itineraryObj
+            });
+        }
+    }
+}
+
 export async function dbAddDestinationToItineraryDay(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
