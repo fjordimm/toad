@@ -46,6 +46,7 @@ export default function NewExpense(props: { onClose: () => void }) {
         return dictionary;
     }
 
+    // called when user clicks submit. Makes the map and sends it to database.
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (tripPageLayoutContext.tripDbDoc !== null) {
@@ -82,16 +83,12 @@ export default function NewExpense(props: { onClose: () => void }) {
                         Add an Expense
                     </p>
                 </div>
-
-                {/* Close (X) Button - Positioned to the Top Right of Modal */}
                 <div
                     className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg cursor-pointer"
                     onClick={props.onClose}
                 >
                     <img src={cross} className="w-7 h-7" />
                 </div>
-
-
                 {/* Form Container */}
                 <form onSubmit={handleSubmitDestination} className="w-full flex flex-col justify-center items-center">
                     {/* Expense Name Input */}
@@ -120,7 +117,6 @@ export default function NewExpense(props: { onClose: () => void }) {
                             />
                         </div>
                         <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
-                            {/* Change type to float later */}
                             <input
                                 type="number"
                                 step="0.01"
@@ -136,7 +132,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                     </div>
                     {/* Container Div for the adding toads to expense and amount split components*/}
                     <div className="w-full">
-                        {/* Page 1 */}
+                        {/* Page 1 of Modal*/}
                         {activeSection === 1 && (
                             <div className="relative w-full p-4 h-96 justify-items-center">
                                 {/* Step Number & Title */}
@@ -164,6 +160,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                             </div>
 
                         )}
+                        {/* Page 2 of Modal */}
                         {activeSection === 2 && (
                             <div className="relative w-full p-4 h-96 justify-items-center">
                                 {/* Step Number & Title */}
@@ -176,7 +173,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                 <div>
                                     {/* -------------------------------- */}
                                     {/* Payment Breakdown Component Here */}
-                                    {/* Use 'payees' for names and fill array 'amount' */}
+                                    {/* Use 'payees' for names and fill array 'amount'. Also use evenSplit boolean*/}
                                     {/* Don't change the order of the names or amounts becuase the order matters */}
                                     {/* -------------------------------- */}
                                 </div>
