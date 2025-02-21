@@ -6,9 +6,9 @@
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 
-export default function Expense(/*props: { tripDbDoc: DocumentSnapshot, expenseId: string }*/) {
+export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId: string }) {
     return (
-        <div className="bg-toad_count_lime w-full h-96 rounded-lg">
+        <div className="bg-toad_count_lime w-full h-[300px] rounded-lg">
 
         </div>
     );

@@ -7,19 +7,31 @@ These arrays are uuids for expenses and will be used to generate the Expense com
 
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import Expense from "./ExpenseList/Expense";
 
 
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null }) {
 
     if (props.view === "all") {
-        // return (
-        //   <div className = "flex flex-col gap-5 mx-3">
-        //   {props.expenses.map(expense => (
-        //   <Expense tripDbDoc = {tripDbDoc} tripId={expense}></Expense>
-        //   ))}
-        //   </div>
-        // );
-        return (<p>All Expenses View.</p>);
+        return (
+            <div className="flex flex-col gap-3 m-3">
+                {/* {props.expenses.map(expense => (
+                    <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
+                ))} */}
+                {
+                    props.expenses.map((expenseId: string) => {
+                        if (props.tripDbDoc !== null) {
+                            return (
+                              <Expense tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
+                            );
+                        } else {
+                            return null;
+                        }
+                    })
+                }
+            </div>
+        );
+        // return (<p>All Expenses View.</p>);
     } else if (props.view == "owe") {
         // return (
         //   <div className = "flex flex-col gap-5 mx-3">
