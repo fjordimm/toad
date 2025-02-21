@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
+import NewExpense from "../modules/TripPageExpenses/NewExpense";
 
 export default function Landing() {
 
     debugLogComponentRerender("LandingPage");
 
     // const mainLayoutContext: MainLayoutContext = useMainLayoutContext();
+
+    
 
     return (
         <div className="grow flex justify-center items-center bg-dashboard_lime">
