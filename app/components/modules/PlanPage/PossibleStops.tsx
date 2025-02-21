@@ -23,7 +23,7 @@ export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, list
         }
 
         return (
-            <div className="flex flex-col w-full gap-2">
+            <div className="flex flex-col w-full">
                 {
                     destinationsAsElems.map((elem: ReactNode) => {
                         return elem;

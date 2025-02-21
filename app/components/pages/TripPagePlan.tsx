@@ -39,15 +39,17 @@ export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, ac
     if (props.activeDraggableId !== props.destinationId) {
         return (
             <DndDraggable id={props.destinationId}>
-                <DestinationBox
-                    tripDbDoc={props.tripDbDoc}
-                    destinationId={props.destinationId}
-                    name={props.destinationObj.name}
-                    price={props.destinationObj.price}
-                    length={props.destinationObj.length}
-                    time={props.destinationObj.time}
-                    description={props.destinationObj.description}
-                />
+                <div className="w-full my-1">
+                    <DestinationBox
+                        tripDbDoc={props.tripDbDoc}
+                        destinationId={props.destinationId}
+                        name={props.destinationObj.name}
+                        price={props.destinationObj.price}
+                        length={props.destinationObj.length}
+                        time={props.destinationObj.time}
+                        description={props.destinationObj.description}
+                    />
+                </div>
             </DndDraggable>
         )
     } else {
@@ -109,7 +111,7 @@ export default function TripPagePlan() {
 
     const [activeDraggableId, setActiveDraggableId] = useState<string | null>(null);
 
-    // These will be done on drag end:
+    // This will be done on drag end:
     let activityMoveAction: { id: string, day: number } | null = null;
 
     function handleDragStart(e: DragStartEvent) {
@@ -126,20 +128,6 @@ export default function TripPagePlan() {
                 await dbSortDestinationWithinDay(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString(), e.over.id.toString());
             }
         }
-
-        // else if (e.over !== null) {
-        //     // console.log(e.over.id.toString());
-        // 	if (e.over.id.toString().includes("calendarcard_")) {
-        //         // console.log("thing");
-        //         // console.log(e.over.id.toString());
-        // 		const dayIndex: number = parseInt(e.over.id.toString().slice("calendarcard_".length));
-
-        // 		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
-        // 		// await dbAddDestinationToItineraryDay(tripPageLayoutContext.tripDbDoc.ref, dayIndex, e.active.id.toString());
-        // 	} else if (e.over.id.toString() === "possiblestops") {
-        // 		// await dbRemoveDestinationFromAllItineraryDays(tripPageLayoutContext.tripDbDoc.ref, e.active.id.toString());
-        // 	}
-        // }
 
         setActiveDraggableId(null);
     }

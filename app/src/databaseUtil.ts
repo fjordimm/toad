@@ -231,11 +231,13 @@ export async function dbSortDestinationWithinDay(tripDbDocRef: DocumentReference
     }
 
     if (dayIndex !== -1 && indexOfOverDestination !== -1) {
-        itineraryObj[dayIndex]["activities"] = itineraryObj[dayIndex]["activities"].filter((item: string) => item !== draggedDestinationId);
-        itineraryObj[dayIndex]["activities"].splice(indexOfOverDestination, 0, draggedDestinationId);
-        await updateDoc(tripDbDoc.ref, {
-            itinerary: itineraryObj
-        });
+        if (itineraryObj[dayIndex]["activities"].includes(draggedDestinationId)) { // Only actually does it if it was already in the same day. This fixes a bug.
+            itineraryObj[dayIndex]["activities"] = itineraryObj[dayIndex]["activities"].filter((item: string) => item !== draggedDestinationId);
+            itineraryObj[dayIndex]["activities"].splice(indexOfOverDestination, 0, draggedDestinationId);
+            await updateDoc(tripDbDoc.ref, {
+                itinerary: itineraryObj
+            });
+        }
     }
 }
 
