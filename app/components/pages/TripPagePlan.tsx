@@ -1,5 +1,5 @@
 import React from "react";
-import { debugLogComponentRerender, debugLogMessage } from "~/src/debugUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";
 import Itinerary from "../modules/TripPagePlan/Itinerary";
@@ -9,7 +9,7 @@ import PossibleStops from "../modules/TripPagePlan/PossibleStops";
 import { useSortable } from "@dnd-kit/sortable";
 import DestinationBox from "../modules/TripPagePlan/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { dbAddDestinationToItineraryDay, dbMoveDestination, dbRemoveDestinationFromAllItineraryDays, dbSortDestinationWithinDay } from "~/src/databaseUtil";
+import { dbMoveDestination, dbSortDestinationWithinDay } from "~/src/databaseUtil";
 
 const destinationBoxShadow = <div className="w-full my-1 max-w-96 h-[86px] rounded-lg bg-[#00000020]"></div>;
 
