@@ -1,3 +1,9 @@
+/*
+TripPageExpenses.tsx is a mostly standalone component; it is referenced in routes.tsx once.
+This file is the main overview for all expenses. There are three separate tabs for different expense views.
+When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
+*/
+
 import { Link } from "react-router";
 import React, { useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
@@ -60,9 +66,9 @@ export default function BudgetPageMain() {
                     <div className="bg-[#D7F297] h-full rounded-xl gap-0">
                         {/* Buttons to Sort */}
                         <div className = "flex flex-row justify-center mt-2 w-full h-9">
-                            <button onClick={() => setView('all')} className = "mx-3 w-1/3 rounded-lg h-full bg-black/15 hover:bg-black/35 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">All Expenses</button>
-                            <button onClick={() => setView('owe')} className = "w-1/3 rounded-lg h-full bg-black/15 hover:bg-black/35 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">I Owe</button>
-                            <button onClick={() => setView('owed')} className = "mx-3 w-1/3 rounded-lg h-full bg-black/15 hover:bg-black/35 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">Owed to Me</button>
+                            <button onClick={() => setView('all')} className = "mx-3 w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">All Expenses</button>
+                            <button onClick={() => setView('owe')} className = "w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">I Owe</button>
+                            <button onClick={() => setView('owed')} className = "mx-3 w-1/3 rounded-lg h-full bg-black/10 hover:bg-black/25 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2">Owed to Me</button>
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
                         <div>
