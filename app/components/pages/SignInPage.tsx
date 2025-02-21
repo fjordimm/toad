@@ -91,7 +91,7 @@ export default function SignInPage() {
                     {/* Submit Button */}
                     <div className = "flex flex-row w-80 h-12 bg-[#728D5F] rounded-xl focus-within:ring-[#FFF]/40 focus-within:ring-2 items-center">
                         <button 
-                        className = "mb-1 mx-4 w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower text-xl focus:outline-none"
+                        className = "mx-4 w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower text-xl focus:outline-none"
                         type="submit"
                         >Submit</button>
                     </div>
