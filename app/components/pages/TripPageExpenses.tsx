@@ -113,7 +113,7 @@ export default function BudgetPageMain() {
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
                         <div className = "mt-9">
-                            <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc}></ExpenseView>
+                            <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} expenses_dict = {expenses} currentUser = {currUser}></ExpenseView>
                         </div>
                     </div>
                 </div>

@@ -9,8 +9,8 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 
 
-export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null }) {
-
+export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, expenses_dict: any, currentUser: string}) {
+    
     if (props.view === "all") {
         // return (
         //   <div className = "flex flex-col gap-5 mx-3">
@@ -19,7 +19,22 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         //   ))}
         //   </div>
         // );
-        
+        let all_paid:string[] = [];
+        let all_unpaid:string[] = [];
+        for(const expense in props.expenses_dict) {
+            let paid:boolean = true;
+            for(const payee in props.expenses_dict[expense]["payers"]) {
+                if(props.expenses_dict[expense]["payers"][payee][1] == 0) { //meaning unpaid
+                    paid = false;
+                    break;
+                }
+                if(paid) {
+                    all_unpaid.push(expense);
+                } else {
+                    all_paid.push(expense);
+                }
+            }
+        }
         if(props.filter === "all") {
             return (<p>All Expenses View ALL.</p>);
         } else if(props.filter === "paid") {
@@ -35,6 +50,15 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         //   ))}
         //   </div>
         // );
+        let owe_paid: string[] = [];
+        let owe_unpaid: string[] = [];
+        for(const expense in props.expenses_dict) {
+            if(props.expenses_dict[expense]["payers"][props.currentUser][1] === 1) {
+                owe_paid.push(expense);
+            } else {
+                owe_unpaid.push(expense);
+            }
+        }
         if(props.filter === "all") {
             return (<p>I Owe People View ALL.</p>);
         } else if(props.filter === "paid") {
@@ -50,6 +74,22 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         //   ))}
         //   </div>
         // );
+        let owed_paid: string[] = [];
+        let owed_unpaid: string[] = [];
+        for(const expense in props.expenses_dict) {
+            let paid:boolean = true;
+            for(const payee in props.expenses_dict[expense]["payers"]) {
+                if(props.expenses_dict[expense]["payers"][payee][1] == 0) { //meaning unpaid
+                    paid = false;
+                    break;
+                }
+                if(paid) {
+                    owed_paid.push(expense);
+                } else {
+                    owed_unpaid.push(expense);
+                }
+            }
+        }
         if(props.filter === "all") {
             return (<p>People Owe Me ALL.</p>);
         } else if(props.filter === "paid") {
