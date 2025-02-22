@@ -53,7 +53,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         let owe_paid: string[] = [];
         let owe_unpaid: string[] = [];
         for(const expense in props.expenses_dict) {
-            if(props.expenses_dict[expense]["payers"][props.currentUser][1] === 1) {
+            if((props.expenses_dict[expense])["payers"][props.currentUser][1] === 1) {
                 owe_paid.push(expense);
             } else {
                 owe_unpaid.push(expense);
@@ -67,13 +67,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             return (<p>I Owe People View UNPAID.</p>);
         }
     } else if (props.view == "owed") {
-        // return (
-        //   <div className = "flex flex-col gap-5 mx-3">
-        //   {props.peopleOweMe.map(expense => (
-        //   <Expense tripDbDoc = {tripDbDoc} tripId={expense}></Expense>
-        //   ))}
-        //   </div>
-        // );
         let owed_paid: string[] = [];
         let owed_unpaid: string[] = [];
         for(const expense in props.expenses_dict) {
@@ -92,10 +85,31 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         }
         if(props.filter === "all") {
             return (<p>People Owe Me ALL.</p>);
+            return (
+                <div className = "flex flex-col gap-5 mx-3">
+                {props.peopleOweMe.map(expense => (
+                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+                ))}
+                </div>
+              );
         } else if(props.filter === "paid") {
             return (<p>People Owe Me PAID.</p>);
+            return (
+                <div className = "flex flex-col gap-5 mx-3">
+                {owed_paid.map(expense => (
+                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+                ))}
+                </div>
+              );
         } else if(props.filter === "unpaid") {
             return (<p>People Owe Me UNPAID.</p>);
+            return (
+                <div className = "flex flex-col gap-5 mx-3">
+                {owed_unpaid.map(expense => (
+                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+                ))}
+                </div>
+              );
         }
     }
 }
