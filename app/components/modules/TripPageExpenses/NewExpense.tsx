@@ -164,34 +164,52 @@ export default function NewExpense(props: { onClose: () => void }) {
                         {activeSection === 2 && (
                             <div className="relative w-full p-4 h-96 justify-items-center">
                                 {/* Step Number & Title */}
-                                <div className="flex items-center space-x-4">
+                                <div className="flex justify-center items-center space-x-4 ">
                                     <div className="rounded-full bg-[#8FAE72] h-10 w-10 flex items-center justify-center">
-                                        <h1 className="text-white text-xl font-semibold">2.</h1>
+                                        <h1 className="text-white text-xl font-sunflower">2.</h1>
                                     </div>
-                                    <h1 className="text-white text-xl font-light">Specify Payment Amount</h1>
+                                    <h1 className="text-white text-xl font-sunflower">Specify Payment Amount</h1>
                                 </div>
-                                <div>
+
+                                <div className="flex flex-col items-center justify-center mt-4 w-full gap-4">
                                     {/* -------------------------------- */}
                                     {/* Payment Breakdown Component Here */}
                                     {/* Use 'payees' for names and fill array 'amount'. Also use evenSplit boolean*/}
                                     {/* Don't change the order of the names or amounts becuase the order matters */}
                                     {/* -------------------------------- */}
+
+                                    {/* Dynamic vs Even Buttons */}
+                                    <div className="flex justify-center font-sunflower text-white">
+                                        <button className="w-24 px-4 py-2 bg-[#8FAE72] rounded-l-xl">
+                                            Dynamic
+                                        </button>
+                                        <button className="w-24 px-4 py-2 bg-[#668a45] rounded-r-xl">
+                                            Even
+                                        </button>
+                                    </div>
+
+                                    {/* Specify Expenses Big Box */}
+                                    {/* <div> */}
+                                    <div className=" w-4/5 h-48 bg-[#BDDE9A] rounded-lg">
+                                        
+                                    </div>
+                                    
                                 </div>
                                 {/* Back Button */}
-                                <div className="absolute bottom-4 left-4">
+                                <div className="absolute bottom-0 left-4">
                                     <button
                                         onClick={() => setActiveSection(1)}
-                                        className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
+                                        className="font-sunflower bg-[#8FAE72] text-white py-2 px-4 rounded-lg text-lg"
                                     >
                                         Back
                                     </button>
                                 </div>
                                 {/* Submit Button */}
-                                <div className="absolute bottom-4 right-4">
+                                <div className="absolute bottom-0 right-4">
                                     <button
                                         type="submit"
                                         onClick={() => setActiveSection(2)}
-                                        className="bg-[#8FAE72] text-white py-3 px-6 rounded-lg text-lg"
+                                        className="font-sunflower bg-[#8FAE72] text-white py-2 px-4 rounded-lg text-lg"
                                     >
                                         Create Expense
                                     </button>
