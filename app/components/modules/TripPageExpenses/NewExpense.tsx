@@ -72,6 +72,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                 [`expenses.${expenseID}`]: newExpense,
             });
         }
+        console.log("closed");
         props.onClose();
     }
 
@@ -192,12 +193,14 @@ export default function NewExpense(props: { onClose: () => void }) {
                                         <button 
                                             className={`w-24 px-4 py-2 rounded-l-xl ${ !evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
                                             onClick={() => handleSplitMethodButton(false)}
+                                            type="button"
                                         >
                                             Dynamic
                                         </button>
                                         <button 
                                             className={`w-24 px-4 py-2 rounded-r-xl ${ evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
                                             onClick={() => handleSplitMethodButton(true)}
+                                            type="button"
                                         >
                                             Even
                                         </button>
