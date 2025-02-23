@@ -52,13 +52,16 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         // );
         let owe_paid: string[] = [];
         let owe_unpaid: string[] = [];
-        for(const expense in props.expenses_dict) {
-            if((props.expenses_dict[expense])["payers"][props.currentUser][1] === 1) {
-                owe_paid.push(expense);
-            } else {
-                owe_unpaid.push(expense);
-            }
+
+        for (const expense of props.iOwePeople) {
+        // 'expense' is now something like "expense_id_1"
+        if (props.expenses_dict[expense].payers[props.currentUser][1] === 1) {
+            owe_paid.push(expense);
+        } else {
+            owe_unpaid.push(expense);
         }
+        }
+
         if(props.filter === "all") {
             return (<p>I Owe People View ALL.</p>);
         } else if(props.filter === "paid") {
@@ -67,49 +70,54 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             return (<p>I Owe People View UNPAID.</p>);
         }
     } else if (props.view == "owed") {
-        let owed_paid: string[] = [];
-        let owed_unpaid: string[] = [];
-        for(const expense in props.expenses_dict) {
-            let paid:boolean = true;
-            for(const payee in props.expenses_dict[expense]["payers"]) {
-                if(props.expenses_dict[expense]["payers"][payee][1] == 0) { //meaning unpaid
+        
+        const owed_paid: string[] = [];
+        const owed_unpaid: string[] = [];
+
+        for (const expense of props.peopleOweMe) {
+            let paid = true;  
+            for (const payee in props.expenses_dict[expense].payers) {
+                const [amount, paidStatus] = props.expenses_dict[expense].payers[payee];
+
+                if (paidStatus === 0) {
                     paid = false;
                     break;
                 }
-                if(paid) {
-                    owed_paid.push(expense);
-                } else {
-                    owed_unpaid.push(expense);
-                }
+            }
+            if (paid) {
+                owed_paid.push(expense);
+            } else {
+                owed_unpaid.push(expense);
             }
         }
+
         if(props.filter === "all") {
             return (<p>People Owe Me ALL.</p>);
-            return (
-                <div className = "flex flex-col gap-5 mx-3">
-                {props.peopleOweMe.map(expense => (
-                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
-                ))}
-                </div>
-              );
+            // return (
+            //     <div className = "flex flex-col gap-5 mx-3">
+            //     {props.peopleOweMe.map(expense => (
+            //     <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+            //     ))}
+            //     </div>
+            //   );
         } else if(props.filter === "paid") {
             return (<p>People Owe Me PAID.</p>);
-            return (
-                <div className = "flex flex-col gap-5 mx-3">
-                {owed_paid.map(expense => (
-                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
-                ))}
-                </div>
-              );
+            // return (
+            //     <div className = "flex flex-col gap-5 mx-3">
+            //     {owed_paid.map(expense => (
+            //     <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+            //     ))}
+            //     </div>
+            //   );
         } else if(props.filter === "unpaid") {
-            return (<p>People Owe Me UNPAID.</p>);
-            return (
-                <div className = "flex flex-col gap-5 mx-3">
-                {owed_unpaid.map(expense => (
-                <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
-                ))}
-                </div>
-              );
+        //     return (<p>People Owe Me UNPAID.</p>);
+        //     return (
+        //         <div className = "flex flex-col gap-5 mx-3">
+        //         {owed_unpaid.map(expense => (
+        //         <Expense tripDbDoc = {props.tripDbDoc} tripId={expense}></Expense>
+        //         ))}
+        //         </div>
+        //       );
         }
     }
 }
