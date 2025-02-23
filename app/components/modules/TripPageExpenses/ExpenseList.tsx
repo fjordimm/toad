@@ -110,7 +110,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             //     </div>
             //   );
         } else if(props.filter === "unpaid") {
-        //     return (<p>People Owe Me UNPAID.</p>);
+            return (<p>People Owe Me UNPAID.</p>);
         //     return (
         //         <div className = "flex flex-col gap-5 mx-3">
         //         {owed_unpaid.map(expense => (

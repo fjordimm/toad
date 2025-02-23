@@ -73,7 +73,7 @@ export default function BudgetPageMain() {
                     <div className="bg-[#D7F297] h-full rounded-xl">
                         {/* Buttons to Sort */}
                         <div className="flex flex-row justify-center -mt-2 w-full max-h-18">
-                        <div className="flex justify-center mt-2 w-full gap-x-0 max-h-18">
+                        <div className="flex justify-center mt-2 w-full gap-x-0 max-h-18 mb-10">
                             {/* All Expenses Button and Filters */}
                             <div className="relative w-1/3 h-18">
                                 <button onClick={() => setView("all")}className={`w-full h-9 rounded-tl-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
@@ -112,7 +112,7 @@ export default function BudgetPageMain() {
                         </div>
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
-                        <div className = "mt-9">
+                        <div className = "">
                             <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} expenses_dict = {expenses} currentUser = {currUser}></ExpenseView>
                         </div>
                     </div>
