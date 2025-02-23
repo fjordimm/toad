@@ -32,7 +32,10 @@ export default function NewExpense(props: { onClose: () => void }) {
 
     let payees: string[] = [] // array to pass in for list of people in expense
     let amount: number[] = [] // array to pass in for the amount people owe
-    let evenSplit: boolean = false; //change if sophie says so 
+
+
+    // let  evenSplit: boolean = false; //change if sophie says so 
+    const [evenSplit, setEvenSplit] = useState(false);
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
 
@@ -44,6 +47,12 @@ export default function NewExpense(props: { onClose: () => void }) {
         }, {} as { [key: string]: [number, number] });
 
         return dictionary;
+    }
+
+    // dynamic and even split
+
+    const handleSplitMethodButton = (evenSplit: boolean) => {
+        setEvenSplit(evenSplit);
     }
 
     // called when user clicks submit. Makes the map and sends it to database.
@@ -180,10 +189,16 @@ export default function NewExpense(props: { onClose: () => void }) {
 
                                     {/* Dynamic vs Even Buttons */}
                                     <div className="flex justify-center font-sunflower text-white">
-                                        <button className="w-24 px-4 py-2 bg-[#8FAE72] rounded-l-xl">
+                                        <button 
+                                            className={`w-24 px-4 py-2 rounded-l-xl ${ !evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
+                                            onClick={() => handleSplitMethodButton(false)}
+                                        >
                                             Dynamic
                                         </button>
-                                        <button className="w-24 px-4 py-2 bg-[#668a45] rounded-r-xl">
+                                        <button 
+                                            className={`w-24 px-4 py-2 rounded-r-xl ${ evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
+                                            onClick={() => handleSplitMethodButton(true)}
+                                        >
                                             Even
                                         </button>
                                     </div>
