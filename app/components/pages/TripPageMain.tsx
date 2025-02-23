@@ -18,15 +18,6 @@ export default function TripPageMain() {
             <div className="grow flex flex-col gap-5">
                 <h1 className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripName}</h1>
 
-<<<<<<< HEAD
-                <div className="">
-                    <Link to="./plan" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Plan</Link>
-                </div>
-
-                <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} />
-
-            </div>
-=======
 				<div className="">
 					<Link to="./plan" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Plan</Link>
 				</div>
@@ -34,7 +25,6 @@ export default function TripPageMain() {
 					<Link to="./budget" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Budget</Link>
 				</div>
 			</div>
->>>>>>> origin/add-expense-modal
 
             <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} />
         </div>

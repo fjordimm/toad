@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import cross from "/cross.svg";
 import { updateDoc } from 'firebase/firestore';
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
+import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
@@ -30,7 +31,10 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [totalCost, setTotalCost] = useState('');
     console.log(date);
 
-    let payees: string[] = [] // array to pass in for list of people in expense
+    //let payees: string[] = [] // array to pass in for list of people in expense
+    //applied useState for payees so if user goes between pages of the modals, payees is saved
+    const [payees, setPayees] = useState<string[]>([]);
+
     let amount: number[] = [] // array to pass in for the amount people owe
     let evenSplit: boolean = false; //change if sophie says so 
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
@@ -142,11 +146,12 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     </div>
                                     <h1 className="text-white text-xl font-light">Add Toads To Expense</h1>
                                 </div>
-                                <div>
+                                <div className="pt-3">
                                     {/* -------------------------------- */}
                                     {/* Add Toads component here */}
                                     {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
                                     {/* -------------------------------- */}
+                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} payees={payees} setPayees={setPayees} />
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
