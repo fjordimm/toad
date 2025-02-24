@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { dbRetrieveUser } from "~/src/databaseUtil";
+import { dbDeleteExpense, dbRetrieveUser } from "~/src/databaseUtil";
 import Loading from "../../Loading";
 
 export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId: string }) {
@@ -67,10 +67,10 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
 
                         {
                             payerObj[1] === 1
-                                ? <button className="w-20 h-5 rounded-full bg-unpaid_button flex justify-center items-center">
+                                ? <button className="w-20 h-5 rounded-lg bg-unpaid_button/70 hover:bg-unpaid_button/100 flex justify-center items-center">
                                     <span className="font-sunflower text-xs">Mark as paid</span>
                                 </button>
-                                : <button className="w-20 h-5 rounded-full bg-paid_button flex justify-center items-center">
+                                : <button className="w-20 h-5 rounded-lg bg-paid_button/70 hover:bg-paid_button/100 flex justify-center items-center">
                                     <span className="font-sunflower text-xs">Paid</span>
                                 </button>
                         }
@@ -94,6 +94,10 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
         );
     }
 
+    async function handleDeleteButton() {
+        await dbDeleteExpense(props.tripDbDoc.ref, props.expenseId);
+    }
+
     return (
         <div className="bg-toad_count_lime w-full rounded-lg flex flex-col p-3 gap-3">
             {
@@ -112,7 +116,10 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
             }
             <div className="flex flex-row justify-between items-end pl-5">
                 {turnPayersDbDocsIntoElems()}
-                <button className="bg-[#F9B691]">Delete</button>
+
+                <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
+                    <span className="font-sunflower text-base text-white">Delete Expense</span>
+                </button>
             </div>
         </div>
     );

@@ -285,3 +285,13 @@ export async function dbDeleteDestination(tripDbDocRef: DocumentReference, desti
         destinations: destinationsObj
     });
 }
+
+export async function dbDeleteExpense(tripDbDocRef: DocumentReference, expenseId: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const expensesObj = tripDbDoc.get("expenses");
+    delete expensesObj[expenseId];
+    await updateDoc(tripDbDoc.ref, {
+        expenses: expensesObj
+    });
+}
