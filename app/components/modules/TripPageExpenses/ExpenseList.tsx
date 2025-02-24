@@ -195,64 +195,88 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
 
         if(props.filter === "all") {
             // return (<p>People Owe Me ALL.</p>);
-            return (
-                <div className="flex flex-col gap-3 m-3">
-                    {/* {props.expenses.map(expense => (
-                        <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                    ))} */}
-                    {
-                        props.peopleOweMe.map((expenseId: string) => {
-                            if (props.tripDbDoc !== null) {
-                                return (
-                                  <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
-                                );
-                            } else {
-                                return null;
-                            }
-                        })
-                    }
-                </div>
-            );
+            if(props.peopleOweMe.length == 0) {
+                return(
+                    <div className="mt-48 flex justify-center items-center">
+                        <p className="font-sunflower text-sidebar_deep_green text-xl text-center p-5">There are no expenses owed to you!</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="flex flex-col gap-3 m-3">
+                        {/* {props.expenses.map(expense => (
+                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
+                        ))} */}
+                        {
+                            props.peopleOweMe.map((expenseId: string) => {
+                                if (props.tripDbDoc !== null) {
+                                    return (
+                                      <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })
+                        }
+                    </div>
+                );
+            }
         } else if(props.filter === "paid") {
             // return (<p>People Owe Me PAID.</p>);
-            return (
-                <div className="flex flex-col gap-3 m-3">
-                    {/* {props.expenses.map(expense => (
-                        <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                    ))} */}
-                    {
-                        owed_paid.map((expenseId: string) => {
-                            if (props.tripDbDoc !== null) {
-                                return (
-                                  <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
-                                );
-                            } else {
-                                return null;
-                            }
-                        })
-                    }
-                </div>
-            );
+            if(owed_paid.length == 0) {
+                return(
+                    <div className="mt-48 flex justify-center items-center">
+                        <p className="font-sunflower text-sidebar_deep_green text-xl text-center p-5">No expenses owed to you are fully paid off yet!</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="flex flex-col gap-3 m-3">
+                        {/* {props.expenses.map(expense => (
+                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
+                        ))} */}
+                        {
+                            owed_paid.map((expenseId: string) => {
+                                if (props.tripDbDoc !== null) {
+                                    return (
+                                      <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })
+                        }
+                    </div>
+                );
+            }
         } else if(props.filter === "unpaid") {
             // return (<p>People Owe Me UNPAID.</p>);
-            return (
-                <div className="flex flex-col gap-3 m-3">
-                    {/* {props.expenses.map(expense => (
-                        <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                    ))} */}
-                    {
-                        owed_unpaid.map((expenseId: string) => {
-                            if (props.tripDbDoc !== null) {
-                                return (
-                                  <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
-                                );
-                            } else {
-                                return null;
-                            }
-                        })
-                    }
-                </div>
-            );
+            if(owed_unpaid.length == 0) {
+                return(
+                    <div className="mt-48 flex justify-center items-center">
+                        <p className="font-sunflower text-sidebar_deep_green text-xl text-center p-5">All expenses owed to you are fully paid off!</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="flex flex-col gap-3 m-3">
+                        {/* {props.expenses.map(expense => (
+                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
+                        ))} */}
+                        {
+                            owed_unpaid.map((expenseId: string) => {
+                                if (props.tripDbDoc !== null) {
+                                    return (
+                                      <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })
+                        }
+                    </div>
+                );
+            }
         }
     }
 }

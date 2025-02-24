@@ -120,16 +120,18 @@ export default function BudgetPageMain() {
                 {/* Sidebar Div */}
                 <div className="flex flex-col w-1/5 h-full gap-y-4">
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-3xl text-sidebar_deep_green"><b>You owe all toads on board</b></p>
-                        <p className="font-sunflower text-3xl text-red-800">${i_owe_toads.toFixed(2)}</p>
+                        <p className="font-sunflower text-2xl text-sidebar_deep_green"><b>You owe all toads on board</b></p>
+                        <p className="font-sunflower text-2xl text-red-800">${i_owe_toads.toFixed(2)}</p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-3xl text-sidebar_deep_green"><b>Your fellow toads owe you</b></p>
-                        <p className="font-sunflower text-3xl text-red-800">${toads_owe_me.toFixed(2)}</p>
+                        <p className="font-sunflower text-2xl text-sidebar_deep_green"><b>Your fellow toads owe you</b></p>
+                        <p className="font-sunflower text-2xl text-red-800">${toads_owe_me.toFixed(2)}</p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-3xl text-sidebar_deep_green"><b>Your fellow toads have paid you</b></p>
-                        <p className="font-sunflower text-3xl text-red-800">${toads_paid_me.toFixed(2)}</p>
+                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                            <b>Your fellow toads have paid you </b>
+                            <span className="text-red-800">${toads_paid_me.toFixed(2)}</span>
+                        </p>
                     </div>
                     <button className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
                         Add an Expense
