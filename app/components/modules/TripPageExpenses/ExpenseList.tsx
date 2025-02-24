@@ -7,6 +7,7 @@ These arrays are uuids for expenses and will be used to generate the Expense com
 
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import Expense from "./ExpenseList/Expense";
 
 
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, expenses_dict: any, currentUser: string}) {
