@@ -35,15 +35,25 @@ export default function NewExpense(props: { onClose: () => void }) {
 
 // ==============================*** BEGIN SOPHIE's CODE *** =======================================================
 
-    const [evenSplit, setEvenSplit] = useState(false);
+
+    const [evenSplit, setEvenSplit] = useState(false); // state for boolean: evenSplit
+
+    // Temporary list
     payees = ["sophiehan2004@gmail.com", "email2@gmail.com", "Bruhz@gmail.com", "sophiehan2005@gmail.com", "email3@gmail.com", "Bruhzz@gmail.com"]
     
+
+    // A dictionary of userExpenses is initialized {key: name string , value: inputtedCost number}
+    // This keeps track of the input boxes and ties every input box to its corresponding user
     const [userExpense, setUserExpense] = useState<{[key:string]: number}>(
         Object.fromEntries(payees.map(name => [name,0.00]))
     );
 
+    // Sum of all inputted costs (takes sum of all values in userExpense dictionary)
     const totalInputAmount = Object.values(userExpense).reduce((acc,cur) => acc + cur, 0);
 
+    // Parameter: a name: string
+    // Functionality: Takes in a name and converts it to a JSX component displaying the name and avatar color
+    // TODO: pass in avatar color as parameter or convert input to a userDB doc. Currently fixed on orange 
     const NameCard =({name}:{name:string}) => {
         return (
             <div className="flex bg-[#8FA789]/40 px-1 py-1 gap-3 items-center w-48 rounded-md">
@@ -61,6 +71,10 @@ export default function NewExpense(props: { onClose: () => void }) {
         );
     };
 
+
+    // Triggered by change on input cost boxes.
+    // Functionality: On every input change, update the inputtedCost in the dictionary of the entry with corresponding name
+    // name and value are passed in by a map function - see below
     const handleExpenseInputChange = (name:string, value:number) => {
         setUserExpense((prevExpenses) => ({
             ...prevExpenses,
@@ -69,6 +83,8 @@ export default function NewExpense(props: { onClose: () => void }) {
         console.log(userExpense);
     }
 
+    // Parameter: a boolean - what evenSplit state should be set to.
+    // Functionality: updates userExpense with new values - even split amount
     const handleSplitMethodButton = (evenSplit: boolean) => {
         setEvenSplit(evenSplit);
 
@@ -83,6 +99,9 @@ export default function NewExpense(props: { onClose: () => void }) {
         });   
     }
 
+
+    // Triggered by Scale button in the warning
+    // Functionality: updates userExpense with new values - after scaling existing values proportionally
     const handleScaling = () =>{
         if (totalInputAmount == 0 ) return;
 
