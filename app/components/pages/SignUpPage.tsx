@@ -22,11 +22,25 @@ export default function SignUpPage() {
     const [lname, setLName] = useState('');
     const [error, setError] = useState('');
 
+    function isValidEmail(email:string) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     // TODO: handle weak password error (and any other errors from createUserWithEmailAndPassword)
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
+
+            if(!isValidEmail(email)) {
+                setError("Please enter a valid email!");
+                setFName("");
+                setLName("");
+                setEmail("");
+                setPassword("");
+            }
+
             await createUserWithEmailAndPassword(firebaseAuth, email, password);
 
             const emailLower = email.toLowerCase();

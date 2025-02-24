@@ -64,7 +64,7 @@ export default function BudgetPageMain() {
     return (
         <div className="grow flex flex-col gap-5 bg-dashboard_lime">
             {/* Non button div */}
-            <div className="">
+            <div className="mt-[3px]">
                 <Link to="./.." className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Back</Link>
             </div>
             <div className="flex flex-row gap-5 h-full">
