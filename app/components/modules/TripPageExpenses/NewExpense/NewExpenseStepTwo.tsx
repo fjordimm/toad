@@ -1,14 +1,49 @@
 import React, { useEffect, useRef, useState } from "react";
+import { dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
+import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
+import type { DocumentSnapshot } from "firebase/firestore";
 
 
-export default function NewExpenseStepTwo({totalCost, payees,setPayees, evenSplit, setEvenSplit}:
+
+
+export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayees, evenSplit, setEvenSplit}:
     {
+    tripDbDoc: DocumentSnapshot | null,
     evenSplit: boolean,
     setEvenSplit: React.Dispatch<React.SetStateAction<boolean>>
     totalCost: string,
     payees: { [key: string]: number[] },
-    setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>}){
+    setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>})
 
+    {
+
+    const [memberColors, setMemberColors] = useState<Record<string, number>>({});
+    useEffect(() => {
+            if (tripDbDoc !== null) {
+                dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
+                    if (result) {
+                        //made for consistency among the colors between added and non-added members to the expense
+                        const colors: Record<string, number> = {};
+                        const memberColorsAlreadyTaken = new Set<number>();
+    
+                        result.forEach(member => {
+                            let colorNum = Math.abs(stringHash(member.id) % 15);
+                            let loopCounter = 0;
+                            while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+                                colorNum = (colorNum + 1) % 15;
+                                loopCounter++;
+                            }
+                            memberColorsAlreadyTaken.add(colorNum);
+                            colors[member.id] = colorNum;
+                        });
+    
+                        setMemberColors(colors);
+                    }
+                });
+            }
+        }, [tripDbDoc]);
+    
+    
 
 
     // Temporary list
@@ -27,10 +62,12 @@ export default function NewExpenseStepTwo({totalCost, payees,setPayees, evenSpli
     // Functionality: Takes in a name and converts it to a JSX component displaying the name and avatar color
     // TODO: pass in avatar color as parameter or convert input to a userDB doc. Currently fixed on orange 
     const NameCard =({name}:{name:string}) => {
+        const userColor = indexTo15UniqueColor(memberColors[name]);
+        
         return (
             <div className="flex bg-[#8FA789]/40 px-1 py-1 gap-3 items-center w-48 rounded-md">
                 <div
-                    className={`w-[18.86px] h-[18.86px] rounded-full bg-orange-600`}
+                    className={`w-[18.86px] h-[18.86px] rounded-full ${userColor}`}
                 >
                 </div>
     
