@@ -54,21 +54,25 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
 
             if (payerDbDoc !== null) {
                 payersAsElems.push(
-                    <div key={i} className="flex flex-row gap-7">
+                    <div key={i} className="flex flex-row gap-7 items-center">
                         <div className="w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm flex flex-row items-center py-1 px-2 gap-2">
                             <div className="bg-trip_member_col_5 min-w-5 min-h-5 w-5 h-5 rounded-full"></div>
                             <div className="overflow-hidden whitespace-nowrap text-ellipsis">
-                                <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">Howdy ho motherfucker</span>
+                                <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">{`${payerDbDoc.get("first_name")} ${payerDbDoc.get("last_name")}`}</span>
                             </div>
                         </div>
 
                         <span className="font-sunflower font-bold">{`$${payerObj[0].toFixed(2)}`}</span>
 
-                        {/* {
-                            payerObj[payersKeys[i]][1] === 1
-                                ? <span>yeeeehawwww</span>
-                                : null
-                        } */}
+                        {
+                            payerObj[1] === 1
+                                ? <button className="w-20 h-5 rounded-full bg-unpaid_button flex justify-center items-center">
+                                    <span className="font-sunflower text-xs">Mark as paid</span>
+                                </button>
+                                : <button className="w-20 h-5 rounded-full bg-paid_button flex justify-center items-center">
+                                    <span className="font-sunflower text-xs">Paid</span>
+                                </button>
+                        }
                     </div>
                 );
             } else {
