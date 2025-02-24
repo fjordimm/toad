@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { dbDeleteExpense, dbRetrieveUser } from "~/src/databaseUtil";
+import { dbDeleteExpense, dbMarkExpenseAsPaidOrUnpaid, dbRetrieveUser } from "~/src/databaseUtil";
 import Loading from "../../Loading";
 
 export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId: string }) {
@@ -46,6 +46,14 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
         );
     }
 
+    async function handleMarkAsPaid(payerId: string) {
+        await dbMarkExpenseAsPaidOrUnpaid(props.tripDbDoc.ref, props.expenseId, payerId, true);
+    }
+
+    async function handleMarkAsUnpaid(payerId: string) {
+        await dbMarkExpenseAsPaidOrUnpaid(props.tripDbDoc.ref, props.expenseId, payerId, false);
+    }
+
     function turnPayersDbDocsIntoElems(): ReactNode {
 
         const payersAsElems = [];
@@ -66,11 +74,11 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                         <span className="font-sunflower font-bold">{`$${payerObj[0].toFixed(2)}`}</span>
 
                         {
-                            payerObj[1] === 1
-                                ? <button className="w-20 h-5 rounded-lg bg-unpaid_button/70 hover:bg-unpaid_button/100 flex justify-center items-center">
+                            payerObj[1] === 0
+                                ? <button onClick={() => { handleMarkAsPaid(payersKeys[i]) }} className="w-20 h-5 rounded-lg bg-unpaid_button/70 hover:bg-unpaid_button/100 flex justify-center items-center">
                                     <span className="font-sunflower text-xs">Mark as paid</span>
                                 </button>
-                                : <button className="w-20 h-5 rounded-lg bg-paid_button/70 hover:bg-paid_button/100 flex justify-center items-center">
+                                : <button onClick={() => { handleMarkAsUnpaid(payersKeys[i]) }} className="w-20 h-5 rounded-lg bg-paid_button/70 hover:bg-paid_button/100 flex justify-center items-center">
                                     <span className="font-sunflower text-xs">Paid</span>
                                 </button>
                         }
@@ -114,7 +122,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                     )
                     : <Loading />
             }
-            <div className="flex flex-row justify-between items-end pl-5">
+            <div className="flex flex-row justify-between items-end pl-12">
                 {turnPayersDbDocsIntoElems()}
 
                 <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
