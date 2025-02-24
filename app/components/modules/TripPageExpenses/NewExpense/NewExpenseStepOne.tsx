@@ -6,7 +6,7 @@ import AddMemberToExpense from "/AddMemberToExpense.svg";
 import DeleteMemberFromExpense from "/DeleteMemberFromExpense.svg";
 import Loading from "../../Loading";
 
-export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tripDbDoc: DocumentSnapshot | null, payees: string[], setPayees: React.Dispatch<React.SetStateAction<string[]>> }) {
+export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tripDbDoc: DocumentSnapshot | null, payees: { [key: string]: number }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>}) {
     const [listOfTripsMembers, setListOfTripMembers] = useState<DocumentSnapshot[] | null>(null);
     const [memberColors, setMemberColors] = useState<Record<string, number>>({});
 
@@ -43,14 +43,22 @@ export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tr
     //adds members to expense if the add button is clicked
     const HandleAddMember = (member: DocumentSnapshot) => {
         const memberId = member.id;
-        if (!payees.includes(memberId)) {
-            setPayees([...payees, memberId]);
+        if (!payees.hasOwnProperty(memberId)) {
+            setPayees((prev) => ({
+                ...prev,
+                [memberId] : 0
+            }));
         }
     };
 
     //deletes members from expense if delete button is clicked
     const HandleDeleteMember = (memberId: string) => {
-        setPayees(payees.filter(id => id !== memberId));
+        setPayees((prev) => {
+            const updatedPayees = { ...prev };
+            delete payees[memberId];
+            delete updatedPayees[memberId]; // Remove the key
+            return updatedPayees;
+        })
     };
 
     //member boxes of members that were added to an expense and are in the subcontainer at the top
@@ -106,7 +114,7 @@ export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tr
         if (members === null) return <Loading />;
         
         return members.map(member => {
-            if (payees.includes(member.id)) return null;
+            if (payees.hasOwnProperty(member.id)) return null;
             return <MemberBox key={member.id} member={member} />;
         });
     };
@@ -115,7 +123,7 @@ export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tr
     const renderAddedMembers = () => {
         if (listOfTripsMembers === null) return <Loading />;
 
-        return payees.map(payeeId => {
+        return Object.keys(payees).map(payeeId => {
             const member = listOfTripsMembers.find(m => m.id === payeeId);
             if (!member) return null;
             return <AddedMember key={member.id} member={member} />;

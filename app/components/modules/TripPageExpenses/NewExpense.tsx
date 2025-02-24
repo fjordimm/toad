@@ -31,24 +31,12 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [totalCost, setTotalCost] = useState('');
     console.log(date);
 
-    //let payees: string[] = [] // array to pass in for list of people in expense
-    //applied useState for payees so if user goes between pages of the modals, payees is saved
-    const [payees, setPayees] = useState<string[]>([]);
+    // useState for payees and their amounts due to keep track across components
+    const [payees, setPayees] = useState<{ [key: string]: number }>({});
+    console.log(payees)
 
-    let amount: number[] = [] // array to pass in for the amount people owe
     let evenSplit: boolean = false; //change if sophie says so 
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
-
-
-    // turn payees and ammount arrays into map
-    function makePayeesDictionary(payees: string[], amount: number[]): { [key: string]: [number, number] } {
-        const dictionary = payees.reduce((acc, name, index) => {
-            acc[name] = [amount[index], 0];
-            return acc;
-        }, {} as { [key: string]: [number, number] });
-
-        return dictionary;
-    }
 
     // called when user clicks submit. Makes the map and sends it to database.
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
@@ -61,7 +49,8 @@ export default function NewExpense(props: { onClose: () => void }) {
                 even_split: evenSplit,
                 date: date,
                 expense_owner: expenseOwner,
-                payers: makePayeesDictionary(payees, amount)
+                // payers: makePayeesDictionary(payees, amount)
+                payers: payees
             };
             await updateDoc(tripPageLayoutContext.tripDbDoc.ref, {
                 [`expenses.${expenseID}`]: newExpense,
@@ -178,8 +167,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                 <div>
                                     {/* -------------------------------- */}
                                     {/* Payment Breakdown Component Here */}
-                                    {/* Use 'payees' for names and fill array 'amount'. Also use evenSplit boolean*/}
-                                    {/* Don't change the order of the names or amounts becuase the order matters */}
+                                    {/* Use 'payees' for names and fill 'payees' dictionary Also use evenSplit boolean*/}
                                     {/* -------------------------------- */}
                                 </div>
                                 {/* Back Button */}
