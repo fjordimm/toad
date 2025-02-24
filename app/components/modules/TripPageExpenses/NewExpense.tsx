@@ -279,7 +279,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* <div> */}
                                     <div className=" w-4/5 h-44 bg-[#BDDE9A] rounded-lg p-4">
                                         <div className="flex flex-col gap-2 overflow-scroll h-full">
-                                            {payees.map((item, index) =>(
+                                            {Object.keys(payees).map((item) =>(
                                                 <div className="flex justify-between">
                                                     <NameCard name={item} />
                                                     <div className="w-48 flex items-center rounded-md gap-2 px-2 font-sunflower text-sidebar_deep_green bg-[#E2F4CE]">
@@ -288,7 +288,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                                             placeholder="0.00"
                                                             min="0"
                                                             step="0.01"
-                                                            value={userExpense[item] === 0 ? "" : userExpense[item]}
+                                                            value={payees[item]?.[0] === 0 ? "" : payees[item]?.[0]}
                                                             className="w-full bg-transparent text-sidebar_deep_green] placeholder:text-sidebar_deep_green/50 font-sunflower focus:outline-none border-b-2 border-sidebar_deep_green/50"
                                                             type="number"
                                                             onChange={(e) => handleExpenseInputChange(item, Number(e.target.value))}
