@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import cross from "/cross.svg";
 import { updateDoc } from 'firebase/firestore';
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
+import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
@@ -30,8 +31,12 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [totalCost, setTotalCost] = useState('');
     console.log(date);
 
-    let payees: string[] = [] // array to pass in for list of people in expense
-    let amount: number[] = [] // array to pass in for the amount people owe
+    // useState for payees and their amounts due to keep track across components
+    // Dictionary Structure:
+    // name: [amount due, notPaid (0)/Paid (1)
+    const [payees, setPayees] = useState<{ [key: string]: number[] }>({});
+    console.log(payees)
+
 
 // ==============================*** BEGIN SOPHIE's CODE *** =======================================================
 
@@ -120,18 +125,6 @@ export default function NewExpense(props: { onClose: () => void }) {
 
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
-
-    // turn payees and ammount arrays into map
-    function makePayeesDictionary(payees: string[], amount: number[]): { [key: string]: [number, number] } {
-        const dictionary = payees.reduce((acc, name, index) => {
-            acc[name] = [amount[index], 0];
-            return acc;
-        }, {} as { [key: string]: [number, number] });
-
-        return dictionary;
-    }
-
-
     // called when user clicks submit. Makes the map and sends it to database.
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -143,7 +136,8 @@ export default function NewExpense(props: { onClose: () => void }) {
                 even_split: evenSplit,
                 date: date,
                 expense_owner: expenseOwner,
-                payers: makePayeesDictionary(payees, amount)
+                // payers: makePayeesDictionary(payees, amount)
+                payers: payees
             };
             await updateDoc(tripPageLayoutContext.tripDbDoc.ref, {
                 [`expenses.${expenseID}`]: newExpense,
@@ -229,11 +223,12 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     </div>
                                     <h1 className="text-white text-xl font-light">Add Toads To Expense</h1>
                                 </div>
-                                <div>
+                                <div className="pt-3">
                                     {/* -------------------------------- */}
                                     {/* Add Toads component here */}
                                     {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
                                     {/* -------------------------------- */}
+                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} payees={payees} setPayees={setPayees} />
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
@@ -261,8 +256,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                 <div className="flex flex-col items-center justify-center mt-4 w-full gap-4">
                                     {/* -------------------------------- */}
                                     {/* Payment Breakdown Component Here */}
-                                    {/* Use 'payees' for names and fill array 'amount'. Also use evenSplit boolean*/}
-                                    {/* Don't change the order of the names or amounts becuase the order matters */}
+                                    {/* Use 'payees' for names and fill 'payees' dictionary Also use evenSplit boolean*/}
                                     {/* -------------------------------- */}
 
                                     {/* Dynamic vs Even Buttons */}
