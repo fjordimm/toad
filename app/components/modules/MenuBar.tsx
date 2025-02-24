@@ -88,7 +88,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
     return (
         <div
-            className={`${open ? "w-72" : "w-5"
+            className={`${open ? "min-w-72 w-72" : "min-w-5 w-5"
                 } relative h-screen bg-sidebar_deep_green transition-width duration-300 ease-in-out overflow-hidden`}>
             <button
                 className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white px-2 py-2 rounded-xl h-32 bg-sidebar_deep_green"

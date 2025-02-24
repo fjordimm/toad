@@ -102,7 +102,8 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
         days: num_days,
         trip_users: [],
         itinerary: itin,
-        destinations: {}
+        destinations: {},
+        expenses: {}
     });
 
     await dbAddUserToTrip(tripDbDocRef, await dbRetrieveUser(tripOwner));
@@ -282,5 +283,25 @@ export async function dbDeleteDestination(tripDbDocRef: DocumentReference, desti
     delete destinationsObj[destinationId];
     await updateDoc(tripDbDoc.ref, {
         destinations: destinationsObj
+    });
+}
+
+export async function dbDeleteExpense(tripDbDocRef: DocumentReference, expenseId: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const expensesObj = tripDbDoc.get("expenses");
+    delete expensesObj[expenseId];
+    await updateDoc(tripDbDoc.ref, {
+        expenses: expensesObj
+    });
+}
+
+export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReference, expenseId: string, payerId: string, value: boolean) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const expensesObj = tripDbDoc.get("expenses");
+    expensesObj[expenseId].payers[payerId][1] = value ? 1 : 0;
+    await updateDoc(tripDbDoc.ref, {
+        expenses: expensesObj
     });
 }
