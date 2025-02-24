@@ -33,10 +33,16 @@ export default function NewExpense(props: { onClose: () => void }) {
     let payees: string[] = [] // array to pass in for list of people in expense
     let amount: number[] = [] // array to pass in for the amount people owe
 
-    const [userExpense, setUserExpense] = useState<{[key:string]: number}>({});
+// ==============================*** BEGIN SOPHIE's CODE *** =======================================================
 
-
+    const [evenSplit, setEvenSplit] = useState(false);
     payees = ["sophiehan2004@gmail.com", "email2@gmail.com", "Bruhz@gmail.com", "sophiehan2005@gmail.com", "email3@gmail.com", "Bruhzz@gmail.com"]
+    
+    const [userExpense, setUserExpense] = useState<{[key:string]: number}>(
+        Object.fromEntries(payees.map(name => [name,0.00]))
+    );
+
+    const totalInputAmount = Object.values(userExpense).reduce((acc,cur) => acc + cur, 0);
 
     const NameCard =({name}:{name:string}) => {
         return (
@@ -63,11 +69,36 @@ export default function NewExpense(props: { onClose: () => void }) {
         console.log(userExpense);
     }
 
-   
+    const handleSplitMethodButton = (evenSplit: boolean) => {
+        setEvenSplit(evenSplit);
+
+        let splitValue =  Math.round((Number(totalCost) / payees.length) * 100) / 100;
+        setUserExpense((prevExpenses) => {
+            const updatedExpenses = Object.keys(prevExpenses).reduce((acc, key) => {
+              acc[key] = splitValue; // Set each user's expense to splitValue
+              return acc;
+            }, {} as { [key: string]: number });  // Type the accumulator to match the state type
+        
+            return updatedExpenses;
+        });   
+    }
+
+    const handleScaling = () =>{
+        if (totalInputAmount == 0 ) return;
+
+        const scalingFactor = Number(totalCost) / totalInputAmount;
+        setUserExpense((prevExpenses) => 
+            Object.fromEntries(
+                Object.entries(prevExpenses).map(([key, value]) => [key,Math.round(value * scalingFactor * 100)/100])
+            )
+        );
+    }
 
 
-    // let  evenSplit: boolean = false; //change if sophie says so 
-    const [evenSplit, setEvenSplit] = useState(false);
+
+    // ==============================*** END SOPHIE's CODE *** =======================================================
+
+
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
 
@@ -81,21 +112,6 @@ export default function NewExpense(props: { onClose: () => void }) {
         return dictionary;
     }
 
-    // dynamic and even split
-
-    const handleSplitMethodButton = (evenSplit: boolean) => {
-        setEvenSplit(evenSplit);
-
-        let splitValue = Number(totalCost) / payees.length;
-        setUserExpense((prevExpenses) => {
-            const updatedExpenses = Object.keys(prevExpenses).reduce((acc, key) => {
-              acc[key] = splitValue; // Set each user's expense to splitValue
-              return acc;
-            }, {} as { [key: string]: number });  // Type the accumulator to match the state type
-        
-            return updatedExpenses;
-        });   
-    }
 
     // called when user clicks submit. Makes the map and sends it to database.
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
@@ -250,7 +266,7 @@ export default function NewExpense(props: { onClose: () => void }) {
 
                                     {/* Specify Expenses Big Box */}
                                     {/* <div> */}
-                                    <div className=" w-4/5 h-48 bg-[#BDDE9A] rounded-lg p-4">
+                                    <div className=" w-4/5 h-44 bg-[#BDDE9A] rounded-lg p-4">
                                         <div className="flex flex-col gap-2 overflow-scroll h-full">
                                             {payees.map((item, index) =>(
                                                 <div className="flex justify-between">
@@ -259,7 +275,9 @@ export default function NewExpense(props: { onClose: () => void }) {
                                                         $
                                                         <input 
                                                             placeholder="0.00"
-                                                            value={userExpense[item]}
+                                                            min="0"
+                                                            step="0.01"
+                                                            value={userExpense[item] === 0 ? "" : userExpense[item]}
                                                             className="w-full bg-transparent text-sidebar_deep_green] placeholder:text-sidebar_deep_green/50 font-sunflower focus:outline-none border-b-2 border-sidebar_deep_green/50"
                                                             type="number"
                                                             onChange={(e) => handleExpenseInputChange(item, Number(e.target.value))}
@@ -269,9 +287,22 @@ export default function NewExpense(props: { onClose: () => void }) {
                                             ))}
 
                                     
-                                        </div>
-                                        
+                                        </div>        
                                     </div>
+                                    {Math.abs(totalInputAmount - Number(totalCost)) >= 0.02 && (
+                                        <div className="flex items-center gap-4 text-red-700 text-sm font-sunflower h-10 -mt-4">
+                                            <p>Input amounts do not add up to total cost</p>
+                                            <div className="flex gap-4">
+                                                <button 
+                                                    className=" text-center w-18 px-4 bg-[#8FAE72] text-[#FFF] rounded-md"
+                                                    type="button"
+                                                    onClick={(e) => handleScaling()}
+                                                >
+                                                    Scale
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                     
                                 </div>
                                 {/* Back Button */}
