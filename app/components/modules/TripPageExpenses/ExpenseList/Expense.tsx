@@ -54,7 +54,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
 
             if (payerDbDoc !== null) {
                 payersAsElems.push(
-                    <div className="flex flex-row gap-10">
+                    <div key={i} className="flex flex-row gap-7">
                         <div className="w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm flex flex-row items-center py-1 px-2 gap-2">
                             <div className="bg-trip_member_col_5 min-w-5 min-h-5 w-5 h-5 rounded-full"></div>
                             <div className="overflow-hidden whitespace-nowrap text-ellipsis">
@@ -62,7 +62,13 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                             </div>
                         </div>
 
-                        <span className="font-sunflower font-bold">hi</span>
+                        <span className="font-sunflower font-bold">{`$${payerObj[0].toFixed(2)}`}</span>
+
+                        {/* {
+                            payerObj[payersKeys[i]][1] === 1
+                                ? <span>yeeeehawwww</span>
+                                : null
+                        } */}
                     </div>
                 );
             } else {
@@ -73,7 +79,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
         }
 
         return (
-            <div className="flex flex-col mx-7 gap-1">
+            <div className="flex flex-col gap-2">
                 {
                     payersAsElems.map((elem: ReactNode) => {
                         return elem;
@@ -82,16 +88,6 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
             </div>
         );
     }
-
-    // let bruh: boolean = true;
-    // for (let i = 0; i < payersDbDocs.length; i++) {
-    //     if (payersDbDocs[i][0] === null) {
-    //         bruh = false;
-    //     }
-    // }
-    // if (bruh) {
-    //     console.log(payersDbDocs);
-    // }
 
     return (
         <div className="bg-toad_count_lime w-full rounded-lg flex flex-col p-3 gap-3">
@@ -109,7 +105,10 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                     )
                     : <Loading />
             }
-            {turnPayersDbDocsIntoElems()}
+            <div className="flex flex-row justify-between items-end pl-5">
+                {turnPayersDbDocsIntoElems()}
+                <button className="bg-[#F9B691]">Delete</button>
+            </div>
         </div>
     );
 }
