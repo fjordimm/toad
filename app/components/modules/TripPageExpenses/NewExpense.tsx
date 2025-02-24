@@ -37,24 +37,22 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [payees, setPayees] = useState<{ [key: string]: number[] }>({});
     console.log(payees)
 
-
 // ==============================*** BEGIN SOPHIE's CODE *** =======================================================
 
 
     const [evenSplit, setEvenSplit] = useState(false); // state for boolean: evenSplit
 
     // Temporary list
-    payees = ["sophiehan2004@gmail.com", "email2@gmail.com", "Bruhz@gmail.com", "sophiehan2005@gmail.com", "email3@gmail.com", "Bruhzz@gmail.com"]
     
 
     // A dictionary of userExpenses is initialized {key: name string , value: inputtedCost number}
     // This keeps track of the input boxes and ties every input box to its corresponding user
-    const [userExpense, setUserExpense] = useState<{[key:string]: number}>(
-        Object.fromEntries(payees.map(name => [name,0.00]))
-    );
+    // const [userExpense, setUserExpense] = useState<{[key:string]: number}>(
+    //     Object.fromEntries(payees.map(name => [name,0.00]))
+    // );
 
     // Sum of all inputted costs (takes sum of all values in userExpense dictionary)
-    const totalInputAmount = Object.values(userExpense).reduce((acc,cur) => acc + cur, 0);
+    const totalInputAmount = Object.values(payees).reduce((acc,cur) => acc + cur[0], 0);
 
     // Parameter: a name: string
     // Functionality: Takes in a name and converts it to a JSX component displaying the name and avatar color
@@ -81,11 +79,10 @@ export default function NewExpense(props: { onClose: () => void }) {
     // Functionality: On every input change, update the inputtedCost in the dictionary of the entry with corresponding name
     // name and value are passed in by a map function - see below
     const handleExpenseInputChange = (name:string, value:number) => {
-        setUserExpense((prevExpenses) => ({
-            ...prevExpenses,
-            [name]: value
+        setPayees((prevPayees) => ({
+            ...prevPayees,
+            [name]: [value, ...prevPayees[name].slice(1)]
         }));
-        console.log(userExpense);
     }
 
     // Parameter: a boolean - what evenSplit state should be set to.
@@ -93,14 +90,15 @@ export default function NewExpense(props: { onClose: () => void }) {
     const handleSplitMethodButton = (evenSplit: boolean) => {
         setEvenSplit(evenSplit);
 
-        let splitValue =  Math.round((Number(totalCost) / payees.length) * 100) / 100;
-        setUserExpense((prevExpenses) => {
-            const updatedExpenses = Object.keys(prevExpenses).reduce((acc, key) => {
-              acc[key] = splitValue; // Set each user's expense to splitValue
-              return acc;
-            }, {} as { [key: string]: number });  // Type the accumulator to match the state type
+        let splitValue =  Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100;
         
-            return updatedExpenses;
+        setPayees((prevPayees) => {
+            const updatedPayees = Object.keys(prevPayees).reduce((acc, key) => {
+              acc[key] = [splitValue, ...prevPayees[key].slice(1)]; // Set each user's expense to splitValue
+              return acc;
+            }, {} as { [key: string]: number[] });  // Type the accumulator to match the state type
+        
+            return updatedPayees;
         });   
     }
 
@@ -111,9 +109,9 @@ export default function NewExpense(props: { onClose: () => void }) {
         if (totalInputAmount == 0 ) return;
 
         const scalingFactor = Number(totalCost) / totalInputAmount;
-        setUserExpense((prevExpenses) => 
+        setPayees((prevPayees) => 
             Object.fromEntries(
-                Object.entries(prevExpenses).map(([key, value]) => [key,Math.round(value * scalingFactor * 100)/100])
+                Object.entries(prevPayees).map(([key, value]) => [key, [Math.round(value[0] * scalingFactor * 100)/100, ...value.slice(1)]])
             )
         );
     }
