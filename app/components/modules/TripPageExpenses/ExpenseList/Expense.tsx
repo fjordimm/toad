@@ -26,6 +26,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
 
     const payers: { [key: string]: any } = expenseObj.payers;
     const payersKeys: string[] = Object.keys(payers);
+    payersKeys.sort((a, b) => { return a.localeCompare(b); }); // Sorted by string because the database is inconsistent
     
     const payersDbDocs: [DocumentSnapshot | null, Dispatch<SetStateAction<DocumentSnapshot | null>>][] = [];
     // Setting the values for payersDbDocs:
