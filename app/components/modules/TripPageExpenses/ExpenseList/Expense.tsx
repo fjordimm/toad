@@ -117,6 +117,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                                 <span className="font-bold">{expenseOwnerDbDoc.get("first_name")}</span>
                                 <span> is requesting a payment split on </span>
                                 <span className="font-bold">{expenseObj.name}</span>
+                                <span>{` (${expenseObj.date})`}</span>
                             </span>
                         </div>
                     )
