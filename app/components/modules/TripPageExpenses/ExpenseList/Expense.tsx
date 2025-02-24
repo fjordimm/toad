@@ -107,7 +107,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
     }
 
     return (
-        <div className="bg-toad_count_lime w-full rounded-lg flex flex-col p-3 gap-3">
+        <div className="bg-toad_count_lime rounded-lg flex flex-col p-3 gap-3">
             {
                 expenseOwnerDbDoc !== null
                     ? (
@@ -117,7 +117,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, expenseId:
                                 <span className="font-bold">{expenseOwnerDbDoc.get("first_name")}</span>
                                 <span> is requesting a payment split on </span>
                                 <span className="font-bold">{expenseObj.name}</span>
-                                <span>{` (${expenseObj.date})`}</span>
+                                <span className="text-black/50">{` (${expenseObj.date})`}</span>
                             </span>
                         </div>
                     )
