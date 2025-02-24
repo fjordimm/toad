@@ -22,7 +22,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", expen
                     props.expenses.map((expenseId: string) => {
                         if (props.tripDbDoc !== null) {
                             return (
-                              <Expense tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
+                              <Expense key={expenseId} tripDbDoc={props.tripDbDoc} expenseId={expenseId}></Expense>  
                             );
                         } else {
                             return null;
