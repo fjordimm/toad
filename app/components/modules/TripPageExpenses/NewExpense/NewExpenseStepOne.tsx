@@ -6,7 +6,7 @@ import AddMemberToExpense from "/AddMemberToExpense.svg";
 import DeleteMemberFromExpense from "/DeleteMemberFromExpense.svg";
 import Loading from "../../Loading";
 
-export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tripDbDoc: DocumentSnapshot | null, payees: { [key: string]: number }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>}) {
+export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tripDbDoc: DocumentSnapshot | null, payees: { [key: string]: number[] }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>}) {
     const [listOfTripsMembers, setListOfTripMembers] = useState<DocumentSnapshot[] | null>(null);
     const [memberColors, setMemberColors] = useState<Record<string, number>>({});
 
@@ -46,7 +46,7 @@ export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tr
         if (!payees.hasOwnProperty(memberId)) {
             setPayees((prev) => ({
                 ...prev,
-                [memberId] : 0
+                [memberId] : [0, 0]
             }));
         }
     };

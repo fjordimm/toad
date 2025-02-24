@@ -32,7 +32,9 @@ export default function NewExpense(props: { onClose: () => void }) {
     console.log(date);
 
     // useState for payees and their amounts due to keep track across components
-    const [payees, setPayees] = useState<{ [key: string]: number }>({});
+    // Dictionary Structure:
+    // name: [amount due, notPaid (0)/Paid (1)
+    const [payees, setPayees] = useState<{ [key: string]: number[] }>({});
     console.log(payees)
 
     let evenSplit: boolean = false; //change if sophie says so 
