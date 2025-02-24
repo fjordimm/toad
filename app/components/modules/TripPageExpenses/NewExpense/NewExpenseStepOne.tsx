@@ -11,6 +11,10 @@ export default function NewExpenseStepOne({ tripDbDoc, payees, setPayees }: { tr
     const [memberColors, setMemberColors] = useState<Record<string, number>>({});
 
     useEffect(() => {
+        console.log("Payees updated:", payees); // making sure payees is being updated
+    }, [payees]);
+
+    useEffect(() => {
         if (tripDbDoc !== null) {
             dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
                 if (result) {
