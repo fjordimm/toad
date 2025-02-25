@@ -3,6 +3,7 @@ import { useState } from 'react';
 import emailicon from '/mail.svg'
 import lock from '/lock.svg'
 import globe from '/globe.svg'
+import logo from '/toadlogo.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
@@ -18,9 +19,20 @@ export default function SignInPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    function isValidEmail(email:string) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
+
+            if(!isValidEmail(email)) {
+                setError("Please enter a valid email!");
+                setEmail("");
+                setPassword("");
+            }
             // TODO: Unused code here? I commented it out.
             await signInWithEmailAndPassword(firebaseAuth, email, password);
 
@@ -29,6 +41,7 @@ export default function SignInPage() {
             setError('');
 
             navigate("/");
+            
         } catch (err: any) {
             if (err.code === 'auth/user-not-found') {
                 setError('The email you entered does not belong to any account!');
@@ -59,7 +72,7 @@ export default function SignInPage() {
                     <p>Don't Have an Account? <a href = "/sign-up" className = "underline">Sign Up</a></p>
                 </div>
                 {/* Form */}
-                <form onSubmit = {handleSubmit} className = "mt-4 gap-y-4 flex flex-col justify-center">
+                <form onSubmit = {handleSubmit} className = "mt-4 gap-y-4 flex flex-col items-center justify-center">
                     {/* Email */}
                     <div className = "flex flex-row w-80 h-12 bg-white/20 rounded-xl focus-within:ring-[#FFF]/40 focus-within:ring-2 items-center">
                         <img src = {emailicon} alt = "Email Icon" className = "w-9 h-9 ml-2" ></img>

@@ -10,6 +10,7 @@ import Loading from './Loading';
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { stringHash } from "~/src/miscUtil";
+import logo from "/toadlogo.svg"
 
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
@@ -102,8 +103,9 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                 <div className="flex flex-col h-full">
                     {/* Fixed Logo and Welcome Section */}
                     <div className="flex-shrink-0">
-                        <Link to="/">
-                            <img src={toadLogo} width={50} height={50} alt="toadLogo" className="justify-self-center mt-3"></img>
+                        <Link className = "flex flex-row font-lilita text-4xl text-white justify-center items-center w-full" to="/">
+                            <p className="justify-self-center mt-3 mr-3">TOAD</p>
+                            <img src={logo} width={50} height={50} alt="toadLogo" className="justify-self-center mt-3"></img>
                         </Link>
                         <h1 className="text-center text-white font-sunflower text-lg py-4 px-4 pb-6">
                             Welcome Back, {`${userFirstName} ${userLastName}`}

@@ -101,7 +101,7 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
             {/* Modal content container */}
             <div
                 ref={modalContentRef}
-                className="flex flex-col w-2/5 justify-center items-center bg-dashboard_component_bg py-8 rounded-2xl gap-6"
+                className="relative flex flex-col w-2/5 justify-center items-center bg-dashboard_component_bg py-8 rounded-2xl gap-6"
                 // Stop click events from bubbling to the overlay
                 onClick={(e) => e.stopPropagation()}
             >
@@ -109,9 +109,9 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
                     <p className="font-sunflower text-sidebar_deep_green text-2xl">
                         Add a Potential Destination
                     </p>
-                    <div className="absolute -right-36 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
+                </div>
+                <div className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
                         <img src={cross} className="w-7 h-7"></img>
-                    </div>
                 </div>
 
 
