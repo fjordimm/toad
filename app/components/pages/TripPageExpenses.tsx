@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
 import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
+import NewExpense from "../modules/TripPageExpenses/NewExpense";
 export default function BudgetPageMain() {
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
@@ -62,6 +63,11 @@ export default function BudgetPageMain() {
     }
 
     return (
+    const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    return(
         <div className="grow flex flex-col gap-5 bg-dashboard_lime">
             {/* Non button div */}
             <div className="mt-[3px]">
@@ -119,6 +125,23 @@ export default function BudgetPageMain() {
                 </div>
                 {/* Sidebar Div */}
                 <div className="flex flex-col w-1/5 h-full gap-y-4">
+                        <div className = "bg-[#D7F297] p-5 rounded-xl">
+                            <p className = "font-sunflower font-bold text-3xl text-sidebar_deep_green">You owe all toads on board</p>
+                            <p className = "font-sunflower font-bold text-3xl text-red-800">$513.26</p>
+                        </div>
+                        <div className = "bg-[#D7F297] p-5 rounded-xl">
+                            <p className = "font-sunflower font-bold text-3xl text-sidebar_deep_green">Your fellow toads owe you</p>
+                            <p className = "font-sunflower font-bold text-3xl text-red-800">$10.00</p>
+                        </div>
+                        <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
+                            Add an Expense
+                        </button>
+
+                        {
+                            isModalOpen
+                                ? <NewExpense onClose={() => setIsModalOpen(false)} />
+                                : null
+                        }
                     <div className="bg-[#D7F297] p-5 rounded-xl">
                         <p className="font-sunflower text-2xl text-sidebar_deep_green">
                             <b>You owe all toads on board </b>
