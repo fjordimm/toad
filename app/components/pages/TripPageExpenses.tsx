@@ -120,16 +120,20 @@ export default function BudgetPageMain() {
                 {/* Sidebar Div */}
                 <div className="flex flex-col w-1/5 h-full gap-y-4">
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green"><b>You owe all toads on board</b></p>
-                        <p className="font-sunflower text-2xl text-red-800">${i_owe_toads.toFixed(2)}</p>
-                    </div>
-                    <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green"><b>Your fellow toads owe you</b></p>
-                        <p className="font-sunflower text-2xl text-red-800">${toads_owe_me.toFixed(2)}</p>
+                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                            <b>You owe all toads on board </b>
+                            <span className="text-red-800">${i_owe_toads.toFixed(2)}</span>
+                        </p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
                         <p className="font-sunflower text-2xl text-sidebar_deep_green">
-                            <b>Your fellow toads have paid you </b>
+                            <b>All toads owe you </b>
+                            <span className="text-red-800">${toads_owe_me.toFixed(2)}</span>
+                        </p>
+                    </div>
+                    <div className="bg-[#D7F297] p-5 rounded-xl">
+                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                            <b>All toads have paid you </b>
                             <span className="text-red-800">${toads_paid_me.toFixed(2)}</span>
                         </p>
                     </div>

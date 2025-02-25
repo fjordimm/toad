@@ -3,6 +3,7 @@ import { useState } from 'react';
 import emailicon from '/mail.svg'
 import lock from '/lock.svg'
 import globe from '/globe.svg'
+import logo from '/toadlogo.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
