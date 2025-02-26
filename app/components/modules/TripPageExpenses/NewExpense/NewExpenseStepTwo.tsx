@@ -143,7 +143,7 @@ export default function NewExpenseStepTwo({ tripDbDoc, tripMembersInfo, totalCos
             <div className=" w-4/5 h-44 bg-[#BDDE9A] rounded-lg p-4">
                 <div className="flex flex-col gap-2 overflow-scroll h-full">
                     {Object.keys(payees).map((item) => (
-                        <div className="flex justify-between">
+                        <div key={item} className="flex justify-between">
                             <NameCard name={item} />
                             <div className="w-48 flex items-center rounded-md gap-2 px-2 font-sunflower text-sidebar_deep_green bg-[#E2F4CE]">
                                 $
