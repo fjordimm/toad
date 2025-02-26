@@ -43,7 +43,7 @@ export default function NewExpense(props: { onClose: () => void }) {
     let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
     // called when user clicks submit. Makes the map and sends it to database.
-    async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmitExpense(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (tripPageLayoutContext.tripDbDoc !== null) {
             const expenseID = uuidv4();
@@ -91,7 +91,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                     <img src={cross} className="w-7 h-7" />
                 </div>
                 {/* Form Container */}
-                <form onSubmit={handleSubmitDestination} className="w-full flex flex-col justify-center items-center">
+                <form onSubmit={handleSubmitExpense} className="w-full flex flex-col justify-center items-center">
                     {/* Expense Name Input */}
                     <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                         <input
