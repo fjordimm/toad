@@ -6,48 +6,47 @@ import type { DocumentSnapshot } from "firebase/firestore";
 
 
 
-export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayees, evenSplit, setEvenSplit}:
+export default function NewExpenseStepTwo({ tripDbDoc, totalCost, payees, setPayees, evenSplit, setEvenSplit }:
     {
-    tripDbDoc: DocumentSnapshot | null,
-    evenSplit: boolean,
-    setEvenSplit: React.Dispatch<React.SetStateAction<boolean>>
-    totalCost: string,
-    payees: { [key: string]: number[] },
-    setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>})
-
-    {
+        tripDbDoc: DocumentSnapshot | null,
+        evenSplit: boolean,
+        setEvenSplit: React.Dispatch<React.SetStateAction<boolean>>
+        totalCost: string,
+        payees: { [key: string]: number[] },
+        setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>
+    }) {
 
     const [memberColors, setMemberColors] = useState<Record<string, number>>({});
     useEffect(() => {
-            if (tripDbDoc !== null) {
-                dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
-                    if (result) {
-                        //made for consistency among the colors between added and non-added members to the expense
-                        const colors: Record<string, number> = {};
-                        const memberColorsAlreadyTaken = new Set<number>();
-    
-                        result.forEach(member => {
-                            let colorNum = Math.abs(stringHash(member.id) % 15);
-                            let loopCounter = 0;
-                            while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
-                                colorNum = (colorNum + 1) % 15;
-                                loopCounter++;
-                            }
-                            memberColorsAlreadyTaken.add(colorNum);
-                            colors[member.id] = colorNum;
-                        });
-    
-                        setMemberColors(colors);
-                    }
-                });
-            }
-        }, [tripDbDoc]);
-    
-    
+        if (tripDbDoc !== null) {
+            dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
+                if (result) {
+                    //made for consistency among the colors between added and non-added members to the expense
+                    const colors: Record<string, number> = {};
+                    const memberColorsAlreadyTaken = new Set<number>();
+
+                    result.forEach(member => {
+                        let colorNum = Math.abs(stringHash(member.id) % 15);
+                        let loopCounter = 0;
+                        while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+                            colorNum = (colorNum + 1) % 15;
+                            loopCounter++;
+                        }
+                        memberColorsAlreadyTaken.add(colorNum);
+                        colors[member.id] = colorNum;
+                    });
+
+                    setMemberColors(colors);
+                }
+            });
+        }
+    }, [tripDbDoc]);
+
+
 
 
     // Temporary list
-    
+
 
     // A dictionary of userExpenses is initialized {key: name string , value: inputtedCost number}
     // This keeps track of the input boxes and ties every input box to its corresponding user
@@ -56,21 +55,21 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
     // );
 
     // Sum of all inputted costs (takes sum of all values in userExpense dictionary)
-    const totalInputAmount = Object.values(payees).reduce((acc,cur) => acc + cur[0], 0);
+    const totalInputAmount = Object.values(payees).reduce((acc, cur) => acc + cur[0], 0);
 
     // Parameter: a name: string
     // Functionality: Takes in a name and converts it to a JSX component displaying the name and avatar color
     // TODO: pass in avatar color as parameter or convert input to a userDB doc. Currently fixed on orange 
-    const NameCard =({name}:{name:string}) => {
+    const NameCard = ({ name }: { name: string }) => {
         const userColor = indexTo15UniqueColor(memberColors[name]);
-        
+
         return (
             <div className="flex bg-[#8FA789]/40 px-1 py-1 gap-3 items-center w-48 rounded-md">
                 <div
                     className={`w-[18.86px] h-[18.86px] rounded-full ${userColor}`}
                 >
                 </div>
-    
+
                 <div className="left-[45px] right-0 h-full overflow-hidden whitespace-nowrap text-ellipsis">
                     <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
                         {name}
@@ -84,7 +83,7 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
     // Triggered by change on input cost boxes.
     // Functionality: On every input change, update the inputtedCost in the dictionary of the entry with corresponding name
     // name and value are passed in by a map function - see below
-    const handleExpenseInputChange = (name:string, value:number) => {
+    const handleExpenseInputChange = (name: string, value: number) => {
         setPayees((prevPayees) => ({
             ...prevPayees,
             [name]: [value, ...prevPayees[name].slice(1)]
@@ -96,28 +95,28 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
     const handleSplitMethodButton = (evenSplit: boolean) => {
         setEvenSplit(evenSplit);
 
-        let splitValue =  Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100;
-        
+        let splitValue = Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100;
+
         setPayees((prevPayees) => {
             const updatedPayees = Object.keys(prevPayees).reduce((acc, key) => {
-              acc[key] = [splitValue, ...prevPayees[key].slice(1)]; // Set each user's expense to splitValue
-              return acc;
+                acc[key] = [splitValue, ...prevPayees[key].slice(1)]; // Set each user's expense to splitValue
+                return acc;
             }, {} as { [key: string]: number[] });  // Type the accumulator to match the state type
-        
+
             return updatedPayees;
-        });   
+        });
     }
 
 
     // Triggered by Scale button in the warning
     // Functionality: updates userExpense with new values - after scaling existing values proportionally
-    const handleScaling = () =>{
-        if (totalInputAmount == 0 ) return;
+    const handleScaling = () => {
+        if (totalInputAmount == 0) return;
 
         const scalingFactor = Number(totalCost) / totalInputAmount;
-        setPayees((prevPayees) => 
+        setPayees((prevPayees) =>
             Object.fromEntries(
-                Object.entries(prevPayees).map(([key, value]) => [key, [Math.round(value[0] * scalingFactor * 100)/100, ...value.slice(1)]])
+                Object.entries(prevPayees).map(([key, value]) => [key, [Math.round(value[0] * scalingFactor * 100) / 100, ...value.slice(1)]])
             )
         );
     }
@@ -127,15 +126,15 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
     return (
         <div className="flex flex-col items-center justify-center w-full gap-4">
             <div className="flex justify-center font-sunflower text-white">
-                <button 
-                    className={`w-24 px-4 py-2 rounded-l-xl ${ !evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
+                <button
+                    className={`w-24 px-4 py-2 rounded-l-xl ${!evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]"} `}
                     onClick={() => handleSplitMethodButton(false)}
                     type="button"
                 >
                     Dynamic
                 </button>
-                <button 
-                    className={`w-24 px-4 py-2 rounded-r-xl ${ evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]" } `}
+                <button
+                    className={`w-24 px-4 py-2 rounded-r-xl ${evenSplit ? "bg-[#668a45]" : "bg-[#8FAE72]"} `}
                     onClick={() => handleSplitMethodButton(true)}
                     type="button"
                 >
@@ -147,12 +146,12 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
             {/* <div> */}
             <div className=" w-4/5 h-44 bg-[#BDDE9A] rounded-lg p-4">
                 <div className="flex flex-col gap-2 overflow-scroll h-full">
-                    {Object.keys(payees).map((item) =>(
+                    {Object.keys(payees).map((item) => (
                         <div className="flex justify-between">
                             <NameCard name={item} />
                             <div className="w-48 flex items-center rounded-md gap-2 px-2 font-sunflower text-sidebar_deep_green bg-[#E2F4CE]">
                                 $
-                                <input 
+                                <input
                                     placeholder="0.00"
                                     min="0"
                                     step="0.01"
@@ -165,14 +164,14 @@ export default function NewExpenseStepTwo({tripDbDoc, totalCost, payees,setPayee
                         </div>
                     ))}
 
-            
-                </div>        
+
+                </div>
             </div>
             {Math.abs(totalInputAmount - Number(totalCost)) >= 0.02 && (
                 <div className="flex items-center gap-4 text-red-700 text-sm font-sunflower h-10 -mt-4">
                     <p>Input amounts do not add up to total cost</p>
                     <div className="flex gap-4">
-                        <button 
+                        <button
                             className=" text-center w-18 px-4 bg-[#8FAE72] text-[#FFF] rounded-md"
                             type="button"
                             onClick={(e) => handleScaling()}

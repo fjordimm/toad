@@ -32,13 +32,11 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [expenseName, setExpenseName] = useState('');
     const [date, setDate] = useState('');
     const [totalCost, setTotalCost] = useState('');
-    console.log(date);
 
     // useState for payees and their amounts due to keep track across components
     // Dictionary Structure:
     // name: [amount due, notPaid (0)/Paid (1)
     const [payees, setPayees] = useState<{ [key: string]: number[] }>({});
-    console.log(payees)
     const [evenSplit, setEvenSplit] = useState(false); // state for boolean: evenSplit
 
 
@@ -147,7 +145,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* Add Toads component here */}
                                     {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
                                     {/* -------------------------------- */}
-                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} payees={payees} setPayees={setPayees} />
+                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} payees={payees} setPayees={setPayees} />
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
