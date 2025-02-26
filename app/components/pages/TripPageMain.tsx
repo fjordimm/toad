@@ -10,7 +10,7 @@ export default function TripPageMain() {
     debugLogComponentRerender("TripPageMain");
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
-
+    
     const tripName: string = tripPageLayoutContext.tripDbDoc.get("trip_name");
 
     return (
@@ -26,7 +26,7 @@ export default function TripPageMain() {
 				</div>
 			</div>
 
-            <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} />
+            <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
         </div>
     );
 }
