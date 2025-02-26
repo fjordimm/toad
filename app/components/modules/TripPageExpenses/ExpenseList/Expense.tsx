@@ -35,7 +35,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
             const payerInfo = props.tripMembersInfo[payerId];
 
             payersAsElems.push(
-                <>
+                <React.Fragment key={payerId}>
                     <div className="w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm flex flex-row items-center py-1 px-2 gap-2">
                         <div className={`min-w-5 min-h-5 w-5 h-5 rounded-full ${payerInfo.color}`}></div>
                         <div className="overflow-hidden whitespace-nowrap text-ellipsis">
@@ -54,7 +54,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
                                 <span className="font-sunflower text-xs">Paid</span>
                             </button>
                     }
-                </>
+                </React.Fragment>
             );
         }
 
