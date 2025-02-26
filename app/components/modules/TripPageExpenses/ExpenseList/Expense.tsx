@@ -13,41 +13,11 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
 
     const expenseObj: any = props.tripDbDoc.get("expenses")[props.expenseId];
 
-    // const [expenseOwnerDbDoc, setExpenseOwnerDbDoc] = useState<DocumentSnapshot | null>(null);
-    // useEffect(
-    //     () => {
-    //         dbRetrieveUser(expenseObj.expense_owner).then(
-    //             (result: DocumentSnapshot) => {
-    //                 setExpenseOwnerDbDoc(result);
-    //             }
-    //         );
-    //     },
-    //     [props.tripDbDoc]
-    // );
-
     const expenseOwnerInfo = props.tripMembersInfo[expenseObj.expense_owner];
 
     const payers: { [key: string]: any } = expenseObj.payers;
     const payersKeys: string[] = Object.keys(payers);
-    payersKeys.sort((a, b) => { return a.localeCompare(b); }); // Sorted by string because the database is inconsistent
-
-    // const payersDbDocs: [DocumentSnapshot | null, Dispatch<SetStateAction<DocumentSnapshot | null>>][] = [];
-    // // Setting the values for payersDbDocs:
-    // for (let i = 0; i < payersKeys.length; i++) {
-    //     payersDbDocs.push(useState<DocumentSnapshot | null>(null));
-    // }
-    // for (let i = 0; i < payersKeys.length; i++) {
-    //     useEffect(
-    //         () => {
-    //             dbRetrieveUser(payersKeys[i]).then(
-    //                 (result: DocumentSnapshot) => {
-    //                     payersDbDocs[i][1](result); // The [1] is the setter function from useState
-    //                 }
-    //             );
-    //         },
-    //         []
-    //     );
-    // }
+    payersKeys.sort((a, b) => { return a.localeCompare(b); }); // Sorted by string because the dictionary order is inconsistent
 
     async function handleMarkAsPaid(payerId: string) {
         await dbMarkExpenseAsPaidOrUnpaid(props.tripDbDoc.ref, props.expenseId, payerId, true);
