@@ -5,9 +5,9 @@ When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
 */
 
 import { Link } from "react-router";
-import React, { useState } from 'react';
-import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
-import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
+import React, { useState } from "react";
+import { updateDoc, type DocumentSnapshot } from "firebase/firestore";
+import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
 export default function BudgetPageMain() {
@@ -118,7 +118,7 @@ export default function BudgetPageMain() {
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
                         <div className = "">
-                            <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} expenses_dict = {expenses} currentUser = {currUser}></ExpenseView>
+                            <ExpenseList view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} expenses_dict = {expenses} currentUser = {currUser}></ExpenseList>
                         </div>
                     </div>
                 </div>

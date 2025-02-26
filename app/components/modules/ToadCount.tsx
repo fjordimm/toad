@@ -14,44 +14,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     debugLogComponentRerender("ToadCount");
 
     const navigate = useNavigate();
-
-    // const [listOfTripsMembers, setListOfTripMembers] = useState<DocumentSnapshot[] | null>(null);
-    // useEffect(
-    //     () => {
-    //         if (props.tripDbDoc !== null) {
-    //             dbRetrieveTripsListOfMembers(props.tripDbDoc).then(
-    //                 (result: DocumentSnapshot[] | null) => {
-    //                     setListOfTripMembers(result);
-    //                 }
-    //             );
-    //         }
-    //     },
-    //     [props.tripDbDoc]
-    // );
-
-    // function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
-    //     if (listOfTripsMembers !== null) {
-
-    //         // The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
-    //         // It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
-    //         const memberColorsAlreadyTaken: Set<number> = new Set<number>();
-
-    //         return listOfTripsMembers.map((member: DocumentSnapshot) => {
-    //             let colorNum: number = Math.abs(stringHash(member.id) % 15);
-    //             let loopCounter: number = 0;
-    //             while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
-    //                 colorNum = (colorNum + 1) % 15;
-    //                 loopCounter++;
-    //             }
-    //             memberColorsAlreadyTaken.add(colorNum);
-
-    //             return <ToadMember key={member.id} memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
-    //         });
-    //     } else {
-    //         return <Loading />;
-    //     }
-    // }
-
+    
     function turnListOfTripsMembersIntoElems(): ReactNode {
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
                 const memberInfo = props.tripMembersInfo[memberEmailId];
