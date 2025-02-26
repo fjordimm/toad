@@ -16,20 +16,38 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
     if (props.view === "all") {
         let all_paid: string[] = [];
         let all_unpaid: string[] = [];
-        for (const expense in props.expenses_dict) {
-            let paid: boolean = true;
-            for (const payee in props.expenses_dict[expense]["payers"]) {
-                if (props.expenses_dict[expense]["payers"][payee][1] == 0) { //meaning unpaid
+        // for (const expense in props.expenses_dict) {
+        //     let paid: boolean = true;
+        //     for (const payee in props.expenses_dict[expense]["payers"]) {
+        //         if (props.expenses_dict[expense]["payers"][payee][1] == 0) { //meaning unpaid
+        //             paid = false;
+        //             break;
+        //         }
+        //         if (paid) {
+        //             all_unpaid.push(expense);
+        //         } else {
+        //             all_paid.push(expense);
+        //         }
+        //     }
+        // }
+
+        for (const expense of props.expenses) {
+            let paid = true;
+            for (const payee in props.expenses_dict[expense].payers) {
+                const [amount, paidStatus] = props.expenses_dict[expense].payers[payee];
+
+                if (paidStatus === 0) {
                     paid = false;
                     break;
                 }
-                if (paid) {
-                    all_unpaid.push(expense);
-                } else {
-                    all_paid.push(expense);
-                }
+            }
+            if (paid) {
+                all_paid.push(expense);
+            } else {
+                all_unpaid.push(expense);
             }
         }
+
         if (props.filter === "all") {
             // return (<p>All Expenses View ALL.</p>);
             return (
