@@ -178,6 +178,7 @@ export default function NewExpense(props: { onClose: () => void }) {
 
                                     <NewExpenseStepTwo 
                                         tripDbDoc={tripPageLayoutContext.tripDbDoc}
+                                        tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
                                         evenSplit={evenSplit}
                                         setEvenSplit={setEvenSplit}
                                         totalCost={totalCost} 

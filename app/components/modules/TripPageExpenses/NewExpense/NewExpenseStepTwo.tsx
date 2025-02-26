@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
 import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
+import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
-
-
-
-export default function NewExpenseStepTwo({ tripDbDoc, totalCost, payees, setPayees, evenSplit, setEvenSplit }:
+export default function NewExpenseStepTwo({ tripDbDoc, tripMembersInfo, totalCost, payees, setPayees, evenSplit, setEvenSplit }:
     {
         tripDbDoc: DocumentSnapshot | null,
+        tripMembersInfo: TripMembersInfo,
         evenSplit: boolean,
         setEvenSplit: React.Dispatch<React.SetStateAction<boolean>>
         totalCost: string,
@@ -16,34 +15,31 @@ export default function NewExpenseStepTwo({ tripDbDoc, totalCost, payees, setPay
         setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>>
     }) {
 
-    const [memberColors, setMemberColors] = useState<Record<string, number>>({});
-    useEffect(() => {
-        if (tripDbDoc !== null) {
-            dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
-                if (result) {
-                    //made for consistency among the colors between added and non-added members to the expense
-                    const colors: Record<string, number> = {};
-                    const memberColorsAlreadyTaken = new Set<number>();
+    // const [memberColors, setMemberColors] = useState<Record<string, number>>({});
+    // useEffect(() => {
+    //     if (tripDbDoc !== null) {
+    //         dbRetrieveTripsListOfMembers(tripDbDoc).then((result) => {
+    //             if (result) {
+    //                 //made for consistency among the colors between added and non-added members to the expense
+    //                 const colors: Record<string, number> = {};
+    //                 const memberColorsAlreadyTaken = new Set<number>();
 
-                    result.forEach(member => {
-                        let colorNum = Math.abs(stringHash(member.id) % 15);
-                        let loopCounter = 0;
-                        while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
-                            colorNum = (colorNum + 1) % 15;
-                            loopCounter++;
-                        }
-                        memberColorsAlreadyTaken.add(colorNum);
-                        colors[member.id] = colorNum;
-                    });
+    //                 result.forEach(member => {
+    //                     let colorNum = Math.abs(stringHash(member.id) % 15);
+    //                     let loopCounter = 0;
+    //                     while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+    //                         colorNum = (colorNum + 1) % 15;
+    //                         loopCounter++;
+    //                     }
+    //                     memberColorsAlreadyTaken.add(colorNum);
+    //                     colors[member.id] = colorNum;
+    //                 });
 
-                    setMemberColors(colors);
-                }
-            });
-        }
-    }, [tripDbDoc]);
-
-
-
+    //                 setMemberColors(colors);
+    //             }
+    //         });
+    //     }
+    // }, [tripDbDoc]);
 
     // Temporary list
 
@@ -59,9 +55,9 @@ export default function NewExpenseStepTwo({ tripDbDoc, totalCost, payees, setPay
 
     // Parameter: a name: string
     // Functionality: Takes in a name and converts it to a JSX component displaying the name and avatar color
-    // TODO: pass in avatar color as parameter or convert input to a userDB doc. Currently fixed on orange 
     const NameCard = ({ name }: { name: string }) => {
-        const userColor = indexTo15UniqueColor(memberColors[name]);
+        const userFullName = `${tripMembersInfo[name].dbDoc.get("first_name")} ${tripMembersInfo[name].dbDoc.get("last_name")}`;
+        const userColor = tripMembersInfo[name].color;
 
         return (
             <div className="flex bg-[#8FA789]/40 px-1 py-1 gap-3 items-center w-48 rounded-md">
@@ -72,7 +68,7 @@ export default function NewExpenseStepTwo({ tripDbDoc, totalCost, payees, setPay
 
                 <div className="left-[45px] right-0 h-full overflow-hidden whitespace-nowrap text-ellipsis">
                     <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
-                        {name}
+                        {userFullName}
                     </span>
                 </div>
             </div>
