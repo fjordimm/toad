@@ -47,6 +47,9 @@ export default function NewExpense(props: { onClose: () => void }) {
         e.preventDefault();
         if (tripPageLayoutContext.tripDbDoc !== null) {
             const expenseID = uuidv4();
+            if (expenseOwner in payees) {
+                payees[expenseOwner][1] = 1;
+            }
             const newExpense = {
                 name: expenseName,
                 total_amount: totalCost,
