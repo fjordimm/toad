@@ -8,7 +8,7 @@ import { Outlet, useOutletContext } from "react-router";
 import Loading from "../modules/Loading";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { dbRetrieveAllTripUsers, dbRetrieveUser } from "~/src/databaseUtil";
-import { indexTo15UniqueColor } from "~/src/miscUtil";
+import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
 
 // This type stores all users that are members of a trip, including their DocumentSnapshot and their color
 // For any components that use user DocumentSnapshots or colors, they should ultimately get that information from TripPageLayout
@@ -52,11 +52,24 @@ export default function TripPageLayout({ params }: Route.ComponentProps) {
                 dbRetrieveAllTripUsers(tripDbDoc).then(
                     (result: DocumentSnapshot[]) => {
                         const newTripMembersInfo: TripMembersInfo = {};
+
+                        // The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
+                        // It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
+                        const memberColorsAlreadyTaken: Set<number> = new Set<number>();
                         
                         for (let memberDbDoc of result) {
+
+                            let colorNum: number = Math.abs(stringHash(memberDbDoc.id) % 15);
+                            let loopCounter: number = 0;
+                            while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
+                                colorNum = (colorNum + 1) % 15;
+                                loopCounter++;
+                            }
+                            memberColorsAlreadyTaken.add(colorNum);
+
                             newTripMembersInfo[memberDbDoc.id] = {
                                 dbDoc: memberDbDoc,
-                                color: indexTo15UniqueColor(2)
+                                color: indexTo15UniqueColor(colorNum)
                             };
                         }
 
