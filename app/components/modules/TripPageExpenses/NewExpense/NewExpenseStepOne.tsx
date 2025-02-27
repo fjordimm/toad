@@ -9,7 +9,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
     //adds members to expense if the add button is clicked
     const HandleAddMember = (member: DocumentSnapshot) => {
         const memberId = member.id;
-        if (!payees.hasOwnProperty(memberId)) {
+        if (!Object.hasOwn(payees, memberId)) {
             setPayees((prev) => ({
                 ...prev,
                 [memberId]: [0, 0]
@@ -78,7 +78,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
     //lists out all the members in the trip that are not yet added to an expense
     const renderMemberBoxes = () => {
         return Object.keys(tripMembersInfo).map(memberId => {
-            if (payees.hasOwnProperty(memberId)) return null;
+            if (Object.hasOwn(payees, memberId)) return null;
             return <MemberBox key={memberId} member={tripMembersInfo[memberId].dbDoc} />;
         });
     };
