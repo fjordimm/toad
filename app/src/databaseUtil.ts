@@ -210,6 +210,25 @@ export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDo
     });
 }
 
+export async function dbAddDestination(tripDbDocRef: DocumentReference, isInItinerary: boolean, name: string, price: string, length: string, time: string, description: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const destinationId: string = generateUuid();
+
+    const destinationsObj = tripDbDoc.get("destinations");
+    destinationsObj[destinationId] = {
+        is_in_itinerary: isInItinerary,
+        name: name,
+        price: price,
+        length: length,
+        time: time,
+        description: description
+    };
+    await updateDoc(tripDbDoc.ref, {
+        destinations: destinationsObj
+    });
+}
+
 // Use -1 for dayIndex to move it to Possible Stops
 export async function dbMoveDestination(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
