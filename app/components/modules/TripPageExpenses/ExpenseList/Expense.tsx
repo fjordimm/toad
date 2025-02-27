@@ -73,6 +73,9 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
         await dbDeleteExpense(props.tripDbDoc.ref, props.expenseId);
     }
 
+    const expenseDate = new Date(expenseObj.date);
+    const expenseDateString = `${expenseDate.toLocaleDateString("default", { month: "short" })} ${expenseDate.getUTCDate()}, ${expenseDate.getUTCFullYear()}`;
+
     return (
         <div className="bg-toad_count_lime rounded-lg flex flex-col p-3 gap-3">
             {
@@ -82,7 +85,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
                         <span className="font-bold">{expenseOwnerInfo.dbDoc.get("first_name")}</span>
                         <span> is requesting a payment split on </span>
                         <span className="font-bold">{expenseObj.name}</span>
-                        <span className="text-black/50">{` (${expenseObj.date})`}</span>
+                        <span className="text-black/50">{` (${expenseDateString})`}</span>
                     </span>
                 </div>
             }
