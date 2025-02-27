@@ -1,6 +1,7 @@
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth, firebaseDb } from "./toadFirebase";
+import { generateUuid } from "./miscUtil";
 
 export class DbError extends Error {
     constructor(message: string) {
@@ -294,6 +295,26 @@ export async function dbDeleteDestination(tripDbDocRef: DocumentReference, desti
     delete destinationsObj[destinationId];
     await updateDoc(tripDbDoc.ref, {
         destinations: destinationsObj
+    });
+}
+
+export async function dbAddExpense(tripDbDocRef: DocumentReference, name: string, totalAmount: string, date: string, expenseOwner: string, evenSplit: boolean, payers: { [key: string]: number[] }) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const expenseId: string = generateUuid();
+
+    const expensesObj = tripDbDoc.get("expenses");
+    expensesObj[expenseId] = {
+        name: name,
+        total_amount: totalAmount,
+        date: date,
+        time_added: new Date().getTime(),
+        expense_owner: expenseOwner,
+        even_split: evenSplit,
+        payers: payers
+    };
+    await updateDoc(tripDbDoc.ref, {
+        expenses: expensesObj
     });
 }
 

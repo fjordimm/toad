@@ -5,6 +5,7 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/compon
 import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
 import { indexTo15UniqueColor } from "~/src/miscUtil";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
+import { dbAddExpense } from "~/src/databaseUtil";
 
 
 export default function NewExpense(props: { onClose: () => void }) {
@@ -17,15 +18,6 @@ export default function NewExpense(props: { onClose: () => void }) {
             props.onClose();
         }
     };
-
-    // Generate unique id for each expense
-    function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 16 | 0,
-                v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
 
     const [activeSection, setActiveSection] = useState(1);
 
@@ -46,24 +38,14 @@ export default function NewExpense(props: { onClose: () => void }) {
     async function handleSubmitExpense(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (tripPageLayoutContext.tripDbDoc !== null) {
-            const expenseID = uuidv4();
+
             if (expenseOwner in payees) {
                 payees[expenseOwner][1] = 1;
             }
-            const newExpense = {
-                name: expenseName,
-                total_amount: totalCost,
-                even_split: evenSplit,
-                date: date,
-                expense_owner: expenseOwner,
-                // payers: makePayeesDictionary(payees, amount)
-                payers: payees
-            };
-            await updateDoc(tripPageLayoutContext.tripDbDoc.ref, {
-                [`expenses.${expenseID}`]: newExpense,
-            });
+
+            await dbAddExpense(tripPageLayoutContext.tripDbDoc.ref, expenseName, totalCost, date, expenseOwner, evenSplit, payees);
         }
-        console.log("closed");
+
         props.onClose();
     }
 
