@@ -7,7 +7,7 @@ import { firebaseDb } from "~/src/toadFirebase";
 import { Outlet, useOutletContext } from "react-router";
 import Loading from "../modules/Loading";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
-import { dbRetrieveAllTripUsers, dbRetrieveUser } from "~/src/databaseUtil";
+import { dbRetrieveAllTripUsers } from "~/src/databaseUtil";
 import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
 
 // This type stores all users that are members of a trip, including their DocumentSnapshot and their color
@@ -57,7 +57,7 @@ export default function TripPageLayout({ params }: Route.ComponentProps) {
                         // It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
                         const memberColorsAlreadyTaken: Set<number> = new Set<number>();
 
-                        for (let memberDbDoc of result) {
+                        for (const memberDbDoc of result) {
 
                             let colorNum: number = Math.abs(stringHash(memberDbDoc.id) % 15);
                             let loopCounter: number = 0;

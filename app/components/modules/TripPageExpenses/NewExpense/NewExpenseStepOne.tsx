@@ -1,13 +1,10 @@
 import type { DocumentSnapshot } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
-import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
+import React from "react";
 import AddMemberToExpense from "/AddMemberToExpense.svg";
 import DeleteMemberFromExpense from "/DeleteMemberFromExpense.svg";
-import Loading from "../../Loading";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
-export default function NewExpenseStepOne({ tripDbDoc, tripMembersInfo, payees, setPayees }: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo, payees: { [key: string]: number[] }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>> }) {
+export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }: { tripMembersInfo: TripMembersInfo, payees: { [key: string]: number[] }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>> }) {
 
     //adds members to expense if the add button is clicked
     const HandleAddMember = (member: DocumentSnapshot) => {

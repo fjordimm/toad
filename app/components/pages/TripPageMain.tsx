@@ -1,6 +1,5 @@
 import React from "react";
 import ToadCount from "../modules/ToadCount";
-import NewExpenseStepOne from "../modules/TripPageExpenses/NewExpense/NewExpenseStepOne";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import { Link } from "react-router";

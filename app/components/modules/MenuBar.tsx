@@ -1,5 +1,4 @@
 import React from "react";
-import toadLogo from "/toadLogo.png";
 import InvitationButton from './MenuBar/InvitationButton';
 import { useEffect, useState, type ReactNode } from 'react';
 import { DocumentSnapshot } from 'firebase/firestore';

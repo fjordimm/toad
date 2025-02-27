@@ -44,7 +44,7 @@ const ToadCount: React.FC<ToadCountProps> = ({ tripDbDoc, onOpenModal }) => {
 // AddDestination.tsx
 import React from "react";
 import { useRef, useState } from 'react';
-import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
+import { type DocumentSnapshot } from 'firebase/firestore';
 import cross from "/cross.svg";
 import { dbAddDestination } from "~/src/databaseUtil";
 

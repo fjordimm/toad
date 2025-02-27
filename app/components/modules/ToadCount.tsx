@@ -1,12 +1,10 @@
 import React, { type ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import { type DocumentSnapshot } from "firebase/firestore";
-import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
-import Loading from "./Loading";
+import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-import { stringHash } from "~/src/miscUtil";
 import type { TripMembersInfo } from "../pages/TripPageLayout";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo }) {

@@ -31,7 +31,7 @@ export async function dbRetrieveAllTripUsers(tripDbDoc: DocumentSnapshot): Promi
     const ret: DocumentSnapshot[] = [];
 
     const tripUsers: string[] = tripDbDoc.get("trip_users");
-    for (let emailId of tripUsers) {
+    for (const emailId of tripUsers) {
         ret.push(await dbRetrieveUser(emailId));
     }
 

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
-import NewExpense from "../modules/TripPageExpenses/NewExpense";
 
 export default function Landing() {
 

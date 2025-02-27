@@ -6,7 +6,6 @@ When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
 
 import { Link } from "react-router";
 import React, { useState } from "react";
-import { updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
@@ -33,8 +32,8 @@ export default function BudgetPageMain() {
         }
     });
 
-    let peopleOweMe: string[] = [];
-    let iOwePeople: string[] = [];
+    const peopleOweMe: string[] = [];
+    const iOwePeople: string[] = [];
 
     // populating the arrays
     for (let i = 0; i < expenses_sorted.length; i++) {
@@ -68,8 +67,6 @@ export default function BudgetPageMain() {
             }
         }
     }
-
-    const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 

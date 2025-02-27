@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
-import { indexTo15UniqueColor, stringHash } from "~/src/miscUtil";
-import type { DocumentSnapshot } from "firebase/firestore";
+import React from "react";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
-export default function NewExpenseStepTwo({ tripDbDoc, tripMembersInfo, totalCost, payees, setPayees, evenSplit, setEvenSplit }:
+export default function NewExpenseStepTwo({ tripMembersInfo, totalCost, payees, setPayees, evenSplit, setEvenSplit }:
     {
-        tripDbDoc: DocumentSnapshot | null,
         tripMembersInfo: TripMembersInfo,
         evenSplit: boolean,
         setEvenSplit: React.Dispatch<React.SetStateAction<boolean>>
@@ -91,7 +87,7 @@ export default function NewExpenseStepTwo({ tripDbDoc, tripMembersInfo, totalCos
     const handleSplitMethodButton = (evenSplit: boolean) => {
         setEvenSplit(evenSplit);
 
-        let splitValue = Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100;
+        const splitValue = Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100;
 
         setPayees((prevPayees) => {
             const updatedPayees = Object.keys(prevPayees).reduce((acc, key) => {
@@ -170,7 +166,7 @@ export default function NewExpenseStepTwo({ tripDbDoc, tripMembersInfo, totalCos
                         <button
                             className=" text-center w-18 px-4 bg-[#8FAE72] text-[#FFF] rounded-md"
                             type="button"
-                            onClick={(e) => handleScaling()}
+                            onClick={handleScaling}
                         >
                             Scale
                         </button>

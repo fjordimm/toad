@@ -13,13 +13,13 @@ import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo, expenses_dict: any, currentUser: string }) {
 
     if (props.view === "all") {
-        let all_paid: string[] = [];
-        let all_unpaid: string[] = [];
+        const all_paid: string[] = [];
+        const all_unpaid: string[] = [];
 
         for (const expense of props.expenses) {
             let paid = true;
             for (const payee in props.expenses_dict[expense].payers) {
-                const [amount, paidStatus] = props.expenses_dict[expense].payers[payee];
+                const [, paidStatus] = props.expenses_dict[expense].payers[payee];
 
                 if (paidStatus === 0) {
                     paid = false;
@@ -119,8 +119,8 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             }
         }
     } else if (props.view == "owe") {
-        let owe_paid: string[] = [];
-        let owe_unpaid: string[] = [];
+        const owe_paid: string[] = [];
+        const owe_unpaid: string[] = [];
 
         for (const expense of props.iOwePeople) {
             // 'expense' is now something like "expense_id_1"
@@ -224,7 +224,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         for (const expense of props.peopleOweMe) {
             let paid = true;
             for (const payee in props.expenses_dict[expense].payers) {
-                const [amount, paidStatus] = props.expenses_dict[expense].payers[payee];
+                const [, paidStatus] = props.expenses_dict[expense].payers[payee];
 
                 if (paidStatus === 0) {
                     paid = false;

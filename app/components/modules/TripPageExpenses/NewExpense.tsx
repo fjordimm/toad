@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import cross from "/cross.svg";
-import { updateDoc } from 'firebase/firestore';
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
-import { indexTo15UniqueColor } from "~/src/miscUtil";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
 import { dbAddExpense } from "~/src/databaseUtil";
 
@@ -31,7 +29,7 @@ export default function NewExpense(props: { onClose: () => void }) {
     const [evenSplit, setEvenSplit] = useState(false); // state for boolean: evenSplit
 
 
-    let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
+    const expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
     // called when user clicks submit. Makes the map and sends it to database.
     async function handleSubmitExpense(e: React.FormEvent<HTMLFormElement>) {
@@ -129,7 +127,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* Add Toads component here */}
                                     {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
                                     {/* -------------------------------- */}
-                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} payees={payees} setPayees={setPayees} />
+                                    <NewExpenseStepOne tripMembersInfo={tripPageLayoutContext.tripMembersInfo} payees={payees} setPayees={setPayees} />
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
@@ -161,7 +159,6 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* -------------------------------- */}
 
                                     <NewExpenseStepTwo
-                                        tripDbDoc={tripPageLayoutContext.tripDbDoc}
                                         tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
                                         evenSplit={evenSplit}
                                         setEvenSplit={setEvenSplit}

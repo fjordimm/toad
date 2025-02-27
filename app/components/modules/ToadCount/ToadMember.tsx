@@ -2,7 +2,6 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-import { indexTo15UniqueColor } from "~/src/miscUtil";
 
 export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 

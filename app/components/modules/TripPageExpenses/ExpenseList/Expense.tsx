@@ -3,10 +3,9 @@
     It is to be used in ExpenseList.
 */
 
-import React, { useEffect, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import React, { type ReactNode } from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { dbDeleteExpense, dbMarkExpenseAsPaidOrUnpaid, dbRetrieveUser } from "~/src/databaseUtil";
-import Loading from "../../Loading";
+import { dbDeleteExpense, dbMarkExpenseAsPaidOrUnpaid } from "~/src/databaseUtil";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
 export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string }) {
@@ -30,7 +29,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
     function turnPayersDbDocsIntoElems(): ReactNode {
 
         const payersAsElems = [];
-        for (let payerId of payersKeys) {
+        for (const payerId of payersKeys) {
             const payerObj = payers[payerId];
             const payerInfo = props.tripMembersInfo[payerId];
 
