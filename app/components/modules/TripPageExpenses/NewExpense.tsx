@@ -7,7 +7,6 @@ import { indexTo15UniqueColor } from "~/src/miscUtil";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
 import { dbAddExpense } from "~/src/databaseUtil";
 
-
 export default function NewExpense(props: { onClose: () => void }) {
 
     const modalContentRef = useRef<HTMLDivElement>(null);
@@ -161,17 +160,17 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* Use 'payees' for names and fill 'payees' dictionary Also use evenSplit boolean*/}
                                     {/* -------------------------------- */}
 
-                                    <NewExpenseStepTwo 
+                                    <NewExpenseStepTwo
                                         tripDbDoc={tripPageLayoutContext.tripDbDoc}
                                         tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
                                         evenSplit={evenSplit}
                                         setEvenSplit={setEvenSplit}
-                                        totalCost={totalCost} 
-                                        payees={payees} 
-                                        setPayees={setPayees} 
+                                        totalCost={totalCost}
+                                        payees={payees}
+                                        setPayees={setPayees}
                                     />
-                                    
-                                    
+
+
                                 </div>
                                 {/* Back Button */}
                                 <div className="absolute bottom-0 left-4">
@@ -199,5 +198,4 @@ export default function NewExpense(props: { onClose: () => void }) {
             </div>
         </div>
     );
-
 }

@@ -10,7 +10,6 @@ import React from "react";
 import Expense from "./ExpenseList/Expense";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
-
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo, expenses_dict: any, currentUser: string }) {
 
     if (props.view === "all") {
@@ -134,7 +133,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
 
         if (props.filter === "all") {
             // return (<p>I Owe People View ALL.</p>);
-            if (props.iOwePeople.length == 0){
+            if (props.iOwePeople.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
                         <p className="font-sunflower text-sidebar_deep_green text-xl text-center p-5">You owe no expenses!</p>

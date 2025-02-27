@@ -29,7 +29,7 @@ export async function dbRetrieveUser(emailId: string): Promise<DocumentSnapshot>
 
 export async function dbRetrieveAllTripUsers(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[]> {
     const ret: DocumentSnapshot[] = [];
-    
+
     const tripUsers: string[] = tripDbDoc.get("trip_users");
     for (let emailId of tripUsers) {
         ret.push(await dbRetrieveUser(emailId));

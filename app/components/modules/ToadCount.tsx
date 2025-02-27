@@ -14,16 +14,15 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     debugLogComponentRerender("ToadCount");
 
     const navigate = useNavigate();
-    
+
     function turnListOfTripsMembersIntoElems(): ReactNode {
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
-                const memberInfo = props.tripMembersInfo[memberEmailId];
+            const memberInfo = props.tripMembersInfo[memberEmailId];
 
-                return (
-                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} />
-                );
-            }
-        );
+            return (
+                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} />
+            );
+        });
     }
 
     const [email, setEmail] = useState<string>("");

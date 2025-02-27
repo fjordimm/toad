@@ -58,7 +58,6 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
     const [timeOfDay, setTimeOfDay] = useState('');
     const [description, setDescription] = useState('');
 
-
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (props.tripDbDoc !== null) {
@@ -100,7 +99,7 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
                     </p>
                 </div>
                 <div className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
-                        <img src={cross} className="w-7 h-7"></img>
+                    <img src={cross} className="w-7 h-7"></img>
                 </div>
 
 
