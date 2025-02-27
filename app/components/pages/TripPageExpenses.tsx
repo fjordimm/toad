@@ -20,9 +20,17 @@ export default function BudgetPageMain() {
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
     //const expenses_sorted: string[] = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
-        const dateA = new Date(expenses[a].date);
-        const dateB = new Date(expenses[b].date);
-        return dateB.getTime() - dateA.getTime();
+        const dateA: number = new Date(expenses[a].date).getTime();
+        const dateB: number = new Date(expenses[b].date).getTime();
+        if (dateA < dateB) {
+            return -1;
+        } else if (dateA > dateB) {
+            return 1;
+        } else {
+            const timeAddedA: number = expenses[a].time_added;
+            const timeAddedB: number = expenses[b].time_added;
+            return timeAddedA - timeAddedB;
+        }
     });
 
     let peopleOweMe: string[] = [];
