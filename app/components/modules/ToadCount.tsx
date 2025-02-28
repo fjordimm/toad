@@ -6,6 +6,7 @@ import { type DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import type { TripMembersInfo } from "../pages/TripPageLayout";
+import { useTripPageLayoutContext, type TripPageLayoutContext } from "../pages/TripPageLayout";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo }) {
 
@@ -18,13 +19,21 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
             const memberInfo = props.tripMembersInfo[memberEmailId];
 
             return (
-                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} />
+                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
             );
         });
     }
 
     const [email, setEmail] = useState<string>("");
     const [inviteError, setInviteError] = useState<string | null>(null);
+
+
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
+    let isTripOwner:boolean = true;
+    if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
+        isTripOwner = false;
+    }
 
     async function handleInviteSubmit() {
 
@@ -99,14 +108,14 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
             </div>
 
             {/* Delete Trip Button */}
-            <div className="mt-2 flex flex-col">
+            {isTripOwner && (<div className="mt-2 flex flex-col">
                 <button
                     onClick={() => handleDeleteTrip(props.tripDbDoc)}
                     className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
                 >
                     Delete Trip
                 </button>
-            </div>
+            </div>)}
         </div>
     );
 }
