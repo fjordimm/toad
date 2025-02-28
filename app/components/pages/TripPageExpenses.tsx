@@ -22,13 +22,13 @@ export default function BudgetPageMain() {
         const dateA: number = new Date(expenses[a].date).getTime();
         const dateB: number = new Date(expenses[b].date).getTime();
         if (dateA < dateB) {
-            return -1;
-        } else if (dateA > dateB) {
             return 1;
+        } else if (dateA > dateB) {
+            return -1;
         } else {
             const timeAddedA: number = expenses[a].time_added;
             const timeAddedB: number = expenses[b].time_added;
-            return timeAddedA - timeAddedB;
+            return timeAddedB - timeAddedA;
         }
     });
 
