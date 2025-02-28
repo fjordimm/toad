@@ -8,6 +8,10 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteExpense, dbMarkExpenseAsPaidOrUnpaid } from "~/src/databaseUtil";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 
+const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
 export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string }) {
 
     const expenseObj: any = props.tripDbDoc.get("expenses")[props.expenseId];
@@ -73,7 +77,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
     }
 
     const expenseDate = new Date(expenseObj.date);
-    const expenseDateString = `${expenseDate.toLocaleDateString("default", { month: "short" })} ${expenseDate.getUTCDate()}, ${expenseDate.getUTCFullYear()}`;
+    const expenseDateString = `${months[expenseDate.getUTCMonth()]} ${expenseDate.getUTCDate()}, ${expenseDate.getUTCFullYear()}`;
 
     return (
         <div className="bg-toad_count_lime rounded-lg flex flex-col p-3 gap-3">
