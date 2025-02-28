@@ -44,21 +44,13 @@ const ToadCount: React.FC<ToadCountProps> = ({ tripDbDoc, onOpenModal }) => {
 // AddDestination.tsx
 import React from "react";
 import { useRef, useState } from 'react';
-import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
+import { type DocumentSnapshot } from 'firebase/firestore';
 import cross from "/cross.svg";
+import { dbAddDestination } from "~/src/databaseUtil";
 
 export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | null, onClose: () => void }) {
 
     const modalContentRef = useRef<HTMLDivElement>(null);
-
-    // Utility to generate a UUID (if needed)
-    function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 16 | 0,
-                v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
 
     const [destinationName, setDestinationName] = useState('');
     const [price, setPrice] = useState('');
@@ -66,22 +58,18 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
     const [timeOfDay, setTimeOfDay] = useState('');
     const [description, setDescription] = useState('');
 
-
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (props.tripDbDoc !== null) {
-            const destKey = uuidv4();
-            const newDestination = {
-                is_in_itinerary: false,
-                name: destinationName,
-                price: (price === null || price === "" || price === " ") ? "Free" : price,
-                length: length,
-                time: timeOfDay,
-                description: description
-            };
-            await updateDoc(props.tripDbDoc.ref, {
-                [`destinations.${destKey}`]: newDestination,
-            });
+            await dbAddDestination(
+                props.tripDbDoc.ref,
+                false,
+                destinationName,
+                (price === null || price === "" || price === " ") ? "Free" : price,
+                length,
+                timeOfDay,
+                description
+            );
         }
         props.onClose();
     }
@@ -111,7 +99,7 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
                     </p>
                 </div>
                 <div className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
-                        <img src={cross} className="w-7 h-7"></img>
+                    <img src={cross} className="w-7 h-7"></img>
                 </div>
 
 

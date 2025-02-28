@@ -1,6 +1,7 @@
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth, firebaseDb } from "./toadFirebase";
+import { generateUuid } from "./miscUtil";
 
 export class DbError extends Error {
     constructor(message: string) {
@@ -21,6 +22,17 @@ export async function dbRetrieveUser(emailId: string): Promise<DocumentSnapshot>
 
     if (!ret.exists()) {
         throw new DbNoUserFoundError(`User with id '${emailId}' does not exist.`);
+    }
+
+    return ret;
+}
+
+export async function dbRetrieveAllTripUsers(tripDbDoc: DocumentSnapshot): Promise<DocumentSnapshot[]> {
+    const ret: DocumentSnapshot[] = [];
+
+    const tripUsers: string[] = tripDbDoc.get("trip_users");
+    for (const emailId of tripUsers) {
+        ret.push(await dbRetrieveUser(emailId));
     }
 
     return ret;
@@ -198,6 +210,25 @@ export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDo
     });
 }
 
+export async function dbAddDestination(tripDbDocRef: DocumentReference, isInItinerary: boolean, name: string, price: string, length: string, time: string, description: string) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const destinationId: string = generateUuid();
+
+    const destinationsObj = tripDbDoc.get("destinations");
+    destinationsObj[destinationId] = {
+        is_in_itinerary: isInItinerary,
+        name: name,
+        price: price,
+        length: length,
+        time: time,
+        description: description
+    };
+    await updateDoc(tripDbDoc.ref, {
+        destinations: destinationsObj
+    });
+}
+
 // Use -1 for dayIndex to move it to Possible Stops
 export async function dbMoveDestination(tripDbDocRef: DocumentReference, dayIndex: number, destinationId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
@@ -283,6 +314,26 @@ export async function dbDeleteDestination(tripDbDocRef: DocumentReference, desti
     delete destinationsObj[destinationId];
     await updateDoc(tripDbDoc.ref, {
         destinations: destinationsObj
+    });
+}
+
+export async function dbAddExpense(tripDbDocRef: DocumentReference, name: string, totalAmount: string, date: string, expenseOwner: string, evenSplit: boolean, payers: { [key: string]: number[] }) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const expenseId: string = generateUuid();
+
+    const expensesObj = tripDbDoc.get("expenses");
+    expensesObj[expenseId] = {
+        name: name,
+        total_amount: totalAmount,
+        date: date,
+        time_added: new Date().getTime(),
+        expense_owner: expenseOwner,
+        even_split: evenSplit,
+        payers: payers
+    };
+    await updateDoc(tripDbDoc.ref, {
+        expenses: expensesObj
     });
 }
 

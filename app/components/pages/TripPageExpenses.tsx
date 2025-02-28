@@ -5,28 +5,35 @@ When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
 */
 
 import { Link } from "react-router";
-import React, { useState } from 'react';
-import { updateDoc, type DocumentSnapshot } from 'firebase/firestore';
-import ExpenseView from '~/components/modules/TripPageExpenses/ExpenseList'
+import React, { useState } from "react";
+import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
 export default function BudgetPageMain() {
 
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
     const [filter, setFilter] = useState<"all" | "paid" | "unpaid">("all");
-    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
-    //const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
-    //const expenses_sorted: string[] = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
-        const dateA = new Date(expenses[a].date);
-        const dateB = new Date(expenses[b].date);
-        return dateB.getTime() - dateA.getTime();
+        const dateA: number = new Date(expenses[a].date).getTime();
+        const dateB: number = new Date(expenses[b].date).getTime();
+        if (dateA < dateB) {
+            return 1;
+        } else if (dateA > dateB) {
+            return -1;
+        } else {
+            const timeAddedA: number = expenses[a].time_added;
+            const timeAddedB: number = expenses[b].time_added;
+            return timeAddedB - timeAddedA;
+        }
     });
 
-    let peopleOweMe: string[] = [];
-    let iOwePeople: string[] = [];
+    const peopleOweMe: string[] = [];
+    const iOwePeople: string[] = [];
 
     // populating the arrays
     for (let i = 0; i < expenses_sorted.length; i++) {
@@ -36,7 +43,6 @@ export default function BudgetPageMain() {
         if (currUser in expenses[expenses_sorted[i]]["payers"] && expenses[expenses_sorted[i]]["expense_owner"] !== currUser) {
             iOwePeople.push(expenses_sorted[i]);
         }
-
     }
 
     // summing the values for the sidebar 
@@ -62,11 +68,9 @@ export default function BudgetPageMain() {
         }
     }
 
-    const tripName = tripPageLayoutContext.tripDbDoc.get("expenses_sorted");
-
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    return(
+    return (
         <div className="grow flex flex-col gap-5 bg-dashboard_lime">
             {/* Non button div */}
             <div className="mt-[3px]">
@@ -78,47 +82,47 @@ export default function BudgetPageMain() {
                     <div className="bg-[#D7F297] h-full rounded-xl">
                         {/* Buttons to Sort */}
                         <div className="flex flex-row justify-center -mt-2 w-full max-h-18">
-                        <div className="flex justify-center mt-2 w-full gap-x-0 max-h-18 mb-10">
-                            {/* All Expenses Button and Filters */}
-                            <div className="relative w-1/3 h-18">
-                                <button onClick={() => setView("all")}className={`w-full h-9 rounded-tl-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
-                                {view === "all" && (
-                                <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
-                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                            <div className="flex justify-center mt-2 w-full gap-x-0 max-h-18 mb-10">
+                                {/* All Expenses Button and Filters */}
+                                <div className="relative w-1/3 h-18">
+                                    <button onClick={() => setView("all")} className={`w-full h-9 rounded-tl-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>All Expenses</button>
+                                    {view === "all" && (
+                                        <div className="absolute top-full left-0 w-full flex justify-center">
+                                            <button onClick={() => setFilter("all")} className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                            <button onClick={() => setFilter("paid")} className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                            <button onClick={() => setFilter("unpaid")} className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                                        </div>
+                                    )}
                                 </div>
-                                )}
-                            </div>
 
-                            {/* I Owe Button and Filters */}
-                            <div className="relative w-1/3">
-                                <button onClick={() => setView("owe")}className={`w-full h-9 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owe" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>I Owe</button>
-                                {view === "owe" && (
-                                <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
-                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                                {/* I Owe Button and Filters */}
+                                <div className="relative w-1/3">
+                                    <button onClick={() => setView("owe")} className={`w-full h-9 font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owe" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>I Owe</button>
+                                    {view === "owe" && (
+                                        <div className="absolute top-full left-0 w-full flex justify-center">
+                                            <button onClick={() => setFilter("all")} className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                            <button onClick={() => setFilter("paid")} className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                            <button onClick={() => setFilter("unpaid")} className={`w-1/3 h-9 rounded-br-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                                        </div>
+                                    )}
                                 </div>
-                                )}
-                            </div>
 
-                            {/* Owed to Me Button and Filters */}
-                            <div className="relative w-1/3">
-                                <button onClick={() => setView("owed")}className={`w-full h-9 rounded-tr-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owed" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
-                                {view === "owed" && (
-                                <div className="absolute top-full left-0 w-full flex justify-center">
-                                    <button onClick={() => setFilter("all")}className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
-                                    <button onClick={() => setFilter("paid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
-                                    <button onClick={() => setFilter("unpaid")}className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                                {/* Owed to Me Button and Filters */}
+                                <div className="relative w-1/3">
+                                    <button onClick={() => setView("owed")} className={`w-full h-9 rounded-tr-xl font-sunflower text-sidebar_deep_green text-xl hover:ring-[#FFF]/40 hover:ring-2 ${view === "owed" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:bg-sidebar_deep_green/25`}>Owed to Me</button>
+                                    {view === "owed" && (
+                                        <div className="absolute top-full left-0 w-full flex justify-center">
+                                            <button onClick={() => setFilter("all")} className={`w-1/3 h-9 rounded-bl-lg font-sunflower text-sidebar_deep_green text-xl ${filter === "all" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>All</button>
+                                            <button onClick={() => setFilter("paid")} className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "paid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Paid</button>
+                                            <button onClick={() => setFilter("unpaid")} className={`w-1/3 h-9 font-sunflower text-sidebar_deep_green text-xl ${filter === "unpaid" ? "bg-sidebar_deep_green/25" : "bg-sidebar_deep_green/10"} hover:ring-[#FFF]/40 hover:ring-2 hover:bg-sidebar_deep_green/25`}>Unpaid</button>
+                                        </div>
+                                    )}
                                 </div>
-                                )}
                             </div>
-                        </div>
                         </div>
                         {/* By Default, display the "All Expenses" Otherwise, show the selected expenses */}
-                        <div className = "">
-                            <ExpenseView view={view} filter = {filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} expenses_dict = {expenses} currentUser = {currUser}></ExpenseView>
+                        <div className="">
+                            <ExpenseList view={view} filter={filter} expenses={expenses_sorted} iOwePeople={iOwePeople} peopleOweMe={peopleOweMe} tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} expenses_dict={expenses} currentUser={currUser}></ExpenseList>
                         </div>
                     </div>
                 </div>
@@ -143,17 +147,16 @@ export default function BudgetPageMain() {
                         </p>
                     </div>
                     <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
-                            Add an Expense
-                        </button>
+                        Add an Expense
+                    </button>
 
-                        {
-                            isModalOpen
-                                ? <NewExpense onClose={() => setIsModalOpen(false)} />
-                                : null
-                        }
+                    {
+                        isModalOpen
+                            ? <NewExpense onClose={() => setIsModalOpen(false)} />
+                            : null
+                    }
                 </div>
             </div>
         </div>
     );
-
 }

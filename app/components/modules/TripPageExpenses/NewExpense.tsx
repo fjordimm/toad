@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import cross from "/cross.svg";
-import { updateDoc } from 'firebase/firestore';
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
-import { indexTo15UniqueColor } from "~/src/miscUtil";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
-
+import { dbAddExpense } from "~/src/databaseUtil";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
@@ -18,51 +16,33 @@ export default function NewExpense(props: { onClose: () => void }) {
         }
     };
 
-    // Generate unique id for each expense
-    function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 16 | 0,
-                v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-
     const [activeSection, setActiveSection] = useState(1);
 
     const [expenseName, setExpenseName] = useState('');
     const [date, setDate] = useState('');
     const [totalCost, setTotalCost] = useState('');
-    console.log(date);
 
     // useState for payees and their amounts due to keep track across components
     // Dictionary Structure:
     // name: [amount due, notPaid (0)/Paid (1)
     const [payees, setPayees] = useState<{ [key: string]: number[] }>({});
-    console.log(payees)
     const [evenSplit, setEvenSplit] = useState(false); // state for boolean: evenSplit
 
 
-    let expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
+    const expenseOwner = tripPageLayoutContext.userDbDoc.get("email");
 
     // called when user clicks submit. Makes the map and sends it to database.
-    async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmitExpense(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (tripPageLayoutContext.tripDbDoc !== null) {
-            const expenseID = uuidv4();
-            const newExpense = {
-                name: expenseName,
-                total_amount: totalCost,
-                even_split: evenSplit,
-                date: date,
-                expense_owner: expenseOwner,
-                // payers: makePayeesDictionary(payees, amount)
-                payers: payees
-            };
-            await updateDoc(tripPageLayoutContext.tripDbDoc.ref, {
-                [`expenses.${expenseID}`]: newExpense,
-            });
+
+            if (expenseOwner in payees) {
+                payees[expenseOwner][1] = 1;
+            }
+
+            await dbAddExpense(tripPageLayoutContext.tripDbDoc.ref, expenseName, totalCost, date, expenseOwner, evenSplit, payees);
         }
-        console.log("closed");
+
         props.onClose();
     }
 
@@ -90,7 +70,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                     <img src={cross} className="w-7 h-7" />
                 </div>
                 {/* Form Container */}
-                <form onSubmit={handleSubmitDestination} className="w-full flex flex-col justify-center items-center">
+                <form onSubmit={handleSubmitExpense} className="w-full flex flex-col justify-center items-center">
                     {/* Expense Name Input */}
                     <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                         <input
@@ -147,7 +127,7 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* Add Toads component here */}
                                     {/* use 'payees' as a parameter and fill out this array with people that owe money*/}
                                     {/* -------------------------------- */}
-                                    <NewExpenseStepOne tripDbDoc={tripPageLayoutContext.tripDbDoc} payees={payees} setPayees={setPayees} />
+                                    <NewExpenseStepOne tripMembersInfo={tripPageLayoutContext.tripMembersInfo} payees={payees} setPayees={setPayees} />
                                 </div>
                                 {/* Next Button */}
                                 <div className="absolute bottom-4 right-4">
@@ -178,16 +158,16 @@ export default function NewExpense(props: { onClose: () => void }) {
                                     {/* Use 'payees' for names and fill 'payees' dictionary Also use evenSplit boolean*/}
                                     {/* -------------------------------- */}
 
-                                    <NewExpenseStepTwo 
-                                        tripDbDoc={tripPageLayoutContext.tripDbDoc}
+                                    <NewExpenseStepTwo
+                                        tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
                                         evenSplit={evenSplit}
                                         setEvenSplit={setEvenSplit}
-                                        totalCost={totalCost} 
-                                        payees={payees} 
-                                        setPayees={setPayees} 
+                                        totalCost={totalCost}
+                                        payees={payees}
+                                        setPayees={setPayees}
                                     />
-                                    
-                                    
+
+
                                 </div>
                                 {/* Back Button */}
                                 <div className="absolute bottom-0 left-4">
@@ -215,5 +195,4 @@ export default function NewExpense(props: { onClose: () => void }) {
             </div>
         </div>
     );
-
 }

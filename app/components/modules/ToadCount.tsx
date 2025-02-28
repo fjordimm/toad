@@ -1,54 +1,26 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { type ReactNode } from "react";
+import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import { type DocumentSnapshot } from "firebase/firestore";
-import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError, dbRetrieveTripsListOfMembers } from "~/src/databaseUtil";
-import Loading from "./Loading";
+import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-import { stringHash } from "~/src/miscUtil";
+import type { TripMembersInfo } from "../pages/TripPageLayout";
 
-export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null }) {
+export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo }) {
 
     debugLogComponentRerender("ToadCount");
 
     const navigate = useNavigate();
 
-    const [listOfTripsMembers, setListOfTripMembers] = useState<DocumentSnapshot[] | null>(null);
-    useEffect(
-        () => {
-            if (props.tripDbDoc !== null) {
-                dbRetrieveTripsListOfMembers(props.tripDbDoc).then(
-                    (result: DocumentSnapshot[] | null) => {
-                        setListOfTripMembers(result);
-                    }
-                );
-            }
-        },
-        [props.tripDbDoc]
-    );
+    function turnListOfTripsMembersIntoElems(): ReactNode {
+        return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
+            const memberInfo = props.tripMembersInfo[memberEmailId];
 
-    function turnListOfTripsMembersIntoElems(listOfTripsMembers: DocumentSnapshot[] | null) {
-        if (listOfTripsMembers !== null) {
-
-            // The code using memberColorsAlreadyTaken, colorNum, and loopCounter is to get a unique color for each user.
-            // It uses stringHash() on each user's email, but if two people have the same hash output, this algorithm will try to give them different colors.
-            const memberColorsAlreadyTaken: Set<number> = new Set<number>();
-
-            return listOfTripsMembers.map((member: DocumentSnapshot) => {
-                let colorNum: number = Math.abs(stringHash(member.id) % 15);
-                let loopCounter: number = 0;
-                while (memberColorsAlreadyTaken.has(colorNum) && loopCounter < 15) {
-                    colorNum = (colorNum + 1) % 15;
-                    loopCounter++;
-                }
-                memberColorsAlreadyTaken.add(colorNum);
-
-                return <ToadMember key={member.id} memberColorIndex={colorNum} tripDbDoc={props.tripDbDoc} memberDbDoc={member} />
-            });
-        } else {
-            return <Loading />;
-        }
+            return (
+                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} />
+            );
+        });
     }
 
     const [email, setEmail] = useState<string>("");
@@ -102,13 +74,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null })
                 {/* Member List */}
                 <div className="mt-4 h-[150px] overflow-y-auto scrollbar-none space-y-3">
                     {/* Can add members to the trip by calling <ToadMembers name="name" /> */}
-                    {/* <ToadMember name="Angelina" />
-					<ToadMember name="Billiam" />
-					<ToadMember name="Sophie" />
-					<ToadMember name="Arnav" />
-					<ToadMember name="Jiggy" />
-					<ToadMember name="Angelina" /> */}
-                    {turnListOfTripsMembersIntoElems(listOfTripsMembers)}
+                    {turnListOfTripsMembersIntoElems()}
                 </div>
 
                 {/* Email Input and Invite Button */}

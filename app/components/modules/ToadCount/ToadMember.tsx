@@ -2,9 +2,8 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-import { indexTo15UniqueColor } from "~/src/miscUtil";
 
-export default function ToadMember(props: { memberColorIndex: number, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
+export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null }) {
 
     debugLogComponentRerender("ToadMember");
 
@@ -21,13 +20,11 @@ export default function ToadMember(props: { memberColorIndex: number, tripDbDoc:
         : "Invalid Member"
         ;
 
-    const userColor: string = indexTo15UniqueColor(props.memberColorIndex);
-
     return (
         <div className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm">
             {/* Circle representing the color icon */}
             <div
-                className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}
+                className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${props.memberColor}`}
             ></div>
 
             {/* Name (wrapped inside overflow-hidden div) */}
