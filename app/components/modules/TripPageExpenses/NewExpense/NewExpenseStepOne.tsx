@@ -35,7 +35,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
         return (
             <div className="relative w-[148px] h-[28px] bg-[#ABC893] rounded-lg shadow-sm">
                 <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
-                <div className="absolute left-[45px] right-0 h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
                     <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
                         {memberName}
                     </span>
@@ -59,7 +59,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
         return (
             <div className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm">
                 <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
-                <div className="absolute left-[45px] right-0 h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
                     <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
                         {memberName}
                     </span>
@@ -96,7 +96,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
     return (
         <div className="w-[236px] h-[300px] bg-[#BDDE9A] p-6 pb-10 rounded-lg shadow-lg space-y-4">
             <div className="flex justify-center -mt-4">
-                <div className="w-[217px] min-w-[217px] max-w-[217px] h-[55px] p-2 overflow-y-auto scrollbar-none space-y-3 bg-[#8FAE72] rounded-lg">
+                <div className="w-[217px] min-w-[217px] max-w-[217px] h-[100px] p-2 overflow-y-auto scrollbar-none space-y-3 bg-[#8FAE72] rounded-lg">
                     {renderAddedMembers()}
                 </div>
             </div>

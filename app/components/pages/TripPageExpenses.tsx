@@ -71,14 +71,14 @@ export default function BudgetPageMain() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <div className="grow flex flex-col gap-5 bg-dashboard_lime">
+        <div className="grow flex flex-col flex-auto gap-5 overflow-auto scrollbar-thin scrollbar-thumb-sidebar_deep_green scrollbar-track-transparent bg-dashboard_lime">
             {/* Non button div */}
             <div className="mt-[3px]">
                 <Link to="./.." className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Back</Link>
             </div>
-            <div className="flex flex-row gap-5 h-full">
+            <div className="flex flex-row gap-5">
                 {/* Main Div */}
-                <div className="grow flex flex-col w-4/5 gap-5 justify-between">
+                <div className="grow flex flex-col overflow-auto w-4/5 gap-5 justify-between">
                     <div className="bg-[#D7F297] h-full rounded-xl">
                         {/* Buttons to Sort */}
                         <div className="flex flex-row justify-center -mt-2 w-full max-h-18">
