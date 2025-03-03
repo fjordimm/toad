@@ -356,3 +356,25 @@ export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReferenc
         expenses: expensesObj
     });
 }
+
+
+export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[]) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const pollId: string = generateUuid();
+
+    const pollObj = tripDbDoc.get("polls") || {};
+    pollObj[pollId] = {
+        title: title,
+        description: description,
+        time_added: new Date().getTime(),
+        poll_owner: pollOwner,
+        options: options
+    };
+
+    console.log("Poll object before update:", pollObj);
+    
+    await updateDoc(tripDbDoc.ref, {
+        polls: pollObj
+    });
+}
