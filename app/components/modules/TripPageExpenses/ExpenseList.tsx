@@ -51,7 +51,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             props.expenses.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -79,7 +79,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             all_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -107,7 +107,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             all_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -149,7 +149,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             props.iOwePeople.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -177,7 +177,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             owe_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -205,7 +205,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             owe_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -256,7 +256,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             props.peopleOweMe.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -284,7 +284,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             owed_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;
@@ -312,7 +312,7 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                             owed_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
                                     return (
-                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                                        <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currentUser}></Expense>
                                     );
                                 } else {
                                     return null;

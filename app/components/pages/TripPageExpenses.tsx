@@ -97,7 +97,11 @@ export default function BudgetPageMain() {
 
     const renderAllMembers = () => {
         return (
-            <div className="flex flex-col gap-3 m-3">
+            <div className="flex flex-col bg-[#EAFFB9] p-3 rounded-2xl">
+                <div className="flex flex-col  overflow-auto items-center justify-center bg-sidebar_deep_green font-sunflower text-white text-l rounded-lg p-1">
+                    <p>View Expenses By Person</p>
+                </div>
+                <div className="flex flex-col gap-3 m-3">
                 {
                     users_list.map((memberEmail: string) => {
                         if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
@@ -113,6 +117,7 @@ export default function BudgetPageMain() {
                         }
                     })
                 }
+                </div>
             </div>
         );
     };

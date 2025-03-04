@@ -47,7 +47,7 @@ export default function MemberBreakdown(props: {memberEmail: string, memberFirst
                 iOweList.map((expenseId: string) => {
                     if (props.tripDbDoc !== null) {
                         return (
-                            <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId}></Expense>
+                            <Expense key={expenseId} tripDbDoc={props.tripDbDoc} tripMembersInfo={props.tripMembersInfo} expenseId={expenseId} currUser={props.currUser}></Expense>
                         );
                     } else {
                         return null;
