@@ -5,6 +5,8 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPage
 import React, { useState } from "react";
 import { Link } from "react-router";
 import AddPoll from "/AddPoll.svg";
+import CalenderDate from "/calendar-date.svg";
+import Dollar from "/currency-dollar-circle.svg"
 
 export default function TripPageMain() {
 
@@ -33,23 +35,30 @@ export default function TripPageMain() {
                             <img src={AddPoll} alt="Add Poll" className="w-8 h-8" />
                             <h2 className="text-lg font-sunflower">Create A Poll</h2>
                         </button>
+
+                        {/* List of all the polls */}
+                        <div>
+                            
+                        </div>
                     </div>
 
                 </div>
             </div>
 
-            <div className="w-1/5 h-screen p-4 fixed right-0 top-0 flex flex-col items-center justify-start space-y-6 overflow-y-auto">
+            <div className="w-1/5 h-screen p-4 fixed right-0 top-0 flex flex-col items-center justify-start space-y-6">
                 <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
 
                 <Link to="./plan" className="w-full flex justify-center">
                     <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
-                        <h2 className="font-sunflower text-sidebar_deep_green">Plan</h2>
+                        <img src={CalenderDate} className="w-17 h-17" />
+                        <h2 className="font-sunflower text-sidebar_deep_green text-2xl">Trip Itinerary</h2>
                     </button>
                 </Link>
 
                 <Link to="./budget" className="w-full flex justify-center">
                     <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
-                        <h2 className="font-sunflower text-sidebar_deep_green">Budget</h2>
+                        <img src={Dollar} className="w-17 h-17" />
+                        <h2 className="font-sunflower text-sidebar_deep_green text-2xl">Budget Tool</h2>
                     </button>
                 </Link>
             </div>
