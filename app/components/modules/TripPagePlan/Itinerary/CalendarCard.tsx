@@ -13,8 +13,22 @@ const options = {
       target: "_blank",
       rel: "noopener noreferrer",
       contentEditable: "false"
-    }
+    },
+    // Ensures that URLs without http(s) get prefixed appropriately
+    formatHref: (href:string, type:string) => {
+      if (type === "url" && !/^(?:https?|ftp):\/\//i.test(href)) {
+        return "https://" + href;
+      }
+      return href;
+    },
+    // format: (value: string, type: string): string => {
+    //     if (type === "url") {
+    //       return value.replace(/^https?:\/\//, "");
+    //     }
+    //     return value;
+    //   },
   };
+  
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
@@ -47,6 +61,18 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
     SAVE: When user clicks out of the input box, save updated content to 
     additional_notes in the corresponding day in database 
     */
+
+    const updateClickableUrls = () => {
+        if (stayAtRef.current) {
+          const textContent = stayAtRef.current.innerText;
+          stayAtRef.current.innerHTML = linkifyHtml(textContent, options);
+        }
+        if (contentRef.current) {
+            const textContent = contentRef.current.innerText;
+            contentRef.current.innerHTML = linkifyHtml(textContent, options);
+          }
+    };
+
     const handleSave = async () => {
         if (props.tripDbDoc != null) {
             const tripData = props.tripDbDoc.data();
@@ -74,6 +100,7 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                         await updateDoc(props.tripDbDoc.ref, {
                             itinerary: updatedItinerary,
                         });
+                        updateClickableUrls();
                     }
                 }
             } catch (e) {
@@ -100,7 +127,8 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
                 // if additional_notes in database is updated - change content of div via ref
                 if (contentRef.current && updatedNotes) {
-                    contentRef.current.innerText = updatedNotes;
+                    // contentRef.current.innerText = updatedNotes;
+                    contentRef.current.innerHTML = linkifyHtml(updatedNotes, options);
                 }
 
                 if (stayAtRef.current && updatedStayAt) {
@@ -122,6 +150,21 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
             };
             currentStayAt.addEventListener("click", clickHandler);
             return () => currentStayAt.removeEventListener("click", clickHandler);
+        }
+    }, []);
+
+    useEffect(() =>{
+        const currentNotes = contentRef.current;
+        if(currentNotes) {
+            const clickHandler = (e: MouseEvent) => {
+                const target = e.target as HTMLElement;
+                if (target.tagName === "A") {
+                    window.open((target as HTMLAnchorElement).href, "_blank");
+                    e.preventDefault();
+                }
+            };
+            currentNotes.addEventListener("click", clickHandler);
+            return () => currentNotes.removeEventListener("click", clickHandler);
         }
     }, []);
 
