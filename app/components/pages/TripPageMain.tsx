@@ -20,25 +20,42 @@ export default function TripPageMain() {
     return (
         <div className="grow flex flex-row justify-between gap-5 bg-dashboard_lime">
             <div className="grow flex flex-col gap-5">
-                <h1 className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>{tripName}</h1>
+                <h1 className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl w-9/12" style={{ fontWeight: 900 }}>{tripName}</h1>
 
-                <div className="">
-                    <Link to="./plan" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Plan</Link>
-                </div>
-                <div className="">
-                    <Link to="./budget" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Budget</Link>
-                </div>
-                <button
-                    onClick={() => setIsPollModalOpen(true)}
-                    className=""
-                    aria-label="Add Poll"
-                >
-                    <img src={AddPoll} alt="Add Poll"/>
+                <div className="h-screen bg-[#D4F28F] w-9/12">
+                    {/* Add a poll button */}
+                    <div className="flex flex-col items-center m-4">
+                        <button
+                            onClick={() => setIsPollModalOpen(true)}
+                            className="flex justify-center space-x-2"
+                            aria-label="Add Poll"
+                        >
+                            <img src={AddPoll} alt="Add Poll" className="w-8 h-8" />
+                            <h2 className="text-lg font-sunflower">Create A Poll</h2>
+                        </button>
+                    </div>
 
-                </button>
+                </div>
             </div>
 
-            <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
+            <div className="w-1/5 h-screen p-4 fixed right-0 top-0 flex flex-col items-center justify-start space-y-6 overflow-y-auto">
+                <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
+
+                <Link to="./plan" className="w-full flex justify-center">
+                    <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
+                        <h2 className="font-sunflower text-sidebar_deep_green">Plan</h2>
+                    </button>
+                </Link>
+
+                <Link to="./budget" className="w-full flex justify-center">
+                    <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
+                        <h2 className="font-sunflower text-sidebar_deep_green">Budget</h2>
+                    </button>
+                </Link>
+            </div>
+
+
+
 
             {/* Show the modal when isPollModalOpen is true */}
             {isPollModalOpen && <NewPoll onClose={() => setIsPollModalOpen(false)} />}
