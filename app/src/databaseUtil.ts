@@ -358,7 +358,7 @@ export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReferenc
 }
 
 
-export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[]) {
+export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] } ) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
     const pollId: string = generateUuid();
@@ -369,7 +369,8 @@ export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, 
         description: description,
         time_added: new Date().getTime(),
         poll_owner: pollOwner,
-        options: options
+        options: options,
+        votes: votes
     };
 
     console.log("Poll object before update:", pollObj);
