@@ -5,6 +5,16 @@ import { useParams } from "react-router";
 import stayAtIcon from "/stayAt.svg"
 import { DestinationDroppable, SortableDestinationBox } from "~/components/pages/TripPagePlan";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import linkifyHtml from "linkify-html";
+
+const options = {
+    defaultProtocol: "https",
+    attributes: {
+      target: "_blank",
+      rel: "noopener noreferrer",
+      contentEditable: "false"
+    }
+  };
 
 // CalendarCard creates SINGULAR itinerary card representing a single day
 
@@ -94,11 +104,26 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                 }
 
                 if (stayAtRef.current && updatedStayAt) {
-                    stayAtRef.current.innerText = updatedStayAt;
+                    stayAtRef.current.innerHTML = linkifyHtml(updatedStayAt, options);
                 }
             }
         }
     }, [props.tripDbDoc]);
+
+    useEffect(() =>{
+        const currentStayAt = stayAtRef.current;
+        if(currentStayAt) {
+            const clickHandler = (e: MouseEvent) => {
+                const target = e.target as HTMLElement;
+                if (target.tagName === "A") {
+                    window.open((target as HTMLAnchorElement).href, "_blank");
+                    e.preventDefault();
+                }
+            };
+            currentStayAt.addEventListener("click", clickHandler);
+            return () => currentStayAt.removeEventListener("click", clickHandler);
+        }
+    }, []);
 
     function turnActivitiesIntoElems(activities: any[]): ReactNode {
         return (
