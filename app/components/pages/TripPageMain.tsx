@@ -37,11 +37,10 @@ export default function TripPageMain() {
                         </button>
 
                         {/* List of all the polls */}
-                        <div>
-                            
+                        <div className="grow flex flex-col gap-5 overflow-y-auto w-full p-2 rounded-lg" style={{ height: 'calc(100vh - 150px)' }}>
+                            {/* {Array(40).fill(<h1>hehehe</h1>)} */}
                         </div>
                     </div>
-
                 </div>
             </div>
 
