@@ -9,6 +9,9 @@ import React, { useState } from "react";
 import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
+import type { DocumentSnapshot } from "firebase/firestore";
+import MemberBreakdown from "../modules/TripPageExpenses/MemberBreakdown";
+
 export default function BudgetPageMain() {
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
@@ -18,6 +21,7 @@ export default function BudgetPageMain() {
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
+    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
         const dateA: number = new Date(expenses[a].date).getTime();
         const dateB: number = new Date(expenses[b].date).getTime();
@@ -69,7 +73,50 @@ export default function BudgetPageMain() {
     }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    //const [isMemberModalOpen, setMemberModalOpen] = useState(false);
+    const [selectedMember, setSelectedMember] =  useState<DocumentSnapshot | null>(null);
 
+    const MemberBox = ({ member, onClick }: {member: DocumentSnapshot, onClick:(member: DocumentSnapshot) => void}) => {
+        const memberName = `${member.get("first_name")} ${member.get("last_name")}`;
+        const userColor = tripPageLayoutContext.tripMembersInfo[member.id].color;
+        return (
+            <div 
+                onClick={() => onClick(member)}
+                className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm"
+            >
+                <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
+                <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
+                        {memberName}
+                    </span>
+                </div>
+            </div>
+        );
+    };
+    
+
+    const renderAllMembers = () => {
+        return (
+            <div className="flex flex-col gap-3 m-3">
+                {
+                    users_list.map((memberEmail: string) => {
+                        if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
+                            return (
+                                <MemberBox 
+                                    key={memberEmail} 
+                                    member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc} 
+                                    onClick={(member) => setSelectedMember(member)}
+                                />
+                            );
+                        } else {
+                            return null;
+                        }
+                    })
+                }
+            </div>
+        );
+    };
+    
     return (
         <div className="grow flex flex-col flex-auto gap-5 overflow-auto scrollbar-thin scrollbar-thumb-sidebar_deep_green scrollbar-track-transparent bg-dashboard_lime">
             {/* Non button div */}
@@ -155,6 +202,23 @@ export default function BudgetPageMain() {
                             ? <NewExpense onClose={() => setIsModalOpen(false)} />
                             : null
                     }
+                    {/* Toad Count v2 */}
+                    <div>
+                        {renderAllMembers()}
+                        {selectedMember && (
+                            <MemberBreakdown
+                                memberEmail={selectedMember.get("email")}
+                                iOwePeople={iOwePeople}
+                                peopleOweMe={peopleOweMe}
+                                expensesDict={expenses}
+                                currUser={currUser}
+                                tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
+                                memberFirstName={selectedMember.get("first_name")}
+                                tripDbDoc={tripPageLayoutContext.tripDbDoc}
+                                onClose={() => setSelectedMember(null)}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
