@@ -5,6 +5,7 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPage
 import React, { useState } from "react";
 import { Link } from "react-router";
 import AddPoll from "/AddPoll.svg";
+import PollCard from "../modules/Polls/PollDisplay";
 
 interface PollData{
     description: string,
@@ -46,7 +47,7 @@ export default function TripPageMain() {
                     <Link to="./budget" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Budget</Link>
                 </div> */}
 
-                <div className="h-full rounded-lg p-4 bg-[#D4F28F] flex flex-col items-center">
+                <div className="h-full rounded-lg p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
                     <button
                         onClick={() => setIsPollModalOpen(true)}
                         className="flex items-center gap-2"
@@ -56,11 +57,25 @@ export default function TripPageMain() {
                             <p className="font-sunflower text-sidebar_deep_green text-xl font-bold">Create a Poll</p>
                     </button>
 
-                    <div>
+                    <div className="w-full flex flex-col gap-2">
                         {Object.entries(tripPolls).map(([pollId, poll]) =>
-                            <div key={pollId}>
-                                <h3>{`Poll ID: ${poll.title}`}</h3>
-                            </div>
+                            // <div key={pollId}>
+                            //     <h3>{`Poll ID: ${poll.title}`}</h3>
+                            //     <PollCard 
+                            //         description={poll.description}
+                            //         options={poll.options}
+                            //         poll_owner={poll.poll_owner}
+                            //         time_added={poll.time_added}
+                            //         title={poll.title}
+                            //     />
+                            // </div>
+                            <PollCard 
+                                description={poll.description}
+                                options={poll.options}
+                                poll_owner={poll.poll_owner}
+                                time_added={poll.time_added}
+                                title={poll.title}
+                            />
                         )}
                     </div>
 
