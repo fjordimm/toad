@@ -82,7 +82,7 @@ export default function BudgetPageMain() {
         return (
             <div 
                 onClick={() => onClick(member)}
-                className="relative w-[148px] h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm"
+                className="relative w-full h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm"
             >
                 <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
                 <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
@@ -97,11 +97,11 @@ export default function BudgetPageMain() {
 
     const renderAllMembers = () => {
         return (
-            <div className="flex flex-col bg-[#EAFFB9] p-3 rounded-2xl">
+            <div className="flex flex-col bg-[#EAFFB9] p-3 rounded-xl">
                 <div className="flex flex-col  overflow-auto items-center justify-center bg-sidebar_deep_green font-sunflower text-white text-l rounded-lg p-1">
                     <p>View Expenses By Person</p>
                 </div>
-                <div className="flex flex-col gap-3 m-3">
+                <div className="flex flex-col gap-3 mt-3">
                 {
                     users_list.map((memberEmail: string) => {
                         if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
@@ -181,19 +181,19 @@ export default function BudgetPageMain() {
                 {/* Sidebar Div */}
                 <div className="flex flex-col w-1/5 h-full gap-y-4">
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>You owe all toads on board </b>
                             <span className="text-red-800">${i_owe_toads.toFixed(2)}</span>
                         </p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>All toads owe you </b>
                             <span className="text-red-800">${toads_owe_me.toFixed(2)}</span>
                         </p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>All toads have paid you </b>
                             <span className="text-red-800">${toads_paid_me.toFixed(2)}</span>
                         </p>
