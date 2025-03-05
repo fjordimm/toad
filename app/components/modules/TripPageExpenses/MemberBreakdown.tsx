@@ -77,10 +77,10 @@ export default function MemberBreakdown(props: {memberEmail: string, memberFirst
         // Blacking out the whole page
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50" onClick={handleOverlayClick}>
             {/* Modal itself */}
-            <div ref={modalContentRef} className="relative flex flex-col w-2/3 justify-center items-center bg-dashboard_component_bg py-8 rounded-2xl px-8 mx-4" onClick={(e) => e.stopPropagation()}>
+            <div ref={modalContentRef} className="relative flex flex-col w-2/3 justify-center items-center bg-dashboard_component_bg py-6 rounded-2xl px-6 mx-4" onClick={(e) => e.stopPropagation()}>
                 
                 {/* Total Owed Amounts */}
-                <div className="flex flex-col justify-center w-full gap-y-4 -mt-4">
+                <div className="flex flex-col justify-center w-full gap-y-4">
                     <div className="flex flex-row justify-center w-full">
                         <div className="flex w-1/2  bg-[#D7F297] p-2 rounded-xl mr-2 items-center justify-center">
                             <p className="font-sunflower text-2xl text-sidebar_deep_green">
