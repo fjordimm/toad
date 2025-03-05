@@ -68,13 +68,16 @@ function testUser(userDbDoc: DocumentSnapshot) {
     if (trip_invites === undefined) {
         logError("Field 'trip_invites' does not exist.");
     } else if (typeof trip_invites !== "object") {
-        logError("Field 'trip_invites' is not an object.");
+        logError("Field 'trip_invites' is not an array.");
     } else if (!(trip_invites instanceof Array)) {
         logError("Field 'trip_invites' is not an array.");
     } else {
-        for (const tripId of trip_invites) {
-            if (typeof tripId !== "string") {
-                logError("An element of field 'trip_invites' is not a string.");
+        for (let i = 0; i < trip_invites.length; i++) {
+            const invitee = trip_invites[i];
+            if (invitee === undefined) {
+                logError(`Element ${i} of 'trip_invites' is somehow undefined.`);
+            } else if (typeof invitee !== "string") {
+                logError(`Element ${i} of 'trip_invites' is not a string.`);
             }
         }
     }
@@ -83,13 +86,13 @@ function testUser(userDbDoc: DocumentSnapshot) {
     if (trips === undefined) {
         logError("Field 'trips' does not exist.");
     } else if (typeof trips !== "object") {
-        logError("Field 'trips' is not an object.");
+        logError("Field 'trips' is not an array.");
     } else if (!(trips instanceof Array)) {
         logError("Field 'trips' is not an array.");
     } else {
         for (const tripId of trips) {
             if (typeof tripId !== "string") {
-                logError("An element of field 'trips' is not a string.");
+                logError("An element of the field 'trips' is not a string.");
             }
         }
     }
@@ -123,7 +126,7 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
     if (created_at === undefined) {
         logError("Field 'created_at' does not exist.");
     } else if (typeof created_at !== "object") {
-        logError("Field 'created_at' is not an object.");
+        logError("Field 'created_at' is not a Timestamp.");
     } else if (!(created_at instanceof Timestamp)) {
         logError("Field 'created_at' is not a Timestamp.");
     }
@@ -186,7 +189,7 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
     if (destinations === undefined)  {
         logError("Field 'destinations' does not exist.");
     } else if (typeof destinations !== "object") {
-        logError("Field 'destinations' is not a object.");
+        logError("Field 'destinations' is not an object.");
     } else {
         for (const destinationId of Object.keys(destinations)) {
             if (typeof destinationId !== "string") {
@@ -248,17 +251,60 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
     if (itinerary === undefined)  {
         logError("Field 'itinerary' does not exist.");
     } else if (typeof itinerary !== "object") {
-        logError("Field 'itinerary' is not a object.");
+        logError("Field 'itinerary' is not an array.");
     } else if (!(itinerary instanceof Array)) {
         logError("Field 'itinerary' is not an array.");
     } else {
-        for (const userId of itinerary) {
-            if (typeof userId !== "string") {
-                logError("An element of field 'itinerary' is not a string.");
+        for (let i = 0; i < itinerary.length; i++) {
+            const itineraryDay = itinerary[i];
+            if (itineraryDay === undefined) {
+                logError(`Element ${i} of field 'itinerary' is somehow undefined.`);
+            } else if (typeof itineraryDay !== "object") {
+                logError(`Element ${i} of field 'itinerary' is not an object.`);
+            } else {
+                const day = itineraryDay["day"];
+                if (day === undefined)  {
+                    logError(`Field 'day' of element '${i}' in field 'itinerary' does not exist.`);
+                } else if (typeof day !== "object") {
+                    logError(`Field 'day' of element '${i}' in field 'itinerary' is not a Timestamp.`);
+                } else if (!(day instanceof Timestamp)) {
+                    logError(`Field 'day' of element '${i}' in field 'itinerary' is not a Timestamp.`);
+                }
+
+                const stay_at = itineraryDay["stay_at"];
+                if (stay_at === undefined)  {
+                    logError(`Field 'stay_at' of element '${i}' in field 'itinerary' does not exist.`);
+                } else if (typeof stay_at !== "string") {
+                    logError(`Field 'stay_at' of element '${i}' in field 'itinerary' is not a string.`);
+                }
+
+                const additional_notes = itineraryDay["additional_notes"];
+                if (additional_notes === undefined)  {
+                    logError(`Field 'additional_notes' of element '${i}' in field 'itinerary' does not exist.`);
+                } else if (typeof additional_notes !== "string") {
+                    logError(`Field 'additional_notes' of element '${i}' in field 'itinerary' is not a string.`);
+                }
+
+                const activities = itineraryDay["activities"];
+                if (activities === undefined)  {
+                    logError(`Field 'activities' of element '${i}' in field 'itinerary' does not exist.`);
+                } else if (typeof activities !== "object") {
+                    logError(`Field 'activities' of element '${i}' in field 'itinerary' is not an array.`);
+                } else if (!(activities instanceof Array)) {
+                    logError(`Field 'activities' of element '${i}' in field 'itinerary' is not an array.`);
+                } else {
+                    for (let j = 0; j < activities.length; j++) {
+                        const activityId = activities[j];
+                        if (activityId === undefined) {
+                            logError(`Element ${j} of field 'activities' of element ${i} in field 'itinerary' is somehow undefined.`);
+                        } else if (typeof activityId !== "string") {
+                            logError(`Element ${j} of field 'activities' of element ${i} in field 'itinerary' is not a string.`);
+                        }
+                    }
+                }
             }
         }
     }
-    // itinerary
 
     // expenses
 
