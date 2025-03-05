@@ -380,3 +380,13 @@ export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, 
         polls: pollObj
     });
 }
+
+export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string){
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const pollObj = tripDbDoc.get("polls");
+    delete(pollObj[pollId])
+    await updateDoc(tripDbDoc.ref, {
+        polls: pollObj
+    });
+}

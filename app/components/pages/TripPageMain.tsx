@@ -59,22 +59,18 @@ export default function TripPageMain() {
                     <div className="w-full flex flex-col gap-2 overflow-scroll">
                         {tripPollsSorted.map(([pollID, poll]) =>(
                             <PollCard 
-                                tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
-                                description={poll.description}
-                                options={poll.options}
-                                poll_owner={poll.poll_owner}
-                                time_added={poll.time_added}
-                                title={poll.title}
-                                votes={poll.votes}
+                                pollID = {pollID || " "}
+                                description={poll.description || " "}
+                                options={poll.options || []}
+                                poll_owner={poll.poll_owner || " "}
+                                time_added={poll.time_added || 0}
+                                title={poll.title || " "}
+                                votes={poll.votes || []}
                             />
                         ))}
                        
                     </div>
-
-
-                    
-                </div>
-                
+                </div>              
             </div>
 
             <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />

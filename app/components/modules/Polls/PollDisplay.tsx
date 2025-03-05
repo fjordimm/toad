@@ -1,7 +1,12 @@
-import type { TripMembersInfo } from "~/components/pages/TripPageLayout"
+import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "~/components/pages/TripPageLayout"
+import PollOption from "./PollOption";
+import { dbDeletePoll } from "~/src/databaseUtil";
+import type { DocumentSnapshot } from "firebase/firestore";
+import Loading from "../Loading";
+
 // Properties of a Poll
 interface PollData{
-    tripMembersInfo: TripMembersInfo,
+    pollID: string,
     description: string,
     options: string[],
     poll_owner: string,
@@ -10,11 +15,27 @@ interface PollData{
     votes: Record<string, string[]>
 }
 
-export default function PollCard ({tripMembersInfo, description, options, poll_owner, time_added, title}:PollData) {
+export default function PollCard ({pollID, description, options, poll_owner, time_added, title, votes}:PollData) {
 
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    
     //Get Full Name and Avatar Color
-    const userFullName = `${tripMembersInfo[poll_owner].dbDoc.get("first_name")} ${tripMembersInfo[poll_owner].dbDoc.get("last_name")}`;
-    const userColor = tripMembersInfo[poll_owner].color;
+
+    const pollOwnerInfo = tripPageLayoutContext.tripMembersInfo?.[poll_owner];
+    if (!pollOwnerInfo) {
+    return <Loading />; // Or handle the case where the owner is not found
+    }
+
+    const userFullName = `${pollOwnerInfo.dbDoc.get("first_name")} ${pollOwnerInfo.dbDoc.get("last_name")}`;
+    const userColor = pollOwnerInfo.color;
+
+
+
+    async function handleDeletePoll() {
+        if (tripPageLayoutContext.tripDbDoc) {
+            await dbDeletePoll(tripPageLayoutContext.tripDbDoc.ref, pollID);
+        }
+    }
 
     return (
         <div className="flex gap-4 min-h-50 bg-[#EAFFB9] rounded-md p-4">
@@ -34,15 +55,14 @@ export default function PollCard ({tripMembersInfo, description, options, poll_o
                 {options.map((item,index) =>{
                     return (
                         <div className="flex gap-4 items-center">
-                            <div className="w-96 bg-[#F8E14C] p-2 rounded-md">
-                                {item} 
-                            </div>
-                            <h1 className="font-sunflower text-sidebar_deep_green"><b>30%</b></h1>
+                            {/* <b>{item}</b> */}
+                            <PollOption option={item} votes={votes[item]} />
                         </div>
                 )})}
 
                 <button 
                     className="self-end bg-[#EACBAC] text-center p-1 rounded-md font-sunflower text-sidebar_deep_green w-24"
+                    onClick={handleDeletePoll}
                 >Delete Poll</button>
             </div>
         </div>
