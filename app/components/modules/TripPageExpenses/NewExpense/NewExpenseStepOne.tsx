@@ -3,8 +3,11 @@ import React from "react";
 import AddMemberToExpense from "/AddMemberToExpense.svg";
 import DeleteMemberFromExpense from "/DeleteMemberFromExpense.svg";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
-
+import { useTripPageLayoutContext, type TripPageLayoutContext } from "../../../pages/TripPageLayout";
 export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }: { tripMembersInfo: TripMembersInfo, payees: { [key: string]: number[] }, setPayees: React.Dispatch<React.SetStateAction<{ [key: string]: number[] }>> }) {
+
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    const active_users: string[] = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
 
     //adds members to expense if the add button is clicked
     const HandleAddMember = (member: DocumentSnapshot) => {
@@ -78,7 +81,7 @@ export default function NewExpenseStepOne({ tripMembersInfo, payees, setPayees }
     //lists out all the members in the trip that are not yet added to an expense
     const renderMemberBoxes = () => {
         return Object.keys(tripMembersInfo).map(memberId => {
-            if (Object.hasOwn(payees, memberId)) return null;
+            if (Object.hasOwn(payees, memberId) || !(active_users).includes(memberId)) return null;
             return <MemberBox key={memberId} member={tripMembersInfo[memberId].dbDoc} />;
         });
     };

@@ -11,7 +11,7 @@ export default function TripPageMain() {
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
 
-    if(!(tripPageLayoutContext.tripDbDoc.get("trip_users").includes(currUser))) {
+    if(!(tripPageLayoutContext.tripDbDoc.get("trip_active_users").includes(currUser))) {
         return(
             <div className="flex w-full align-middle justify-center items-center font-sunflower text-4xl text-sidebar_deep_green">
                 <text>Forbidden! You are not a part of this trip.</text>

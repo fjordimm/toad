@@ -21,7 +21,8 @@ export default function BudgetPageMain() {
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
-    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
+    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
+    const users_archived_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
         const dateA: number = new Date(expenses[a].date).getTime();
         const dateB: number = new Date(expenses[b].date).getTime();
@@ -82,7 +83,7 @@ export default function BudgetPageMain() {
         return (
             <div 
                 onClick={() => onClick(member)}
-                className="relative w-full h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm"
+                className="relative w-full h-[28px] bg-[#8FA789]/40 shadow-sm rounded-lg"
             >
                 <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
                 <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
@@ -97,13 +98,13 @@ export default function BudgetPageMain() {
 
     const renderAllMembers = () => {
         return (
-            <div className="flex flex-col bg-[#EAFFB9] p-3 rounded-xl">
-                <div className="flex flex-col  overflow-auto items-center justify-center bg-sidebar_deep_green font-sunflower text-white text-l rounded-lg p-1">
+            <div className="flex flex-col bg-[#EAFFB9] rounded-xl">
+                <div className="flex flex-col  overflow-auto items-center justify-center text-sidebar_deep_green text-l rounded-tl-xl rounded-tr-xl p-1">
                     <p>View Expenses By Person</p>
                 </div>
-                <div className="flex flex-col gap-3 mt-3">
+                <div className="flex flex-col mx-2  my-3 gap-2">
                 {
-                    users_list.map((memberEmail: string) => {
+                    users_archived_list.map((memberEmail: string) => {
                         if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
                             return (
                                 <MemberBox 
@@ -198,8 +199,8 @@ export default function BudgetPageMain() {
                             <span className="text-red-800">${toads_paid_me.toFixed(2)}</span>
                         </p>
                     </div>
-                    <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
-                        Add an Expense
+                    <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-1 font-sunflower text-white text-2xl">
+                        + Add an Expense
                     </button>
 
                     {

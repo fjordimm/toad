@@ -14,21 +14,24 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
 
     const navigate = useNavigate();
 
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    const trip_active_users: string[] = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
+
     function turnListOfTripsMembersIntoElems(): ReactNode {
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
             const memberInfo = props.tripMembersInfo[memberEmailId];
 
-            return (
-                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
-            );
+            if(trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
+                return (
+                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
+                );
+            }
         });
     }
 
     const [email, setEmail] = useState<string>("");
     const [inviteError, setInviteError] = useState<string | null>(null);
 
-
-    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     let isTripOwner:boolean = true;
     if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
@@ -65,7 +68,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     }
 
     const toadCount: string = props.tripDbDoc !== null
-        ? props.tripDbDoc.get("trip_users").length
+        ? props.tripDbDoc.get("trip_active_users").length
         : "?"
         ;
 
