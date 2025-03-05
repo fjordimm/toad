@@ -32,9 +32,15 @@ export default function NewPoll(props: { onClose: () => void }) {
             return;
         }
 
+        //adding votes to db
+        const votes: { [key: string]: string[] } = {};
+        options.forEach(option => {
+            votes[option] = []; // Maintain order
+        });
+
         //  Save to Firestore
         if (tripPageLayoutContext.tripDbDoc) {
-            await dbAddPoll(tripPageLayoutContext.tripDbDoc.ref, title, description, pollOwner, options);
+            await dbAddPoll(tripPageLayoutContext.tripDbDoc.ref, title, description, pollOwner, options, votes);
         }
 
         console.log("Poll added successfully");
