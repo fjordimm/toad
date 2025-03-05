@@ -11,7 +11,7 @@ interface PollData{
 export default function PollCard ({description, options, poll_owner, time_added, title}:PollData) {
 
     return (
-        <div className="flex gap-4 min-h-40 bg-[#EAFFB9] rounded-md p-4">
+        <div className="flex gap-4 min-h-50 bg-[#EAFFB9] rounded-md p-4">
 
             {/* User Avatar */}
             <div className={`w-[28px] h-[28px] rounded-full bg-sidebar_deep_green`}></div>
