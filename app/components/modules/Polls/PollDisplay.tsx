@@ -15,20 +15,17 @@ interface PollData{
     votes: Record<string, string[]>
 }
 
-export default function PollCard ({pollID, description, options, poll_owner, time_added, title, votes}:PollData) {
+export default function PollCard ({pollID, description, options, poll_owner, title, votes}:PollData) {
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     
     //Get Full Name and Avatar Color
-
     const pollOwnerInfo = tripPageLayoutContext.tripMembersInfo?.[poll_owner];
     if (!pollOwnerInfo) {
-    return <Loading />; // Or handle the case where the owner is not found
+        return <Loading />; // Loading poll owner
     }
-
     const userFullName = `${pollOwnerInfo.dbDoc.get("first_name")} ${pollOwnerInfo.dbDoc.get("last_name")}`;
     const userColor = pollOwnerInfo.color;
-
 
 
     async function handleDeletePoll() {
@@ -36,6 +33,7 @@ export default function PollCard ({pollID, description, options, poll_owner, tim
             await dbDeletePoll(tripPageLayoutContext.tripDbDoc.ref, pollID);
         }
     }
+
 
     return (
         <div className="flex gap-4 min-h-50 bg-[#EAFFB9] rounded-md p-4">
@@ -56,7 +54,7 @@ export default function PollCard ({pollID, description, options, poll_owner, tim
                     return (
                         <div className="flex gap-4 items-center">
                             {/* <b>{item}</b> */}
-                            <PollOption option={item} votes={votes[item]} />
+                            <PollOption id= {pollID} option={item} votes={votes[item]} />
                         </div>
                 )})}
 

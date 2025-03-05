@@ -390,3 +390,30 @@ export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: stri
         polls: pollObj
     });
 }
+
+export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option:string, user:string){
+
+    await dbDeleteVotes(tripDbDocRef, pollId, user);
+
+    await updateDoc(tripDbDocRef, {
+        [`polls.${pollId}.votes.${option}`]: arrayUnion(user)
+    });
+}
+
+export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user:string){
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    if(tripDbDoc.exists()){
+        const votesObj = tripDbDoc.data().polls[pollId].votes || {}
+
+        for (const option in votesObj){
+            if (votesObj[option]){
+                votesObj[option] = votesObj[option].filter((voter: string) => voter !== user);
+            }
+        }
+
+        await updateDoc(tripDbDocRef,{
+            [`polls.${pollId}.votes`]: votesObj,
+        })
+    }
+}
