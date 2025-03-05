@@ -1,6 +1,6 @@
 import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "~/components/pages/TripPageLayout"
 import PollOption from "./PollOption";
-import { dbDeletePoll } from "~/src/databaseUtil";
+import { dbDeletePoll, dbDeleteVotes } from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
 import Loading from "../Loading";
 
@@ -15,6 +15,14 @@ interface PollData{
     votes: Record<string, string[]>
 }
 
+function totalVotes (votes:Record<string, string[]>  ): number {
+    let total = 0;
+    for (const option in votes){
+        total += votes[option].length
+    }
+    return total
+}
+
 export default function PollCard ({pollID, description, options, poll_owner, title, votes}:PollData) {
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
@@ -26,11 +34,19 @@ export default function PollCard ({pollID, description, options, poll_owner, tit
     }
     const userFullName = `${pollOwnerInfo.dbDoc.get("first_name")} ${pollOwnerInfo.dbDoc.get("last_name")}`;
     const userColor = pollOwnerInfo.color;
+    const voter = tripPageLayoutContext.userDbDoc.get("email");
+
 
 
     async function handleDeletePoll() {
         if (tripPageLayoutContext.tripDbDoc) {
             await dbDeletePoll(tripPageLayoutContext.tripDbDoc.ref, pollID);
+        }
+    }
+
+    async function handleClearVote() {
+        if (tripPageLayoutContext.tripDbDoc) {
+            await dbDeleteVotes(tripPageLayoutContext.tripDbDoc.ref, pollID, voter);
         }
     }
 
@@ -54,14 +70,21 @@ export default function PollCard ({pollID, description, options, poll_owner, tit
                     return (
                         <div className="flex gap-4 items-center">
                             {/* <b>{item}</b> */}
-                            <PollOption id= {pollID} option={item} votes={votes[item]} />
+                            <PollOption id= {pollID} option={item} votes={votes[item]} totalVotes={totalVotes(votes)} />
                         </div>
                 )})}
 
-                <button 
-                    className="self-end bg-[#EACBAC] text-center p-1 rounded-md font-sunflower text-sidebar_deep_green w-24"
-                    onClick={handleDeletePoll}
-                >Delete Poll</button>
+                <div className="flex w-full gap-2 justify-end ">
+                    <button 
+                        className="self-end bg-[#CFC0E5] text-center p-1 rounded-md font-sunflower text-sidebar_deep_green w-24"
+                        onClick={handleClearVote}
+                    >Clear Vote</button>
+
+                    <button 
+                        className="self-end bg-[#F9B691] text-center p-1 rounded-md font-sunflower text-sidebar_deep_green w-24"
+                        onClick={handleDeletePoll}
+                    >Delete Poll</button>
+                </div>
             </div>
         </div>
     )
