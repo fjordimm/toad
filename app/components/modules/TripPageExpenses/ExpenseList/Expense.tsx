@@ -12,7 +12,7 @@ const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string }) {
+export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string, currUser: string}) {
 
     const expenseObj: any = props.tripDbDoc.get("expenses")[props.expenseId];
 
@@ -95,9 +95,9 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
             <div className="flex flex-row justify-between items-end pl-12">
                 {turnPayersDbDocsIntoElems()}
 
-                <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
+                {expenseOwnerInfo.dbDoc.get("email") === props.currUser ? <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
                     <span className="font-sunflower text-base text-white">Delete Expense</span>
-                </button>
+                </button>: null}
             </div>
         </div>
     );

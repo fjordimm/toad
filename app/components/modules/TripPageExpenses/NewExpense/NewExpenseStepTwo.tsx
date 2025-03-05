@@ -137,7 +137,7 @@ export default function NewExpenseStepTwo({ tripMembersInfo, totalCost, payees, 
             {/* Specify Expenses Big Box */}
             {/* <div> */}
             <div className=" w-4/5 h-44 bg-[#BDDE9A] rounded-lg p-4">
-                <div className="flex flex-col gap-2 overflow-scroll h-full">
+                <div className="flex flex-col gap-2 overflow-scroll overflow-x-hidden h-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-sidebar_button_bg">
                     {Object.keys(payees).map((item) => (
                         <div key={item} className="flex justify-between">
                             <NameCard name={item} />

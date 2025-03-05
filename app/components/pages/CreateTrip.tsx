@@ -19,10 +19,20 @@ export default function CreateTrip() {
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+     const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+
+            if (new Date(endDate) < new Date(startDate)) {
+                setError("Please make sure that your start date is before your end date!");
+                setTripName('');
+                setStartDate('');
+                setEndDate('');
+                throw new Error("bad request");
+            }
+
             const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
 
             setTripName('');
@@ -31,7 +41,7 @@ export default function CreateTrip() {
 
             navigate(`/trip/${tripDbDocRef.id}`);
         }
-        catch (error) {
+        catch (err:any) {
             console.error("Error adding trip: ", error);
         }
     };
@@ -99,6 +109,7 @@ export default function CreateTrip() {
                         >
                             Begin
                         </button>
+                        <p className="font-maven text-red-900 width-2 text-center">{error}</p>
                     </form>
                 </div>
             </div>

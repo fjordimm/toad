@@ -9,6 +9,9 @@ import React, { useState } from "react";
 import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
+import type { DocumentSnapshot } from "firebase/firestore";
+import MemberBreakdown from "../modules/TripPageExpenses/MemberBreakdown";
+
 export default function BudgetPageMain() {
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
@@ -18,6 +21,8 @@ export default function BudgetPageMain() {
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
+    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
+    const users_archived_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
         const dateA: number = new Date(expenses[a].date).getTime();
         const dateB: number = new Date(expenses[b].date).getTime();
@@ -69,16 +74,64 @@ export default function BudgetPageMain() {
     }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    //const [isMemberModalOpen, setMemberModalOpen] = useState(false);
+    const [selectedMember, setSelectedMember] =  useState<DocumentSnapshot | null>(null);
 
+    const MemberBox = ({ member, onClick }: {member: DocumentSnapshot, onClick:(member: DocumentSnapshot) => void}) => {
+        const memberName = `${member.get("first_name")} ${member.get("last_name")}`;
+        const userColor = tripPageLayoutContext.tripMembersInfo[member.id].color;
+        return (
+            <div 
+                onClick={() => onClick(member)}
+                className="relative w-full h-[28px] bg-[#8FA789]/40 shadow-sm rounded-lg"
+            >
+                <div className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${userColor}`}></div>
+                <div className="absolute left-[45px] right-2 h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span className="text-[#3C533A] font-sunflower text-sm leading-[30px]">
+                        {memberName}
+                    </span>
+                </div>
+            </div>
+        );
+    };
+    
+
+    const renderAllMembers = () => {
+        return (
+            <div className="flex flex-col bg-[#EAFFB9] rounded-xl">
+                <div className="flex flex-col  overflow-auto items-center justify-center text-sidebar_deep_green text-l rounded-tl-xl rounded-tr-xl p-1">
+                    <p>View Expenses By Person</p>
+                </div>
+                <div className="flex flex-col mx-2  my-3 gap-2">
+                {
+                    users_archived_list.map((memberEmail: string) => {
+                        if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
+                            return (
+                                <MemberBox 
+                                    key={memberEmail} 
+                                    member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc} 
+                                    onClick={(member) => setSelectedMember(member)}
+                                />
+                            );
+                        } else {
+                            return null;
+                        }
+                    })
+                }
+                </div>
+            </div>
+        );
+    };
+    
     return (
-        <div className="grow flex flex-col gap-5 bg-dashboard_lime">
+        <div className="grow flex flex-col flex-auto gap-5 overflow-auto scrollbar-thin scrollbar-thumb-sidebar_deep_green scrollbar-track-transparent bg-dashboard_lime">
             {/* Non button div */}
             <div className="mt-[3px]">
                 <Link to="./.." className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Back</Link>
             </div>
-            <div className="flex flex-row gap-5 h-full">
+            <div className="flex flex-row gap-5">
                 {/* Main Div */}
-                <div className="grow flex flex-col w-4/5 gap-5 justify-between">
+                <div className="grow flex flex-col overflow-auto w-4/5 gap-5 justify-between">
                     <div className="bg-[#D7F297] h-full rounded-xl">
                         {/* Buttons to Sort */}
                         <div className="flex flex-row justify-center -mt-2 w-full max-h-18">
@@ -129,25 +182,25 @@ export default function BudgetPageMain() {
                 {/* Sidebar Div */}
                 <div className="flex flex-col w-1/5 h-full gap-y-4">
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>You owe all toads on board </b>
                             <span className="text-red-800">${i_owe_toads.toFixed(2)}</span>
                         </p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>All toads owe you </b>
                             <span className="text-red-800">${toads_owe_me.toFixed(2)}</span>
                         </p>
                     </div>
                     <div className="bg-[#D7F297] p-5 rounded-xl">
-                        <p className="font-sunflower text-2xl text-sidebar_deep_green">
+                        <p className="font-sunflower text-xl text-sidebar_deep_green">
                             <b>All toads have paid you </b>
                             <span className="text-red-800">${toads_paid_me.toFixed(2)}</span>
                         </p>
                     </div>
-                    <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-2 font-sunflower text-white text-2xl">
-                        Add an Expense
+                    <button onClick={() => setIsModalOpen(true)} className="bg-sidebar_deep_green rounded-xl p-1 font-sunflower text-white text-2xl">
+                        + Add an Expense
                     </button>
 
                     {
@@ -155,6 +208,23 @@ export default function BudgetPageMain() {
                             ? <NewExpense onClose={() => setIsModalOpen(false)} />
                             : null
                     }
+                    {/* Toad Count v2 */}
+                    <div>
+                        {renderAllMembers()}
+                        {selectedMember && (
+                            <MemberBreakdown
+                                memberEmail={selectedMember.get("email")}
+                                iOwePeople={iOwePeople}
+                                peopleOweMe={peopleOweMe}
+                                expensesDict={expenses}
+                                currUser={currUser}
+                                tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
+                                memberFirstName={selectedMember.get("first_name")}
+                                tripDbDoc={tripPageLayoutContext.tripDbDoc}
+                                onClose={() => setSelectedMember(null)}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

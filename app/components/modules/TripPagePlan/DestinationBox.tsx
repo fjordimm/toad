@@ -35,9 +35,9 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, des
 
                 <div className="flex flex-wrap justify-end gap-1" onPointerDown={(e) => e.stopPropagation()}>
                     {/* Edit Button */}
-                    <button className="w-6 h-6" aria-label="Edit destination">
+                    {/* <button className="w-6 h-6" aria-label="Edit destination">
                         <img src={EditBox} alt="Edit Box" />
-                    </button>
+                    </button> */}
 
                     {/*Trash Button*/}
                     <button onClick={() => handleDelete(props.destinationId)} className="w-6 h-6" aria-label="Delete destination">
