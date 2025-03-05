@@ -13,6 +13,7 @@ interface PollData{
     poll_owner: string,
     time_added: Number,
     title: string,
+    votes: Record<string, string[]>,
 }
 
 export default function TripPageMain() {
@@ -58,11 +59,13 @@ export default function TripPageMain() {
                     <div className="w-full flex flex-col gap-2 overflow-scroll">
                         {tripPollsSorted.map(([pollID, poll]) =>(
                             <PollCard 
+                                tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
                                 description={poll.description}
                                 options={poll.options}
                                 poll_owner={poll.poll_owner}
                                 time_added={poll.time_added}
                                 title={poll.title}
+                                votes={poll.votes}
                             />
                         ))}
                        
