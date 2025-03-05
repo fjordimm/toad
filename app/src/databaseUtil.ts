@@ -391,15 +391,17 @@ export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: stri
     });
 }
 
+// Add user email to votes[options] once a vote is casted for a specific pollID and option
 export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option:string, user:string){
 
-    await dbDeleteVotes(tripDbDocRef, pollId, user);
+    await dbDeleteVotes(tripDbDocRef, pollId, user);   // ensure only one option is selected
 
     await updateDoc(tripDbDocRef, {
         [`polls.${pollId}.votes.${option}`]: arrayUnion(user)
     });
 }
 
+// Clears ALL of current user's votes
 export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user:string){
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
