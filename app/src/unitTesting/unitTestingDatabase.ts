@@ -193,57 +193,58 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
     } else {
         for (const destinationId of Object.keys(destinations)) {
             if (typeof destinationId !== "string") {
-                logError("A key in 'destinations' is not a string.");
-            }
-
-            const destinationObj = destinations[destinationId];
-            if (destinationObj === undefined) {
-                logError(`The item '${destinationId}' of 'destinations' is somehow undefined.`);
-            } else if (typeof destinationObj !== "object") {
-                logError(`The item '${destinationId}' of 'destinations' is not an object.`);
+                logError("A key in field 'destinations' is not a string.");
             } else {
-                const description = destinationObj["description"];
-                if (description === undefined)  {
-                    logError(`Field 'description' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof description !== "string") {
-                    logError(`Field 'description' of the item '${destinationId}' in 'destinations' is not a string.`);
-                }
+                const destinationObj = destinations[destinationId];
+                if (destinationObj === undefined) {
+                    logError(`Item '${destinationId}' of field 'destinations' is somehow undefined.`);
+                } else if (typeof destinationObj !== "object") {
+                    logError(`Item '${destinationId}' of field 'destinations' is not an object.`);
+                } else {
+                    const description = destinationObj["description"];
+                    if (description === undefined)  {
+                        logError(`Field 'description' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof description !== "string") {
+                        logError(`Field 'description' of the item '${destinationId}' in field 'destinations' is not a string.`);
+                    }
 
-                const is_in_itinerary = destinationObj["is_in_itinerary"];
-                if (is_in_itinerary === undefined)  {
-                    logError(`Field 'is_in_itinerary' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof is_in_itinerary !== "boolean") {
-                    logError(`Field 'is_in_itinerary' of the item '${destinationId}' in 'destinations' is not a boolean.`);
-                }
-                
-                const length = destinationObj["length"];
-                if (length === undefined)  {
-                    logError(`Field 'length' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof length !== "string") {
-                    logError(`Field 'length' of the item '${destinationId}' in 'destinations' is not a string.`);
-                }
+                    const is_in_itinerary = destinationObj["is_in_itinerary"];
+                    if (is_in_itinerary === undefined)  {
+                        logError(`Field 'is_in_itinerary' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof is_in_itinerary !== "boolean") {
+                        logError(`Field 'is_in_itinerary' of the item '${destinationId}' in field 'destinations' is not a boolean.`);
+                    }
+                    
+                    const length = destinationObj["length"];
+                    if (length === undefined)  {
+                        logError(`Field 'length' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof length !== "string") {
+                        logError(`Field 'length' of the item '${destinationId}' in field 'destinations' is not a string.`);
+                    }
 
-                const name = destinationObj["name"];
-                if (name === undefined)  {
-                    logError(`Field 'name' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof name !== "string") {
-                    logError(`Field 'name' of the item '${destinationId}' in 'destinations' is not a string.`);
-                }
+                    const name = destinationObj["name"];
+                    if (name === undefined)  {
+                        logError(`Field 'name' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof name !== "string") {
+                        logError(`Field 'name' of the item '${destinationId}' in field 'destinations' is not a string.`);
+                    }
 
-                const price = destinationObj["price"];
-                if (price === undefined)  {
-                    logError(`Field 'price' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof price !== "string") {
-                    logError(`Field 'price' of the item '${destinationId}' in 'destinations' is not a string.`);
-                }
+                    const price = destinationObj["price"];
+                    if (price === undefined)  {
+                        logError(`Field 'price' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof price !== "string") {
+                        logError(`Field 'price' of the item '${destinationId}' in field 'destinations' is not a string.`);
+                    }
 
-                const time = destinationObj["time"];
-                if (time === undefined)  {
-                    logError(`Field 'time' of the item '${destinationId}' in 'destinations' does not exist.`);
-                } else if (typeof time !== "string") {
-                    logError(`Field 'time' of the item '${destinationId}' in 'destinations' is not a string.`);
+                    const time = destinationObj["time"];
+                    if (time === undefined)  {
+                        logError(`Field 'time' of the item '${destinationId}' in field 'destinations' does not exist.`);
+                    } else if (typeof time !== "string") {
+                        logError(`Field 'time' of the item '${destinationId}' in field 'destinations' is not a string.`);
+                    }
                 }
             }
+
         }
     }
 
@@ -306,8 +307,131 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
         }
     }
 
-    // expenses
+    const expenses = tripDbDoc.get("expenses");
+    if (expenses === undefined)  {
+        logError("Field 'expenses' does not exist.");
+    } else if (typeof expenses !== "object") {
+        logError("Field 'expenses' is not an object.");
+    } else {
+        for (const expenseId of Object.keys(expenses)) {
+            if (typeof expenseId !== "string") {
+                logError("A key in field 'expenses' is not a string.");
+            } else {
+                const expenseObj = expenses[expenseId];
+                if (expenseObj === undefined) {
+                    logError(`Item '${expenseId}' of field 'expenses' is somehow undefined.`);
+                } else if (typeof expenseObj !== "object") {
+                    logError(`Item '${expenseId}' of field 'expenses' is not an object.`);
+                } else {
+                    const name = expenseObj["name"];
+                    if (name === undefined) {
+                        logError(`Field 'name' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof name !== "string") {
+                        logError(`Field 'name' of item '${expenseId}' in field 'expenses' is not a string.`);
+                    }
 
+                    const date = expenseObj["date"];
+                    if (date === undefined) {
+                        logError(`Field 'date' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof date !== "string") {
+                        logError(`Field 'date' of item '${expenseId}' in field 'expenses' is not a string.`);
+                    } else if (isNaN(new Date(date).getTime())) {
+                        logError(`Field 'date' of item '${expenseId}' in field 'expenses' is not in a valid format for a date.`);
+                    }
+
+                    const time_added = expenseObj["time_added"];
+                    if (time_added === undefined) {
+                        logError(`Field 'time_added' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof time_added !== "number") {
+                        logError(`Field 'time_added' of item '${expenseId}' in field 'expenses' is not a number.`);
+                    }
+
+                    const expense_owner = expenseObj["expense_owner"];
+                    if (expense_owner === undefined) {
+                        logError(`Field 'expense_owner' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof expense_owner !== "string") {
+                        logError(`Field 'expense_owner' of item '${expenseId}' in field 'expenses' is not a string.`);
+                    }
+
+                    const total_amount = expenseObj["total_amount"];
+                    if (total_amount === undefined) {
+                        logError(`Field 'total_amount' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof total_amount !== "string") {
+                        logError(`Field 'total_amount' of item '${expenseId}' in field 'expenses' is not a string.`);
+                    }
+
+                    const even_split = expenseObj["even_split"];
+                    if (even_split === undefined) {
+                        logError(`Field 'even_split' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof even_split !== "boolean") {
+                        logError(`Field 'even_split' of item '${expenseId}' in field 'expenses' is not a boolean.`);
+                    }
+
+                    const payers = expenseObj["payers"];
+                    if (payers === undefined) {
+                        logError(`Field 'payers' of item '${expenseId}' in field 'expenses' does not exist.`);
+                    } else if (typeof payers !== "object") {
+                        logError(`Field 'payers' of item '${expenseId}' in field 'expenses' is not an object.`);
+                    } else {
+                        for (const payerId of Object.keys(payers)) {
+                            if (typeof payerId !== "string") {
+                                logError(`A key in field 'payers' of item '${expenseId}' in field 'expenses' is not a string.`);
+                            } else {
+                                const payerObj = payers[payerId];
+                                if (payerObj === undefined) {
+                                    logError(`Item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is somehow undefined.`);
+                                } else if (typeof payerObj !== "object") {
+                                    logError(`Item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is not an array.`);
+                                } else if(!(payerObj instanceof Array)) {
+                                    logError(`Item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is not an array.`);
+                                } else if (payerObj.length !== 2) {
+                                    logError(`Item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is does not have a length of 2.`);
+                                } else {
+                                    const item0 = payerObj[0];
+                                    if (item0 === undefined) {
+                                        logError(`Index 0 of item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' somehow does not exist.`);
+                                    } else if (typeof item0 !== "number") {
+                                        logError(`Index 0 of item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is not a number.`);
+                                    }
+
+                                    const item1 = payerObj[1];
+                                    if (item1 === undefined) {
+                                        logError(`Index 1 of item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' somehow does not exist.`);
+                                    } else if (typeof item1 !== "number") {
+                                        logError(`Index 1 of item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' is not a number.`);
+                                    } else if (item1 !== 0 && item1 !== 1) {
+                                        logError(`Index 1 of item '${payerId}' in field 'payers' of item '${expenseId}' in field 'expenses' has a value other than 1 or 0.`);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    const polls = tripDbDoc.get("polls");
+    if (polls === undefined)  {
+        logError("Field 'polls' does not exist.");
+    } else if (typeof polls !== "object") {
+        logError("Field 'polls' is not an object.");
+    } else {
+        for (const pollId of Object.keys(polls)) {
+            if (typeof pollId !== "string") {
+                logError("A key in field 'polls' is not a string.");
+            } else {
+                const pollObj = polls[pollId];
+                if (pollObj === undefined) {
+                    logError(`Item '${pollId}' of field 'polls' is somehow undefined.`);
+                } else if (typeof pollObj !== "object") {
+                    logError(`Item '${pollId}' of field 'polls' is not an object.`);
+                } else {
+                    // TODO
+                }
+            }
+        }
+    }
     // polls
 
 
