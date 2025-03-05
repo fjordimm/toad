@@ -11,6 +11,8 @@ interface PollData{
 }
 
 export default function PollCard ({tripMembersInfo, description, options, poll_owner, time_added, title}:PollData) {
+
+    //Get Full Name and Avatar Color
     const userFullName = `${tripMembersInfo[poll_owner].dbDoc.get("first_name")} ${tripMembersInfo[poll_owner].dbDoc.get("last_name")}`;
     const userColor = tripMembersInfo[poll_owner].color;
 

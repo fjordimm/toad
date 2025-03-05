@@ -26,10 +26,10 @@ export default function TripPageMain() {
 
     // Converts Map of 'Polls' into an Array sorted by time_added
     const tripPolls: Map<string,PollData>  = tripPageLayoutContext.tripDbDoc.get('polls');
-    const tripPollsSorted  = Object.entries(tripPolls).sort((a,b) => a[1].time_added - b[1].time_added );
-
-
-
+    const tripPollsSorted = tripPolls && Object.keys(tripPolls).length > 0 
+        ? Object.entries(tripPolls).sort((a, b) => a[1].time_added - b[1].time_added)
+        : [];
+  
 
     const [isPollModalOpen, setIsPollModalOpen] = useState(false);
 

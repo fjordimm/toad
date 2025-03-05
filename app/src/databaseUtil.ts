@@ -115,7 +115,8 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
         trip_users: [],
         itinerary: itin,
         destinations: {},
-        expenses: {}
+        expenses: {},
+        polls: {}
     });
 
     await dbAddUserToTrip(tripDbDocRef, await dbRetrieveUser(tripOwner));
