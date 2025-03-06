@@ -491,26 +491,22 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
                                 } else if (!(voteObj instanceof Array)) {
                                     logError(`Item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is not an array.`);
                                 } else {
-                                    // TODO
+                                    for (let i = 0; i < voteObj.length; i++) {
+                                        const userId = voteObj[i];
+                                        if (userId === undefined) {
+                                            logError(`Element ${i} of item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is somehow undefined.`);
+                                        } else if (typeof userId !== "string") {
+                                            logError(`Element ${i} of item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is not a string.`);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                    // votes
                 }
             }
         }
     }
-    // polls
-
-
-
-    // const _____ = tripDbDoc.get("_____");
-    // if (_____ === undefined)  {
-    //     logError("Field '_____' does not exist.");
-    // } else if (typeof _____ !== "number") {
-    //     logError("Field '_____' is not a number.");
-    // }
 }
 
 main();
