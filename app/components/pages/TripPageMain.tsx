@@ -9,7 +9,7 @@ import PollCard from "../modules/Polls/PollDisplay";
 import CalenderDate from "/calendar-date.svg";
 import Dollar from "/currency-dollar-circle.svg"
 
-interface PollData{
+interface PollData {
     description: string,
     options: string[],
     poll_owner: string,
@@ -28,11 +28,11 @@ export default function TripPageMain() {
     const tripName: string = tripPageLayoutContext.tripDbDoc.get("trip_name");
 
     // Converts Map of 'Polls' into an Array sorted by time_added
-    const tripPolls: Map<string,PollData>  = tripPageLayoutContext.tripDbDoc.get('polls');
-    const tripPollsSorted = tripPolls && Object.keys(tripPolls).length > 0 
+    const tripPolls: Map<string, PollData> = tripPageLayoutContext.tripDbDoc.get('polls');
+    const tripPollsSorted = tripPolls && Object.keys(tripPolls).length > 0
         ? Object.entries(tripPolls).sort((a, b) => a[1].time_added - b[1].time_added)
         : [];
-  
+
 
     const [isPollModalOpen, setIsPollModalOpen] = useState(false);
 
@@ -49,20 +49,20 @@ export default function TripPageMain() {
                     <Link to="./budget" className="bg-dashboard_component_bg py-2 px-4 rounded-lg font-sunflower text-sidebar_deep_green underline">Budget</Link>
                 </div> */}
 
-                <div className="h-full overflow-scroll rounded-lg p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
+                <div className="h-full w-9/12 overflow-scroll rounded-xl p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
                     <button
                         onClick={() => setIsPollModalOpen(true)}
-                        className="flex items-center gap-2"
+                        className="flex items-center space-x-2 p-2"
                         aria-label="Add Poll"
                     >
-                            <img src={AddPoll} alt="Add Poll"/>
-                            <p className="font-sunflower text-sidebar_deep_green text-xl font-bold">Create a Poll</p>
+                        <img src={AddPoll} alt="Add Poll" className="w-8 h-8" />
+                        <h2 className="text-lg font-sunflower">Create A Poll</h2>
                     </button>
 
                     <div className="w-full flex flex-col gap-2 overflow-scroll">
-                        {tripPollsSorted.map(([pollID, poll]) =>(
-                            <PollCard 
-                                pollID = {pollID || " "}
+                        {tripPollsSorted.map(([pollID, poll]) => (
+                            <PollCard
+                                pollID={pollID || " "}
                                 description={poll.description || " "}
                                 options={poll.options || []}
                                 poll_owner={poll.poll_owner || " "}
@@ -71,27 +71,10 @@ export default function TripPageMain() {
                                 votes={poll.votes || []}
                             />
                         ))}
-                       
-                    </div>
-                </div>              
-                <div className="h-screen bg-[#D4F28F] w-9/12">
-                    {/* Add a poll button */}
-                    <div className="flex flex-col items-center m-4">
-                        <button
-                            onClick={() => setIsPollModalOpen(true)}
-                            className="flex justify-center space-x-2"
-                            aria-label="Add Poll"
-                        >
-                            <img src={AddPoll} alt="Add Poll" className="w-8 h-8" />
-                            <h2 className="text-lg font-sunflower">Create A Poll</h2>
-                        </button>
 
-                        {/* List of all the polls */}
-                        <div className="grow flex flex-col gap-5 overflow-y-auto w-full p-2 rounded-lg" style={{ height: 'calc(100vh - 150px)' }}>
-                            {/* {Array(40).fill(<h1>hehehe</h1>)} */}
-                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div className="w-1/5 h-screen p-4 fixed right-0 top-0 flex flex-col items-center justify-start space-y-6">
