@@ -113,6 +113,7 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
         trip_owner: tripOwner,
         days: num_days,
         trip_users: [],
+        trip_active_users: [],
         itinerary: itin,
         destinations: {},
         expenses: {}
@@ -192,7 +193,8 @@ export async function dbDeclineInvitation(userDbDoc: DocumentSnapshot, tripId: s
 
 export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userDbDoc: DocumentSnapshot) {
     await updateDoc(tripDbDocRef, {
-        trip_users: arrayUnion(userDbDoc.id)
+        trip_users: arrayUnion(userDbDoc.id), 
+        trip_active_users: arrayUnion(userDbDoc.id)
     });
 
     await updateDoc(userDbDoc.ref, {
@@ -206,7 +208,7 @@ export async function dbRemoveUserFromTrip(tripDbDoc: DocumentSnapshot, userDbDo
     });
 
     await updateDoc(tripDbDoc.ref, {
-        trip_users: arrayRemove(userDbDoc.id)
+        trip_active_users: arrayRemove(userDbDoc.id)
     });
 }
 

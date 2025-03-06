@@ -6,6 +6,7 @@ import { type DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import type { TripMembersInfo } from "../pages/TripPageLayout";
+import { useTripPageLayoutContext, type TripPageLayoutContext } from "../pages/TripPageLayout";
 
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo }) {
 
@@ -13,18 +14,29 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
 
     const navigate = useNavigate();
 
+    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+    const trip_active_users: string[] = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
+
     function turnListOfTripsMembersIntoElems(): ReactNode {
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
             const memberInfo = props.tripMembersInfo[memberEmailId];
 
-            return (
-                <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} />
-            );
+            if(trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
+                return (
+                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
+                );
+            }
         });
     }
 
     const [email, setEmail] = useState<string>("");
     const [inviteError, setInviteError] = useState<string | null>(null);
+
+    const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
+    let isTripOwner:boolean = true;
+    if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
+        isTripOwner = false;
+    }
 
     async function handleInviteSubmit() {
 
@@ -56,7 +68,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     }
 
     const toadCount: string = props.tripDbDoc !== null
-        ? props.tripDbDoc.get("trip_users").length
+        ? props.tripDbDoc.get("trip_active_users").length
         : "?"
         ;
 
@@ -72,7 +84,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
                 </div>
 
                 {/* Member List */}
-                <div className="mt-4 h-[150px] overflow-y-auto scrollbar-none space-y-3">
+                <div className="mt-4 h-[135px] overflow-y-auto scrollbar-none space-y-3">
                     {/* Can add members to the trip by calling <ToadMembers name="name" /> */}
                     {turnListOfTripsMembersIntoElems()}
                 </div>
@@ -99,14 +111,14 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
             </div>
 
             {/* Delete Trip Button */}
-            <div className="mt-2 flex flex-col">
+            {isTripOwner && (<div className="mt-2 flex flex-col">
                 <button
                     onClick={() => handleDeleteTrip(props.tripDbDoc)}
                     className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
                 >
                     Delete Trip
                 </button>
-            </div>
+            </div>)}
         </div>
     );
 }
