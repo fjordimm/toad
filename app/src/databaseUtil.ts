@@ -116,7 +116,8 @@ export async function dbCreateTrip(tripName: string, startDate: string, endDate:
         trip_active_users: [],
         itinerary: itin,
         destinations: {},
-        expenses: {}
+        expenses: {},
+        polls: {}
     });
 
     await dbAddUserToTrip(tripDbDocRef, await dbRetrieveUser(tripOwner));
@@ -357,4 +358,66 @@ export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReferenc
     await updateDoc(tripDbDoc.ref, {
         expenses: expensesObj
     });
+}
+
+
+export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] } ) {
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const pollId: string = generateUuid();
+
+    const pollObj = tripDbDoc.get("polls") || {};
+    pollObj[pollId] = {
+        title: title,
+        description: description,
+        time_added: new Date().getTime(),
+        poll_owner: pollOwner,
+        options: options,
+        votes: votes
+    };
+
+    console.log("Poll object before update:", pollObj);
+    
+    await updateDoc(tripDbDoc.ref, {
+        polls: pollObj
+    });
+}
+
+export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string){
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    const pollObj = tripDbDoc.get("polls");
+    delete(pollObj[pollId])
+    await updateDoc(tripDbDoc.ref, {
+        polls: pollObj
+    });
+}
+
+// Add user email to votes[options] once a vote is casted for a specific pollID and option
+export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option:string, user:string){
+
+    await dbDeleteVotes(tripDbDocRef, pollId, user);   // ensure only one option is selected
+
+    await updateDoc(tripDbDocRef, {
+        [`polls.${pollId}.votes.${option}`]: arrayUnion(user)
+    });
+}
+
+// Clears ALL of current user's votes
+export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user:string){
+    const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
+
+    if(tripDbDoc.exists()){
+        const votesObj = tripDbDoc.data().polls[pollId].votes || {}
+
+        for (const option in votesObj){
+            if (votesObj[option]){
+                votesObj[option] = votesObj[option].filter((voter: string) => voter !== user);
+            }
+        }
+
+        await updateDoc(tripDbDocRef,{
+            [`polls.${pollId}.votes`]: votesObj,
+        })
+    }
 }
