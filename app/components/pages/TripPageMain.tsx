@@ -81,14 +81,14 @@ export default function TripPageMain() {
                 <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
 
                 <Link to="./plan" className="w-full flex justify-center">
-                    <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
+                    <button className="w-full h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={CalenderDate} className="w-17 h-17" />
                         <h2 className="font-sunflower text-sidebar_deep_green text-2xl">Trip Itinerary</h2>
                     </button>
                 </Link>
 
                 <Link to="./budget" className="w-full flex justify-center">
-                    <button className="w-10/12 h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-md p-4 flex flex-col items-center justify-center space-y-2">
+                    <button className="w-full h-40 bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={Dollar} className="w-17 h-17" />
                         <h2 className="font-sunflower text-sidebar_deep_green text-2xl">Budget Tool</h2>
                     </button>
