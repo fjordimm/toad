@@ -427,7 +427,76 @@ function testTrip(tripDbDoc: DocumentSnapshot) {
                 } else if (typeof pollObj !== "object") {
                     logError(`Item '${pollId}' of field 'polls' is not an object.`);
                 } else {
-                    // TODO
+                    const title = pollObj["title"];
+                    if (title === undefined) {
+                        logError(`Field 'title' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof title !== "string") {
+                        logError(`Field 'title' of item '${pollId}' in field 'polls' is not a string.`);
+                    }
+
+                    const description = pollObj["description"];
+                    if (description === undefined) {
+                        logError(`Field 'description' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof description !== "string") {
+                        logError(`Field 'description' of item '${pollId}' in field 'polls' is not a string.`);
+                    }
+
+                    const poll_owner = pollObj["poll_owner"];
+                    if (poll_owner === undefined) {
+                        logError(`Field 'poll_owner' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof poll_owner !== "string") {
+                        logError(`Field 'poll_owner' of item '${pollId}' in field 'polls' is not a string.`);
+                    }
+
+                    const time_added = pollObj["time_added"];
+                    if (time_added === undefined) {
+                        logError(`Field 'time_added' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof time_added !== "number") {
+                        logError(`Field 'time_added' of item '${pollId}' in field 'polls' is not a number.`);
+                    }
+
+                    const options = pollObj["options"];
+                    if (options === undefined) {
+                        logError(`Field 'options' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof options !== "object") {
+                        logError(`Field 'options' of item '${pollId}' in field 'polls' is not an array.`);
+                    } else if (!(options instanceof Array)) {
+                        logError(`Field 'options' of item '${pollId}' in field 'polls' is not an array.`);
+                    } else {
+                        for (let i = 0; i < options.length; i++) {
+                            const optionObj = options[i];
+                            if (optionObj === undefined) {
+                                logError(`Element ${i} of field 'options' of item '${pollId}' in field 'polls' is somehow undefined.`);
+                            } else if (typeof optionObj !== "string") {
+                                logError(`Element ${i} of field 'options' of item '${pollId}' in field 'polls' is not a string.`);
+                            }
+                        }
+                    }
+
+                    const votes = pollObj["votes"];
+                    if (votes === undefined) {
+                        logError(`Field 'votes' of item '${pollId}' in field 'polls' does not exist.`);
+                    } else if (typeof votes !== "object") {
+                        logError(`Field 'votes' of item '${pollId}' in field 'polls' is not an object.`);
+                    } else {
+                        for (const voteKey of Object.keys(votes)) {
+                            if (typeof voteKey !== "string") {
+                                logError(`A key in field 'votes' of item '${pollId}' in field 'polls' is not a string.`);
+                            } else {
+                                const voteObj = votes[voteKey];
+                                if (voteObj === undefined) {
+                                    logError(`Item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is somehow undefined.`);
+                                } else if (typeof voteObj !== "object") {
+                                    logError(`Item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is not an array.`);
+                                } else if (!(voteObj instanceof Array)) {
+                                    logError(`Item '${voteKey}' in field 'votes' of item '${pollId}' in field 'polls' is not an array.`);
+                                } else {
+                                    // TODO
+                                }
+                            }
+                        }
+                    }
+                    // votes
                 }
             }
         }
