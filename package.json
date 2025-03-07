@@ -7,7 +7,8 @@
 		"dev": "react-router dev",
 		"start": "http-server ./build/client",
 		"typecheck": "react-router typegen && tsc",
-		"lint": "npx eslint app/**/*.{js,mjs,cjs,ts,jsx,tsx}"
+		"lint": "npx eslint app/**/*.{js,mjs,cjs,ts,jsx,tsx}",
+		"test-database": "tsc app/src/unitTesting/unitTestingDatabase.ts --outDir build/unitTesting/; echo '{ \"type\": \"commonjs\" }' > build/unitTesting/package.json; node build/unitTesting/unitTesting/unitTestingDatabase.js"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",
