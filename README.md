@@ -2,6 +2,20 @@
 
 Hosted at https://toad-b0980.web.app/
 
+## Node Package Installation
+
+After cloning the repository, run this to install necessary packages:
+
+```
+npm install
+```
+
+Note: you may have to run this instead if problems pop up:
+
+```
+npm install --legacy-peer-deps
+```
+
 ## Development Building and Testing
 
 To test the site using Vite, run:
