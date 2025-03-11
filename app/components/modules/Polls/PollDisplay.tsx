@@ -5,14 +5,17 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import Loading from "../Loading";
 
 // Properties of a Poll
-interface PollData{
+interface PollData {
     pollID: string,
     description: string,
     options: string[],
     poll_owner: string,
     time_added: Number,
     title: string,
-    votes: Record<string, string[]>
+    votes: Record<string, string[]>,
+    tripDbDoc: DocumentSnapshot,
+    tripMembersInfo: TripMembersInfo,
+    voterDbDoc: DocumentSnapshot
 }
 
 // Calculates total number of votes casted
@@ -27,12 +30,10 @@ function totalVotes (votes:Record<string, string[]>  ): number {
 }
 
 // Displays one Poll
-export default function PollCard ({pollID, description, options, poll_owner, title, votes}:PollData) {
-
-    const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
+export default function PollCard ({pollID, description, options, poll_owner, title, votes, tripDbDoc, tripMembersInfo, voterDbDoc}:PollData) {
     
     //Get Full Name and Avatar Color of pollOwner
-    const pollOwnerInfo = tripPageLayoutContext.tripMembersInfo?.[poll_owner];
+    const pollOwnerInfo = tripMembersInfo?.[poll_owner];
     if (!pollOwnerInfo) {
         return <Loading />; // Loading poll owner
     }
@@ -40,23 +41,21 @@ export default function PollCard ({pollID, description, options, poll_owner, tit
     const userColor = pollOwnerInfo.color;
 
     //Get email of current voter
-    const voter = tripPageLayoutContext.userDbDoc.get("email");
-
+    const voter = voterDbDoc.get("email");
 
     // Deletes a Poll
     async function handleDeletePoll() {
-        if (tripPageLayoutContext.tripDbDoc) {
-            await dbDeletePoll(tripPageLayoutContext.tripDbDoc.ref, pollID);
+        if (tripDbDoc) {
+            await dbDeletePoll(tripDbDoc.ref, pollID);
         }
     }
 
     //Removes the current voter's vote
     async function handleClearVote() {
-        if (tripPageLayoutContext.tripDbDoc) {
-            await dbDeleteVotes(tripPageLayoutContext.tripDbDoc.ref, pollID, voter);
+        if (tripDbDoc) {
+            await dbDeleteVotes(tripDbDoc.ref, pollID, voter);
         }
     }
-
 
     return (
         <div className="flex gap-4 min-h-50 bg-[#EAFFB9] rounded-md p-4">
@@ -76,7 +75,15 @@ export default function PollCard ({pollID, description, options, poll_owner, tit
                 {options.map((item,index) =>{
                     return (
                         <div className="flex gap-4 items-center">
-                            <PollOption id= {pollID} option={item} votes={votes[item]} totalVotes={totalVotes(votes)} />
+                            <PollOption
+                                id= {pollID}
+                                option={item}
+                                votes={votes[item]}
+                                totalVotes={totalVotes(votes)}
+                                tripDbDoc={tripDbDoc}
+                                tripMembersInfo={tripMembersInfo}
+                                voterDbDoc={voterDbDoc}
+                            />
                         </div>
                 )})}
 

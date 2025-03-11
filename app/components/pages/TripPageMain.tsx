@@ -73,6 +73,9 @@ export default function TripPageMain() {
                                 time_added={poll.time_added || 0}
                                 title={poll.title || " "}
                                 votes={poll.votes || []}
+                                tripDbDoc={tripPageLayoutContext.tripDbDoc}
+                                tripMembersInfo={tripPageLayoutContext.tripMembersInfo}
+                                voterDbDoc={tripPageLayoutContext.userDbDoc}
                             />
                         ))}
 
