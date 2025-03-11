@@ -30,8 +30,9 @@ export default function PollOption({option, votes, totalVotes, id}:PollOption){
     
     // Ratio of:     voters who voted for this option / total voters
     // NaN values return 0
-    const voterPercentage = isNaN((votes.length / totalVotes) * 100) ? 0 : (votes.length / totalVotes) * 100;
+    const voterPercentage = isNaN((votes.length / totalVotes) * 100) ? 0 : Math.round((votes.length / totalVotes) * 100);
 
+    // Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100
     return (
         <div className="flex gap-4 w-full ">
             {/* Voter Percentage */}
