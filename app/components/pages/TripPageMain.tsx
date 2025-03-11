@@ -1,3 +1,9 @@
+/*
+ * File Description: This page is the main trip page, or the first thing a user sees when the click on a trip from the sidebar.
+ *                   It contains a feed of polls, navigation buttons to the plan/budget page, a view of the members of the trip
+ * File Interactions: This page interacts with ToadCount.tsx, PollModal.tsx, PollCard.tsx, and navigates to the budget/trip pages
+ */
+
 import ToadCount from "../modules/ToadCount";
 import NewPoll from "../modules/Polls/PollModal";
 import { debugLogComponentRerender } from "~/src/debugUtil";
