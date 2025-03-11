@@ -2,6 +2,7 @@
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import { getDoc } from "firebase/firestore";
 import { dbAddVote } from "~/src/databaseUtil";
+import Loading from "../Loading";
 
 
 interface PollOption{
@@ -61,9 +62,11 @@ export default function PollOption({option, votes, totalVotes, id}:PollOption){
 
                 {/* Display voters' avatars */}
                 <div className="flex gap-1 min-h-4">
-                    {votes.map((user, index) => (
-                        <div className={`w-[14px] h-[14px] rounded-full ${tripPageLayoutContext.tripMembersInfo[user].color}`}></div>
-                    ))}
+                    {  
+                        votes.map((user, index) => (
+                            <div className={`w-[14px] h-[14px] rounded-full ${tripPageLayoutContext.tripMembersInfo[user]?.color || "bg-sidebar_deep_green"}`}></div>
+                        ))
+                    }
                 </div>
             </div>
         </div>
