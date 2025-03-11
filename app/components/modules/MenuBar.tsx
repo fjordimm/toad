@@ -59,7 +59,14 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
         () => {
             dbRetrieveUsersListOfTrips(props.userDbDoc).then(
                 (result: DocumentSnapshot[] | null) => {
-                    setUserListOfTrips(result);
+                    setUserListOfTrips((currentVal: DocumentSnapshot[] | null) => {
+                        // This is to fix a race condition
+                        if (currentVal === null) {
+                            return result;
+                        } else {
+                            return currentVal;
+                        }
+                    });
                 }
             );
         },
@@ -71,7 +78,14 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
         () => {
             dbRetrieveUsersListOfInvitations(props.userDbDoc).then(
                 (result: DocumentSnapshot[] | null) => {
-                    setUserListOfInvitations(result);
+                    setUserListOfInvitations((currentVal: DocumentSnapshot[] | null) => {
+                        // This is to fix a race condition
+                        if (currentVal === null) {
+                            return result;
+                        } else {
+                            return currentVal;
+                        }
+                    });
                 }
             );
         },
