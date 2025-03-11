@@ -7,6 +7,7 @@ import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
 import logo from "/toadLogo.svg";
+import { FirebaseError } from "firebase/app";
 
 export default function SignInPage() {
 
@@ -26,29 +27,32 @@ export default function SignInPage() {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-
             if (!isValidEmail(email)) {
                 setError("Please enter a valid email!");
+            } else {
+                await signInWithEmailAndPassword(firebaseAuth, email, password);
+
                 setEmail("");
                 setPassword("");
+                setError("");
+
+                navigate("/");
             }
-
-            await signInWithEmailAndPassword(firebaseAuth, email, password);
-
-            setEmail('');
-            setPassword('');
-            setError('');
-
-            navigate("/");
-
         } catch (err: any) {
-            if (err.code === 'auth/user-not-found') {
-                setError('The email you entered does not belong to any account!');
-                setEmail('');
-                setPassword('');
-            } else if (err.code === 'auth/wrong-password') {
-                setError('The password you entered is incorrect.');
-                setPassword('');
+            if (err instanceof FirebaseError) {
+                if (err.code === "auth/user-not-found") {
+                    setError("The email you entered does not belong to any account!");
+                } else if (err.code === "auth/wrong-password") {
+                    setError("The password you entered is incorrect!");
+                } else {
+                    setError("An unknown error has occurred!");
+                    console.log("An unknown Firebase error occurred while trying to add a new user:");
+                    console.log(err);
+                }
+            } else {
+                setError("An unknown error has occurred!");
+                console.log("An unknown error occurred while trying to add a new user:");
+                console.log(err);
             }
         }
     }

@@ -9,6 +9,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
 import logo from "/toadLogo.svg";
+import { FirebaseError } from "firebase/app";
 
 export default function SignUpPage() {
 
@@ -27,57 +28,46 @@ export default function SignUpPage() {
         return emailRegex.test(email);
     }
 
-    // TODO: handle weak password error (and any other errors from createUserWithEmailAndPassword)
-
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-
             if (!isValidEmail(email)) {
                 setError("Please enter a valid email!");
-                setFName("");
-                setLName("");
-                setEmail("");
-                setPassword("");
+            } else {
+                await createUserWithEmailAndPassword(firebaseAuth, email, password);
+
+                const emailLower = email.toLowerCase();
+                /* Creates a user with their email as the identifier */
+                const userDocRef = doc(firebaseDb, "users", emailLower);
+                await setDoc(userDocRef, {
+                    email: email,
+                    first_name: fname,
+                    last_name: lname,
+                    trips: [],
+                    trip_invites: []
+                });
+
+                navigate("/sign-in");
             }
-
-            await createUserWithEmailAndPassword(firebaseAuth, email, password);
-
-            const emailLower = email.toLowerCase();
-            /* Creates a user with their email as the identifier*/
-            const userDocRef = doc(firebaseDb, "users", emailLower);
-            await setDoc(userDocRef, {
-                email: email,
-                first_name: fname,
-                last_name: lname,
-                trips: [],
-                trip_invites: []
-            });
-
-            // Removed this in place of arrays
-            /*This creates new empty collections for user trips and invited trips. Can also do with an array, but did with a collection for now*/
-            // await addDoc(collection(firebaseDb, "users", emailLower, "trips"), {
-            //     placeholder: "",      
-            // });
-            // await addDoc(collection(firebaseDb, "users", emailLower, "trip_invites"), {
-            //     placeholder: "",      
-            // });
-
-            navigate("/sign-in");
-
         } catch (err: any) {
-            if (err.code === 'auth/email-already-in-use') {
-                setError('Email already in use! Sign In.');
+            if (err instanceof FirebaseError) {
+                if (err.code === "auth/email-already-in-use") {
+                    setError("Email already in use!");
+                } else if (err.code === "auth/invalid-email") {
+                    setError("Please enter a valid email!");
+                } else if (err.code === "auth/weak-password") { 
+                    setError("Your password is too weak!");
+                }else {
+                    setError("An unknown error has occurred!");
+                    console.log("An unknown Firebase error occurred while trying to add a new user:");
+                    console.log(err);
+                }
+            } else {
+                setError("An unknown error has occurred!");
+                console.log("An unknown error occurred while trying to add a new user:");
+                console.log(err);
             }
         }
-        setEmail('');
-        setPassword('');
-        setFName('');
-        setLName('');
-        /*
-        In the future, will need code to:
-        - Redirect user (using React Router) to the Log In page.
-        */
     }
 
     return (
