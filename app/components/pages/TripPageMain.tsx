@@ -48,7 +48,7 @@ export default function TripPageMain() {
 
     return (
         <div className="w-full flex flex-row justify-between gap-5 bg-dashboard_lime">
-            <div className="flex flex-col gap-5 overflow-x-hidden">
+            <div className="grow flex flex-col gap-5 overflow-x-hidden">
                 <div className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>
                     <h1 className="overflow-hidden overflow-ellipsis">{tripName}</h1>
                 </div>
