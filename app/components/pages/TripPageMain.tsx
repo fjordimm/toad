@@ -53,7 +53,7 @@ export default function TripPageMain() {
                     <h1 className="overflow-hidden overflow-ellipsis">{tripName}</h1>
                 </div>
 
-                <div className="h-full overflow-scroll rounded-xl p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
+                <div className="h-full overflow-auto rounded-xl p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
                     <button
                         onClick={() => setIsPollModalOpen(true)}
                         className="flex items-center space-x-2 p-2"
@@ -63,7 +63,7 @@ export default function TripPageMain() {
                         <h2 className="text-lg font-sunflower">Create A Poll</h2>
                     </button>
 
-                    <div className="w-full flex flex-col gap-2 overflow-scroll">
+                    <div className="w-full flex flex-col gap-2 overflow-auto">
                         {tripPollsSorted.map(([pollID, poll]) => (
                             <PollCard
                                 pollID={pollID || " "}
