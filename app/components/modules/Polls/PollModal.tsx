@@ -13,6 +13,7 @@ export default function NewPoll(props: { onClose: () => void }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [options, setOptions] = useState<string[]>([]);
+    const [error, setError] = useState<string>("");
 
     // Debugging: Log current options when they change
     useEffect(() => {
@@ -54,13 +55,30 @@ export default function NewPoll(props: { onClose: () => void }) {
 
     // Remove Poll Option
     const handleRemoveOption = (index: number) => {
-        setOptions(prevOptions => prevOptions.filter((_, i) => i !== index));
+        setOptions(prevOptions => {
+            const newOptions = prevOptions.filter((_, i) => i !== index);
+            validateDuplicateOptions(newOptions);
+            return newOptions;
+        })
     };
 
     // Update Poll Option
     const handleOptionChange = (index: number, value: string) => {
-        setOptions(prevOptions => prevOptions.map((opt, i) => (i === index ? value : opt)));
+        setOptions(prevOptions => {
+            const newOptions = prevOptions.map((opt, i) => (i === index ? value : opt));
+            validateDuplicateOptions(newOptions);
+            return newOptions;
+        })
     };
+
+    const validateDuplicateOptions = (options: string[]) => {
+        const uniqueOptions = new Set(options);
+        if (uniqueOptions.size < options.length){
+            setError("Error: options cannot have the same name");
+        }else{
+            setError("");
+        }
+    }
 
     // Handle Click Outside to Close Modal
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -160,9 +178,11 @@ export default function NewPoll(props: { onClose: () => void }) {
                         ))}
                     </div>
 
+                    {error && <div className="font-sunflower font-bold text-[#a30f22] p-2">{error}</div>}
+
                     {/* Submit Button */}
                     <div className="relative top-3 right-2 w-full flex justify-end pr-4">
-                        <button type="submit" className="bg-[#8FAE72] text-white py-2 px-6 rounded-lg text-lg">
+                        <button type="submit" disabled={!!error} className="bg-[#8FAE72] text-white py-2 px-6 rounded-lg text-lg">
                             Done
                         </button>
                     </div>
