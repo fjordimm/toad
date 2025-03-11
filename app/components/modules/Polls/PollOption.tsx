@@ -41,7 +41,8 @@ export default function PollOption({option, votes, totalVotes, id}:PollOption){
             {/* Wraps 'Option' and list of voter avatars */}
             <div className="flex flex-col gap-1 w-full"> 
                 {/* Option Bar */}
-                <div className="relative">
+                <button className="relative"
+                 onClick={() => handleVoteCasted()}>
                     {/* Progress Bar Overlay - deep orange*/}
                     <div className="absolute h-full rounded-md bg-[#E29F2C] text-left font-sunflower text-sidebar_deep_green p-2 font-bold" 
                         style={{ width: `${voterPercentage}%` }}>
@@ -49,12 +50,12 @@ export default function PollOption({option, votes, totalVotes, id}:PollOption){
                     </div>
 
                     {/* Vote Option Background - yellow */}
-                    <button 
+                    <div 
                         className=" w-full h-10 bg-[#F8E14C] p-2 rounded-md text-left font-sunflower text-sidebar_deep_green font-bold"
-                        onClick={() => handleVoteCasted()}
+                        // onClick={() => handleVoteCasted()}
                     >
-                    </button>
-                </div>
+                    </div>
+                </button>
                 
 
                 {/* Display voters' avatars */}
