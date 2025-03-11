@@ -111,7 +111,7 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
             </div>
 
             {/* Delete Trip Button */}
-            {isTripOwner && (<div className="mt-2 flex flex-col">
+            {isTripOwner && (<div className="mt-3 flex flex-col">
                 <button
                     onClick={() => handleDeleteTrip(props.tripDbDoc)}
                     className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
