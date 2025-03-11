@@ -2,11 +2,11 @@ import React from "react";
 import { useState } from 'react';
 import emailicon from '/mail.svg'
 import lock from '/lock.svg'
-import globe from '/globe.svg'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseAuth } from '../../src/toadFirebase'
 import { useNavigate } from 'react-router';
 import { debugLogComponentRerender } from '~/src/debugUtil';
+import logo from "/toadLogo.svg";
 
 export default function SignInPage() {
 
@@ -60,7 +60,7 @@ export default function SignInPage() {
                 {/* Logo: Title and image */}
                 <div className="flex flex-row">
                     <h1 className="font-lilita text-9xl text-white">TOAD</h1>
-                    <img src={globe} alt="Toad Logo" className="ml-6 w-32 h-32"></img>
+                    <img src={logo} alt="Toad Logo" className="ml-6 w-32 h-32"></img>
                 </div>
                 {/* Subtitle */}
                 <div className="mt-4 font-sunflower text-3xl text-white justify-center">

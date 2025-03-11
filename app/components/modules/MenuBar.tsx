@@ -9,7 +9,7 @@ import Loading from './Loading';
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { stringHash } from "~/src/miscUtil";
-import logo from "/toadlogo.svg"
+import logo from "/toadLogo.svg";
 
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
