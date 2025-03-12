@@ -1,3 +1,8 @@
+/*
+ * File Description: This is the plan page for all trips, featuring a sidebar of possible stops, and the actual itinerary.
+ * File Interactions: This file heavily relies on the dnd-kit sortable library, as well as CalendarCard.tsx, Itinerary.tsx, and the rest of the imports it has.
+ */
+
 import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";

@@ -63,7 +63,7 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, des
 
             {/* Collapsible Section */}
             <div
-                className={`bg-[#D7F297] rounded-md text-sm text-black max-w-[256px] overflow-y-auto scrollbar-none break-words hyphens-auto transition-all duration-300 ease-in-out ${isCollapsed ? "max-h-0 opacity-0" : "max-h-[86px] opacity-100 px-2 mt-2 pt-1 pb-2"
+                className={`bg-[#D7F297] rounded-md text-sm text-black overflow-y-auto scrollbar-none break-words hyphens-auto transition-all duration-300 ease-in-out ${isCollapsed ? "max-h-0 opacity-0" : "max-h-[86px] opacity-100 px-2 mt-2 pt-1 pb-2"
                     }`}
             >
                 {/* Activity Description */}

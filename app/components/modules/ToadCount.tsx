@@ -1,10 +1,18 @@
+/*
+ * File Description: This file renders the ToadCount component that displays a list of users from the trip, an invite button, and delete trip button.
+ *                   Removing members from trips and deleting the trip is only displayed if the signed in user is the trip owner.
+ * File Interactions: This file calls ToadMember as it generates a list of user cards, ConfirmDelete to ensure a user doesn't accidentally delete a trip,
+ *                    as well as other functions imported in its header.
+ */
+
 import React, { type ReactNode } from "react";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
+import ConfirmDelete from "./ToadCount/ConfirmDelete"
 import { type DocumentSnapshot } from "firebase/firestore";
-import { dbDeleteTrip, dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
-import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
+import { dbInviteUser, DbNoUserFoundError } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 import type { TripMembersInfo } from "../pages/TripPageLayout";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "../pages/TripPageLayout";
 
@@ -32,6 +40,8 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     const [email, setEmail] = useState<string>("");
     const [inviteError, setInviteError] = useState<string | null>(null);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     let isTripOwner:boolean = true;
     if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
@@ -55,15 +65,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
                     throw err;
                 }
             }
-        }
-    }
-
-    async function handleDeleteTrip(tripDbDoc: DocumentSnapshot | null) {
-        if (tripDbDoc !== null) {
-            await dbDeleteTrip(tripDbDoc);
-            navigate("/");
-        } else {
-            debugLogError("Trying to delete an invalid trip.");
         }
     }
 
@@ -111,14 +112,19 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
             </div>
 
             {/* Delete Trip Button */}
-            {isTripOwner && (<div className="mt-2 flex flex-col">
+            {isTripOwner && (<div className="mt-3 flex flex-col">
                 <button
-                    onClick={() => handleDeleteTrip(props.tripDbDoc)}
+                    onClick={() => setIsModalOpen(true)}
                     className="w-[271px] h-[46px] bg-[#D86D6D]/50 text-white rounded-lg text-sm hover:bg-[#D86D6D]/70 text-center"
                 >
                     Delete Trip
                 </button>
             </div>)}
+            {isModalOpen && (
+            <ConfirmDelete 
+            tripDbDoc={props.tripDbDoc}
+            onClose={() => setIsModalOpen(false)}
+            />)}
         </div>
     );
 }

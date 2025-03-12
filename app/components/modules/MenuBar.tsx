@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import InvitationButton from './MenuBar/InvitationButton';
 import { useEffect, useState, type ReactNode } from 'react';
 import { DocumentSnapshot } from 'firebase/firestore';
@@ -9,7 +9,7 @@ import Loading from './Loading';
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { stringHash } from "~/src/miscUtil";
-import logo from "/toadlogo.svg"
+import logo from "/toadLogo.svg";
 
 export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
 
@@ -55,28 +55,54 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     const [open, setOpen] = useState(true);
 
     const [userListOfTrips, setUserListOfTrips] = useState<DocumentSnapshot[] | null>(null);
-    useEffect(
-        () => {
-            dbRetrieveUsersListOfTrips(props.userDbDoc).then(
-                (result: DocumentSnapshot[] | null) => {
-                    setUserListOfTrips(result);
-                }
-            );
-        },
-        [props.userDbDoc]
-    );
+    {
+        const raceConditionId = useRef<number>(0); // This is used only for solving a race condition
+
+        useEffect(
+            () => {
+                raceConditionId.current += 1;
+                const oldRaceConditionId = raceConditionId.current;
+
+                dbRetrieveUsersListOfTrips(props.userDbDoc).then(
+                    (result: DocumentSnapshot[] | null) => {
+                        setUserListOfTrips((currentVal: DocumentSnapshot[] | null) => {
+                            if (raceConditionId.current === oldRaceConditionId) {
+                                return result;
+                            } else {
+                                return currentVal;
+                            }
+                        });
+                    }
+                );
+            },
+            [props.userDbDoc]
+        );
+    }
 
     const [userListOfInvitations, setUserListOfInvitations] = useState<DocumentSnapshot[] | null>(null);
-    useEffect(
-        () => {
-            dbRetrieveUsersListOfInvitations(props.userDbDoc).then(
-                (result: DocumentSnapshot[] | null) => {
-                    setUserListOfInvitations(result);
-                }
-            );
-        },
-        [props.userDbDoc]
-    );
+    {
+        const raceConditionId = useRef<number>(0); // This is used only for solving a race condition
+
+        useEffect(
+            () => {
+                raceConditionId.current += 1;
+                const oldRaceConditionId = raceConditionId.current;
+
+                dbRetrieveUsersListOfInvitations(props.userDbDoc).then(
+                    (result: DocumentSnapshot[] | null) => {
+                        setUserListOfInvitations((currentVal: DocumentSnapshot[] | null) => {
+                            if (raceConditionId.current === oldRaceConditionId) {
+                                return result;
+                            } else {
+                                return currentVal;
+                            }
+                        });
+                    }
+                );
+            },
+            [props.userDbDoc]
+        );
+    }
 
     async function handleLogOut() {
         await firebaseAuth.signOut();
