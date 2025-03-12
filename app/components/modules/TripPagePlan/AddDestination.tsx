@@ -1,3 +1,11 @@
+
+/*
+ * File Description: This component opens a modal that allows users to add a potential destination to a trip.
+ *                   It contains a form that, asks users for name, price, length, time of day, and description.
+ *                   When users submit the form, it adds a potential destination to the database. 
+ * File Interactions: This component is called in TripPagePlan.tsx, where the button for adding a destination is located. 
+ *                    It also refers to the functions that are imported in the header.
+ */
 /*
 Instructions for use: 
 
@@ -16,7 +24,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
             <AddDestination 
             tripDbDoc={tripDbDoc}
             onClose={() => setIsModalOpen(false)}
-            />
+            />)
 
 //wherever the sidebar is called, include code similar to this
 //the idea is that you just have to pass in the parameter "onOpenModal={() => setIsModalOpen(true)}"
@@ -40,8 +48,6 @@ const ToadCount: React.FC<ToadCountProps> = ({ tripDbDoc, onOpenModal }) => {
 (i am using ToadCount as an example because that is where I included my button, but it will be different for PossibleStops)
 
 */
-
-// AddDestination.tsx
 import React from "react";
 import { useRef, useState } from 'react';
 import { type DocumentSnapshot } from 'firebase/firestore';
