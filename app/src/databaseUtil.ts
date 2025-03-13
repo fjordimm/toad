@@ -69,7 +69,6 @@ export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot> 
 export function dbCheckAndGetUserAuthentication(onAuthenticated: (result: DocumentReference) => void, onNotAuthenticated: () => void) {
     onAuthStateChanged(firebaseAuth, (authUser: User | null) => {
         if (authUser !== null) {
-            // TODO: better null checking and error handling. The 'as' shouldn't be there
             onAuthenticated(doc(firebaseDb, "users", authUser.email as string));
         } else {
             onNotAuthenticated();
@@ -142,8 +141,6 @@ export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
         });
     }
 
-    // TODO: what if someone was invited to a trip, then the trip was deleted, then they accept the invitation
-
     await deleteDoc(tripDbDoc.ref);
 }
 
@@ -178,8 +175,6 @@ export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Prom
         return [];
     }
 }
-
-// TODO: be more consistent/deliberate with DocumentReference vs. DocumentSnapshot
 
 export async function dbInviteUser(tripDbDocRef: DocumentReference, userEmailId: string) {
     const userDbDoc: DocumentSnapshot = await dbRetrieveUser(userEmailId);
