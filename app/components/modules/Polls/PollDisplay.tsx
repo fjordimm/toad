@@ -28,7 +28,7 @@ function totalVotes(votes: Record<string, string[]>): number {
 }
 
 // Displays one Poll
-export default function PollDisplay(props: { pollID: string, description: string, options: string[], poll_owner: string, time_added: Number, title: string, votes: Record<string, string[]>, tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, voterDbDoc: DocumentSnapshot }) {
+export default function PollDisplay(props: { pollID: string, description: string, options: string[], poll_owner: string, time_added: number, title: string, votes: Record<string, string[]>, tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, voterDbDoc: DocumentSnapshot }) {
 
     debugLogComponentRerender("PollDisplay");
 
@@ -72,7 +72,7 @@ export default function PollDisplay(props: { pollID: string, description: string
                 <p className="font-sunflower text-sidebar_deep_green"> {props.description}</p>
 
                 {/* Poll Options */}
-                {props.options.map((item, index) => {
+                {props.options.map((item) => {
                     return (
                         <div className="flex gap-4 items-center">
                             <PollOption

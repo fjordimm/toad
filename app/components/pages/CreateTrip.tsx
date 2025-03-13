@@ -50,7 +50,7 @@ export default function CreateTrip() {
             navigate(`/trip/${tripDbDocRef.id}`);
         }
         catch (err: any) {
-            console.error("Error adding trip: ", error);
+            console.error("Error adding trip: ", err);
         }
     };
 

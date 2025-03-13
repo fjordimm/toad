@@ -9,7 +9,6 @@
 */
 
 import React, { useEffect, useRef, useState } from "react";
-import { updateDoc } from 'firebase/firestore';
 import cross from "/cross.svg";
 import DeletePoll from "/DeletePoll.svg";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";

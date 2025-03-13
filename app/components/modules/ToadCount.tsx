@@ -11,7 +11,7 @@
 
 import React, { type ReactNode } from "react";
 import { useState } from "react";
-import { Form, useNavigate } from "react-router";
+import { Form } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import ConfirmDelete from "./ToadCount/ConfirmDelete"
 import { type DocumentSnapshot } from "firebase/firestore";
@@ -23,8 +23,6 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "../pages/T
 export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo }) {
 
     debugLogComponentRerender("ToadCount");
-
-    const navigate = useNavigate();
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const trip_active_users: string[] = tripPageLayoutContext.tripDbDoc.get("trip_active_users");

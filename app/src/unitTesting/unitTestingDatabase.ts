@@ -7,7 +7,7 @@
     The command `npm run test-database` should run this file.
 */
 
-import { collection, doc, DocumentSnapshot, getDoc, getDocs, QuerySnapshot, Timestamp } from "firebase/firestore";
+import { collection, DocumentSnapshot, getDocs, QuerySnapshot, Timestamp } from "firebase/firestore";
 import { firebaseDb } from "../toadFirebase";
 
 async function main() {

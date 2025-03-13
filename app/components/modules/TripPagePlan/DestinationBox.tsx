@@ -13,7 +13,6 @@ import { useState } from "react";
 import MovableIcon from "/MovableIcon.svg";
 import NotCollapsed from "/NotCollapsed.svg";
 import Collapsed from "/Collapsed.svg";
-import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";

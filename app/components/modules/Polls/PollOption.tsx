@@ -9,8 +9,8 @@
 */
 
 import React from "react";
-import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
-import { DocumentSnapshot, getDoc } from "firebase/firestore";
+import { type TripMembersInfo } from "app/components/pages/TripPageLayout";
+import { DocumentSnapshot } from "firebase/firestore";
 import { dbAddVote } from "~/src/databaseUtil";
 import Loading from "../Loading";
 import { debugLogComponentRerender } from "~/src/debugUtil";
@@ -65,7 +65,7 @@ export default function PollOption(props: { id: string, option: string, votes: s
 
                 {/* Display voters' avatars */}
                 <div className="flex gap-1 min-h-4">
-                    {props.votes.map((user, index) => {
+                    {props.votes.map((user) => {
                         if (props.tripMembersInfo[user] !== null && props.tripMembersInfo[user] !== undefined) {
                             return <div className={`w-[14px] h-[14px] rounded-full ${props.tripMembersInfo[user].color}`}></div>;
                         } else {

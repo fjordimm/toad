@@ -30,7 +30,6 @@ export default function TripPageExpenses() {
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
-    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
     const users_archived_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
         const dateA: number = new Date(expenses[a].date).getTime();

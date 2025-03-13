@@ -32,8 +32,8 @@ export default function MemberBreakdown(props: { memberEmail: string, memberFirs
     let theyOwe: number = 0;
     let iOwePaid: number = 0;
     let theyOwePaid: number = 0;
-    let iOweList: string[] = [];
-    let theyOweList: string[] = [];
+    const iOweList: string[] = [];
+    const theyOweList: string[] = [];
     for (const expense of props.iOwePeople) {
         if (props.expensesDict[expense]["expense_owner"] === props.memberEmail) {
             if (props.expensesDict[expense]["payers"][props.currUser][1] == 0) {

@@ -20,16 +20,6 @@ import PollDisplay from "../modules/Polls/PollDisplay";
 import CalenderDate from "/calendar-date.svg";
 import Dollar from "/currency-dollar-circle.svg"
 
-interface PollData {
-    description: string,
-    options: string[],
-    poll_owner: string,
-    time_added: Number,
-    title: string,
-    votes: Record<string, string[]>,
-}
-
-
 export default function TripPageMain() {
 
     debugLogComponentRerender("TripPageMain");
@@ -48,7 +38,7 @@ export default function TripPageMain() {
     const tripName: string = tripPageLayoutContext.tripDbDoc.get("trip_name");
 
     // Converts Map of 'Polls' into an Array sorted by time_added
-    const tripPolls: Map<string, PollData> = tripPageLayoutContext.tripDbDoc.get('polls');
+    const tripPolls: { [key: string]: any } = tripPageLayoutContext.tripDbDoc.get("polls");
     const tripPollsSorted = tripPolls && Object.keys(tripPolls).length > 0
         ? Object.entries(tripPolls).sort((a, b) => a[1].time_added - b[1].time_added)
         : [];
