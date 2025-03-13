@@ -67,6 +67,7 @@ export default function TopLevelLayout() {
 
     return (
         <div className="grow flex flex-col justify-stretch items-stretch bg-dashboard_lime">
+            {/* Sub pages (as defined in routes.ts) */}
             <Outlet context={{ userDbDoc: userDbDoc }} />
         </div>
     );

@@ -24,8 +24,10 @@ import DestinationBox from "../modules/TripPagePlan/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbMoveDestination, dbSortDestinationWithinDay } from "~/src/databaseUtil";
 
+// The outline of a destination you see while dragging it, before dropping it
 const destinationBoxShadow = <div className="w-full my-1 max-w-96 h-[86px] rounded-lg bg-[#00000020]"></div>;
 
+// A utility component for making destinations draggable
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
     const { setNodeRef } = useDroppable({ id: props.id });
@@ -37,6 +39,7 @@ export function DestinationDroppable(props: { id: string, children: ReactNode })
     );
 }
 
+// A utility component for making destinations draggable
 function DndDraggable(props: { id: string, children: ReactNode }) {
 
     const { attributes, listeners, setNodeRef } = useDraggable({ id: props.id });
@@ -48,6 +51,8 @@ function DndDraggable(props: { id: string, children: ReactNode }) {
     );
 }
 
+// A utility component for making destinations draggable
+// To be used by PossibleStops
 export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any }) {
     if (props.activeDraggableId !== props.destinationId) {
         return (
@@ -70,6 +75,7 @@ export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, ac
     }
 }
 
+// A utility component for making destinations draggable
 function DndSortable(props: { id: string, children: ReactNode }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
 
@@ -88,6 +94,7 @@ function DndSortable(props: { id: string, children: ReactNode }) {
     );
 }
 
+// A utility component for making destinations draggable
 export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any }) {
     if (props.activeDraggableId !== props.destinationId) {
         return (
@@ -124,7 +131,7 @@ export default function TripPagePlan() {
 
     const [activeDraggableId, setActiveDraggableId] = useState<string | null>(null);
 
-    // This will be done on drag end:
+    // The action will be done on drag end
     let activityMoveAction: { id: string, day: number } | null = null;
 
     function handleDragStart(e: DragStartEvent) {
@@ -175,10 +182,12 @@ export default function TripPagePlan() {
 
             <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
                 <div className="max-w-full flex flex-row justify-stretch gap-5">
+                    {/* The actual content */}
                     <Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
                     <PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
                 </div>
 
+                {/* Displays the destination while you are dragging it (if any), with a non-fixed position */}
                 <DragOverlay>
                     {
                         activeDraggableId !== null ? (

@@ -26,11 +26,13 @@ export default function MainLayout() {
             <div className="max-w-full flex flex-row overflow-hidden max-h-[100vh]">
                 <MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
                 <div className="grow m-5 overflow-y-auto">
+                    {/* Sub pages (as defined in routes.ts) */}
                     <Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }} />
                 </div>
             </div>
         );
     } else {
+        // Alternative 'You are not signed in' page.
         return (
             <div>
                 <p>You are not signed in.</p>

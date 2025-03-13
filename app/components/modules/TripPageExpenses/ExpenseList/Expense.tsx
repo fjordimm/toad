@@ -89,20 +89,22 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
 
     return (
         <div className="bg-toad_count_lime rounded-lg flex flex-col p-3 gap-3">
-            {
-                <div className="flex flex-row gap-3 items-center">
-                    <div className={`rounded-full min-w-10 min-h-10 w-10 h-10 ${expenseOwnerInfo.color}`}></div>
-                    <span className="font-sunflower text-lg">
-                        <span className="font-bold">{expenseOwnerInfo.dbDoc.get("first_name")}</span>
-                        <span> is requesting a payment split on </span>
-                        <span className="font-bold">{expenseObj.name}</span>
-                        <span className="text-black/50">{` (${expenseDateString})`}</span>
-                    </span>
-                </div>
-            }
+            {/* Expense title */}
+            <div className="flex flex-row gap-3 items-center">
+                <div className={`rounded-full min-w-10 min-h-10 w-10 h-10 ${expenseOwnerInfo.color}`}></div>
+                <span className="font-sunflower text-lg">
+                    <span className="font-bold">{expenseOwnerInfo.dbDoc.get("first_name")}</span>
+                    <span> is requesting a payment split on </span>
+                    <span className="font-bold">{expenseObj.name}</span>
+                    <span className="text-black/50">{` (${expenseDateString})`}</span>
+                </span>
+            </div>
+
             <div className="flex flex-row justify-between items-end pl-12">
+                {/* List of payers */}
                 {turnPayersDbDocsIntoElems()}
 
+                {/* Delete button */}
                 {expenseOwnerInfo.dbDoc.get("email") === props.currUser ? <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
                     <span className="font-sunflower text-base text-white">Delete Expense</span>
                 </button> : null}

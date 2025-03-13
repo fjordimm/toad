@@ -49,7 +49,6 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
         }
     };
 
-
     return (
         <div
             className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
@@ -70,7 +69,6 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
                 <div className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
                     <img src={cross} className="w-7 h-7"></img>
                 </div>
-
 
                 {/* Form Container */}
                 <form className="w-full flex flex-col justify-center items-center" onSubmit={handleSubmitDestination}>

@@ -28,6 +28,7 @@ export default function MemberBreakdown(props: { memberEmail: string, memberFirs
         }
     };
 
+    // Creates the lists to be passed down to ExpenseList, and calculates the total amounts
     let iOwe: number = 0;
     let theyOwe: number = 0;
     let iOwePaid: number = 0;

@@ -23,7 +23,6 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, des
     debugLogComponentRerender("DestinationBox");
 
     const [isCollapsed, setIsCollapsed] = useState(true);
-    // const [mouseIsOver, setMouseIsOver] = useState(false);
 
     async function handleDelete(destinationId: string) {
         await dbRemoveDestinationFromAllItineraryDays(props.tripDbDoc.ref, destinationId);

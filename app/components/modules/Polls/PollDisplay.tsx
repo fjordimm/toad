@@ -27,7 +27,6 @@ function totalVotes(votes: Record<string, string[]>): number {
     return total
 }
 
-// Displays one Poll
 export default function PollDisplay(props: { pollID: string, description: string, options: string[], poll_owner: string, time_added: number, title: string, votes: Record<string, string[]>, tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, voterDbDoc: DocumentSnapshot }) {
 
     debugLogComponentRerender("PollDisplay");

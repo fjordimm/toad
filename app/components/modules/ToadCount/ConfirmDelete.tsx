@@ -20,13 +20,14 @@ export default function ConfirmDelete(props: { tripDbDoc: DocumentSnapshot | nul
     debugLogComponentRerender("ConfirmDelete");
 
     const navigate = useNavigate();
+
     const modalContentRef = useRef<HTMLDivElement>(null);
+
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
             props.onClose();
         }
     };
-
 
     async function handleDeleteTrip() {
 

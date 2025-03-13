@@ -63,8 +63,8 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
     // Use REFs to avoid unecessary rerenders
     const contentRef = useRef<HTMLDivElement | null>(null);
     /*  
-    SAVE: When user clicks out of the input box, save updated content to 
-    additional_notes in the corresponding day in database 
+     SAVE: When user clicks out of the input box, save updated content to 
+     additional_notes in the corresponding day in database 
     */
 
     const updateClickableUrls = () => {

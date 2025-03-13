@@ -22,7 +22,6 @@ returns: Array[{activities:... day:... stay_at: ... additional_notes:...}]
 */
 async function retrieveItinerary(tripDbDoc: DocumentSnapshot) {
     const itineraryDaysList = await dbRetrieveTripItinerary(tripDbDoc);
-    // console.log("Retrieving Trip: " + tripDbDoc.id + "Content: " + ItineraryDaysList);
     return itineraryDaysList || null;
 }
 
@@ -31,7 +30,6 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
     debugLogComponentRerender("Itinerary");
 
     const [itineraryList, setItineraryList] = useState<any[]>([]);
-
     useEffect(() => {
         if (props.tripDbDoc) {
             const fetchItinerary = async () => {
@@ -45,7 +43,6 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
             setItineraryList([]);
         }
     }, [props.tripDbDoc])
-
 
     return (
         <div className="flex flex-col gap-4">

@@ -93,6 +93,7 @@ export default function TripPageLayout({ params }: Route.ComponentProps) {
     );
 
     return (
+        // Sub pages (as defined in routes.ts)
         tripDbDoc !== null && tripMembersInfo !== null
             ? <Outlet context={{ tripDbDoc: tripDbDoc, tripMembersInfo: tripMembersInfo, userDbDoc: mainLayoutContext.userDbDoc }} />
             : <Loading />

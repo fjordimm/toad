@@ -45,6 +45,7 @@ export default function ToadMember(props: { memberColor: string, tripDbDoc: Docu
                     </span>
                 </div>
             </div>
+            
             {/* Delete Button */}
             {props.isTripOwner && (<button
                 onClick={handleRemoveMember}

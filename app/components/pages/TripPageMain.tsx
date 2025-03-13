@@ -50,10 +50,12 @@ export default function TripPageMain() {
     return (
         <div className="w-full flex flex-row justify-between gap-5 bg-dashboard_lime">
             <div className="grow flex flex-col gap-5 overflow-x-hidden">
+                {/* Trip title */}
                 <div className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>
                     <h1 className="overflow-hidden overflow-ellipsis">{tripName}</h1>
                 </div>
 
+                {/* Polls sections */}
                 <div className="h-full overflow-auto rounded-xl p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
                     <button
                         onClick={() => setIsPollModalOpen(true)}
@@ -86,8 +88,10 @@ export default function TripPageMain() {
             </div>
 
             <div className="flex flex-col items-center justify-start gap-3">
+                {/* ToadCount (list of members, and delete button) */}
                 <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
 
+                {/* Link to plan page */}
                 <Link to="./plan" className="w-full flex justify-center">
                     <button className="w-full bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={CalenderDate} className="w-12 h-12" />
@@ -95,6 +99,7 @@ export default function TripPageMain() {
                     </button>
                 </Link>
 
+                {/* Link to budget page */}
                 <Link to="./budget" className="w-full flex justify-center">
                     <button className="w-full bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={Dollar} className="w-12 h-12" />
