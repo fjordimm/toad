@@ -10,14 +10,14 @@
 */
 
 import React, { useRef } from "react";
-import InvitationButton from './MenuBar/InvitationButton';
-import { useEffect, useState, type ReactNode } from 'react';
-import { DocumentSnapshot } from 'firebase/firestore';
-import { firebaseAuth } from '~/src/toadFirebase';
-import { Link, useNavigate } from 'react-router';
-import TripsButton from './MenuBar/TripsButton';
-import Loading from './Loading';
-import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from '~/src/databaseUtil';
+import InvitationButton from "./MenuBar/InvitationButton";
+import { useEffect, useState, type ReactNode } from "react";
+import { DocumentSnapshot } from "firebase/firestore";
+import { firebaseAuth } from "~/src/toadFirebase";
+import { Link, useNavigate } from "react-router";
+import TripsButton from "./MenuBar/TripsButton";
+import Loading from "./Loading";
+import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { stringHash } from "~/src/miscUtil";
 import logo from "/toadLogo.svg";

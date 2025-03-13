@@ -10,7 +10,7 @@
 
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 import Expense from "../../modules/TripPageExpenses/ExpenseList/Expense";
 import { debugLogComponentRerender } from "~/src/debugUtil";

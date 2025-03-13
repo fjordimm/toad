@@ -24,10 +24,10 @@ export default function CreateTrip() {
 
     const navigate = useNavigate();
 
-    const [tripName, setTripName] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [error, setError] = useState('');
+    const [tripName, setTripName] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,17 +35,17 @@ export default function CreateTrip() {
 
             if (new Date(endDate) < new Date(startDate)) {
                 setError("Please make sure that your start date is before your end date!");
-                setTripName('');
-                setStartDate('');
-                setEndDate('');
+                setTripName("");
+                setStartDate("");
+                setEndDate("");
                 throw new Error("bad request");
             }
 
             const tripDbDocRef = await dbCreateTrip(tripName, startDate, endDate, mainLayoutContext.userDbDoc.get("email"));
 
-            setTripName('');
-            setStartDate('');
-            setEndDate('');
+            setTripName("");
+            setStartDate("");
+            setEndDate("");
 
             navigate(`/trip/${tripDbDocRef.id}`);
         }
@@ -81,7 +81,7 @@ export default function CreateTrip() {
                         </div>
 
                         {/* Select Dates */}
-                        <div className='flex gap-4 items-center justify-center'>
+                        <div className="flex gap-4 items-center justify-center">
                             <img src={calendarIcon} alt="calendarIcon"></img>
                             <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                                 <input
@@ -95,7 +95,7 @@ export default function CreateTrip() {
                                     className="w-40 min-w-32 bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0  border-b-2 border-[#FFF]/50"
                                 />
                             </div>
-                            <p className='font-sunflower text-sidebar_deep_green text-lg'>to</p>
+                            <p className="font-sunflower text-sidebar_deep_green text-lg">to</p>
                             <div className="bg-sidebar_deep_green/15 py-4 px-8 rounded-2xl focus-within:ring-[#FFF]/40 focus-within:ring-2">
                                 <input
                                     type="date"
@@ -112,8 +112,8 @@ export default function CreateTrip() {
 
                         {/* Submit Button */}
                         <button
-                            className='w-full bg-sidebar_deep_green/50 font-sunflower text-[#FFF]/80 py-4 rounded-2xl'
-                            type='submit'
+                            className="w-full bg-sidebar_deep_green/50 font-sunflower text-[#FFF]/80 py-4 rounded-2xl"
+                            type="submit"
                         >
                             Begin
                         </button>

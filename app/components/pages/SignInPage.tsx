@@ -9,13 +9,13 @@
 */
 
 import React from "react";
-import { useState } from 'react';
-import emailicon from '/mail.svg'
-import lock from '/lock.svg'
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { firebaseAuth } from '../../src/toadFirebase'
-import { useNavigate } from 'react-router';
-import { debugLogComponentRerender } from '~/src/debugUtil';
+import { useState } from "react";
+import emailicon from "/mail.svg"
+import lock from "/lock.svg"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "../../src/toadFirebase"
+import { useNavigate } from "react-router";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -25,9 +25,9 @@ export default function SignInPage() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     function isValidEmail(email: string) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

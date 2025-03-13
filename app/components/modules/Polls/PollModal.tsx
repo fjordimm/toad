@@ -23,8 +23,8 @@ export default function PollModal(props: { onClose: () => void }) {
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
     // State Variables
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
     const [options, setOptions] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
 

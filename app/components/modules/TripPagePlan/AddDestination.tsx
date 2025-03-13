@@ -52,8 +52,8 @@ Additionally, you will have to pass in the function. So you will need to modify 
 */
 
 import React from "react";
-import { useRef, useState } from 'react';
-import { type DocumentSnapshot } from 'firebase/firestore';
+import { useRef, useState } from "react";
+import { type DocumentSnapshot } from "firebase/firestore";
 import cross from "/cross.svg";
 import { dbAddDestination } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
@@ -64,11 +64,11 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
 
     const modalContentRef = useRef<HTMLDivElement>(null);
 
-    const [destinationName, setDestinationName] = useState('');
-    const [price, setPrice] = useState('');
-    const [length, setLength] = useState('');
-    const [timeOfDay, setTimeOfDay] = useState('');
-    const [description, setDescription] = useState('');
+    const [destinationName, setDestinationName] = useState("");
+    const [price, setPrice] = useState("");
+    const [length, setLength] = useState("");
+    const [timeOfDay, setTimeOfDay] = useState("");
+    const [description, setDescription] = useState("");
 
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();

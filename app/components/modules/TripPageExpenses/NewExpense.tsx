@@ -31,9 +31,9 @@ export default function NewExpense(props: { onClose: () => void }) {
 
     const [activeSection, setActiveSection] = useState(1);
 
-    const [expenseName, setExpenseName] = useState('');
-    const [date, setDate] = useState('');
-    const [totalCost, setTotalCost] = useState('');
+    const [expenseName, setExpenseName] = useState("");
+    const [date, setDate] = useState("");
+    const [totalCost, setTotalCost] = useState("");
 
     // useState for payees and their amounts due to keep track across components
     // Dictionary Structure:

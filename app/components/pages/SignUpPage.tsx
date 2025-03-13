@@ -9,15 +9,15 @@
 */
 
 import React from "react";
-import { useState } from 'react';
-import emailicon from '/mail.svg';
-import lock from '/lock.svg';
-import person from '/person.svg';
-import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router';
-import { debugLogComponentRerender } from '~/src/debugUtil';
+import { useState } from "react";
+import emailicon from "/mail.svg";
+import lock from "/lock.svg";
+import person from "/person.svg";
+import { firebaseAuth, firebaseDb } from "../../src/toadFirebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -27,11 +27,11 @@ export default function SignUpPage() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [fname, setFName] = useState('');
-    const [lname, setLName] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fname, setFName] = useState("");
+    const [lname, setLName] = useState("");
+    const [error, setError] = useState("");
 
     function isValidEmail(email: string) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
