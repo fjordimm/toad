@@ -14,7 +14,7 @@ import calendarIcon from "/calendarIcon.svg";
 import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useNavigate } from "react-router";
 import { dbCreateTrip } from "~/src/databaseUtil";
-import { debugLogComponentRerender } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
 export default function CreateTrip() {
 
@@ -50,7 +50,8 @@ export default function CreateTrip() {
             navigate(`/trip/${tripDbDocRef.id}`);
         }
         catch (err: any) {
-            console.error("Error adding trip: ", err);
+            debugLogError("Error adding trip:");
+            console.error(err);
         }
     };
 

@@ -26,8 +26,6 @@ export default function PollOption(props: { id: string, option: string, votes: s
     // Adds user to database for corresponding vote once they click on an option
     async function handleVoteCasted() {
         if (props.tripDbDoc) {
-            console.log("User votedwadad: " + voter)
-
             await dbAddVote(props.tripDbDoc.ref, props.id, props.option, voter);
         }
     }

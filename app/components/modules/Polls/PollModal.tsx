@@ -28,11 +28,6 @@ export default function PollModal(props: { onClose: () => void }) {
     const [options, setOptions] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
 
-    // Debugging: Log current options when they change
-    useEffect(() => {
-        console.log("Current options:", options);
-    }, [options]);
-
     // Get Poll Owner Email
     const pollOwner = tripPageLayoutContext.userDbDoc.get("email");
 
@@ -57,7 +52,6 @@ export default function PollModal(props: { onClose: () => void }) {
             await dbAddPoll(tripPageLayoutContext.tripDbDoc.ref, title, description, pollOwner, options, votes);
         }
 
-        console.log("Poll added successfully");
         props.onClose();
     }
 

@@ -16,7 +16,7 @@ import stayAtIcon from "/stayAt.svg"
 import { DestinationDroppable, SortableDestinationBox } from "~/components/pages/TripPagePlan";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import linkifyHtml from "linkify-html";
-import { debugLogComponentRerender } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
 const linkifyOptions = {
     defaultProtocol: "https",
@@ -39,7 +39,6 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
     debugLogComponentRerender("CalendarCard");
 
     const { tripId } = useParams();
-    // console.log("DBDoc ID: " + tripDbDoc?.id);
 
     // DATE HANDLER ===================================================
     // Interfaces with databse itinerary to get the display date of each card
@@ -108,8 +107,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                         updateClickableUrls();
                     }
                 }
-            } catch (e) {
-                console.error("Error updating additional notes: ", e);
+            } catch (err) {
+                debugLogError("Error updating additional notes:");
+                console.error(err);
             }
         }
     };

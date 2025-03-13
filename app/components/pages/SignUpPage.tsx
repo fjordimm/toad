@@ -17,7 +17,7 @@ import { firebaseAuth, firebaseDb } from "../../src/toadFirebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import { debugLogComponentRerender } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -69,13 +69,13 @@ export default function SignUpPage() {
                     setError("Your password is too weak!");
                 } else {
                     setError("An unknown error has occurred!");
-                    console.log("An unknown Firebase error occurred while trying to add a new user:");
-                    console.log(err);
+                    debugLogError("An unknown Firebase error occurred while trying to add a new user:");
+                    console.error(err);
                 }
             } else {
                 setError("An unknown error has occurred!");
-                console.log("An unknown error occurred while trying to add a new user:");
-                console.log(err);
+                debugLogError("An unknown error occurred while trying to add a new user:");
+                console.error(err);
             }
         }
     }

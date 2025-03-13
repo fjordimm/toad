@@ -15,7 +15,7 @@ import lock from "/lock.svg"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth } from "../../src/toadFirebase"
 import { useNavigate } from "react-router";
-import { debugLogComponentRerender } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -56,13 +56,13 @@ export default function SignInPage() {
                     setError("The password you entered is incorrect!");
                 } else {
                     setError("An unknown error has occurred!");
-                    console.log("An unknown Firebase error occurred while trying to add a new user:");
-                    console.log(err);
+                    debugLogError("An unknown Firebase error occurred while trying to add a new user:");
+                    console.error(err);
                 }
             } else {
                 setError("An unknown error has occurred!");
-                console.log("An unknown error occurred while trying to add a new user:");
-                console.log(err);
+                debugLogError("An unknown error occurred while trying to add a new user:");
+                console.error(err);
             }
         }
     }

@@ -11,6 +11,7 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth, firebaseDb } from "./toadFirebase";
 import { generateUuid } from "./miscUtil";
+import { debugLogError } from "./debugUtil";
 
 export class DbError extends Error {
     constructor(message: string) {
@@ -168,11 +169,12 @@ export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Prom
             return itineraryList;
 
         } else {
-            console.log("Trip Document Does Not Exist");
+            debugLogError("Trip Document Does Not Exist");
             return [];
         }
-    } catch (error) {
-        console.error("Error fetching document:", error);
+    } catch (err) {
+        debugLogError("Error fetching document:");
+        console.log(err);
         return [];
     }
 }
@@ -384,8 +386,6 @@ export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, 
         options: options,
         votes: votes
     };
-
-    console.log("Poll object before update:", pollObj);
 
     await updateDoc(tripDbDoc.ref, {
         polls: pollObj
