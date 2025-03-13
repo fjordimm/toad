@@ -8,49 +8,6 @@
   - Database: Firestore writes
 */
 
-/*
-
-((( OUTDATED )))
-TODO
-
-Instructions for use: 
-This file, when implemented, will interact with TWO other files. Sidebar, and also TripLandingPage. 
-***
-TripLandingPage: 
-***
-
-//declare this inside the function 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-// this goes in the return statement wherever 
-    {isModalOpen && (
-        <AddDestination 
-        tripDbDoc={tripDbDoc}
-        onClose={() => setIsModalOpen(false)}
-    />)
-
-//wherever the sidebar is called, include code similar to this
-//the idea is that you just have to pass in the parameter "onOpenModal={() => setIsModalOpen(true)}"
-    <ToadCount 
-        tripDbDoc={tripDbDoc} 
-        onOpenModal={() => setIsModalOpen(true)}
-    />
-***
-PossibleStops.tsx
-***
-
-Inside the button element for "Add a Possible Destination", include: 
-    onClick={onOpenModal}
-
-Additionally, you will have to pass in the function. So you will need to modify the function header to be something like:
-    type ToadCountProps = {
-        tripDbDoc: DocumentSnapshot | null;
-        onOpenModal: () => void;
-    };
-    const ToadCount: React.FC<ToadCountProps> = ({ tripDbDoc, onOpenModal }) => {
-    (i am using ToadCount as an example because that is where I included my button, but it will be different for PossibleStops)
-*/
-
 import React from "react";
 import { useRef, useState } from "react";
 import { type DocumentSnapshot } from "firebase/firestore";
