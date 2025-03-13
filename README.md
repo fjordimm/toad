@@ -2,7 +2,7 @@
 
 Hosted at https://toad-b0980.web.app/
 
-# Notion
+## Notion
 
 Scrum Board and Documentation: https://www.notion.so/TOAD-17c4dfbbcda280c988afc8c6bbb13b2e
 
