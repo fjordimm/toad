@@ -14,9 +14,9 @@ import { Link } from "react-router";
 import { indexTo15UniqueColor } from "~/src/miscUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
-export default function TripsButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
+export default function TripButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
 
-    debugLogComponentRerender("TripsButton");
+    debugLogComponentRerender("TripButton");
 
     const color = indexTo15UniqueColor(props.tripColorIndex);
 

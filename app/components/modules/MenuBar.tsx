@@ -15,7 +15,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth } from "~/src/toadFirebase";
 import { Link, useNavigate } from "react-router";
-import TripsButton from "./MenuBar/TripsButton";
+import TripsButton from "./MenuBar/TripButton";
 import Loading from "./Loading";
 import { dbRetrieveUsersListOfInvitations, dbRetrieveUsersListOfTrips } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
@@ -52,8 +52,6 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     function turnUserListOfInvitationsIntoElems(userListOfInvitations: DocumentSnapshot[] | null): ReactNode {
         if (userListOfInvitations !== null) {
             return userListOfInvitations.map((trip: DocumentSnapshot) => {
-                // return <TripsButton tripDbDoc={trip} num={0} />
-                // return <p>Yippity skippity {trip.id}</p>
                 return <InvitationButton key={trip.id} userDbDoc={props.userDbDoc} tripDbDoc={trip} />;
             });
         } else {
@@ -124,9 +122,8 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
     const userLastName: string = props.userDbDoc.get("last_name");
 
     return (
-        <div
-            className={`${open ? "min-w-72 w-72" : "min-w-5 w-5"
-                } relative h-screen bg-sidebar_deep_green transition-width duration-300 ease-in-out overflow-hidden`}>
+        <div className={`${open ? "min-w-72 w-72" : "min-w-5 w-5"} relative h-screen bg-sidebar_deep_green transition-width duration-300 ease-in-out overflow-hidden`}>
+            {/* Collapse button */}
             <button
                 className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white px-2 py-2 rounded-xl h-32 bg-sidebar_deep_green"
                 style={{ zIndex: 10 }}
@@ -149,6 +146,7 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                     </div>
 
                     <div className="flex-grow overflow-y-auto">
+                        {/* Your trips section */}
                         <h3 className="text-center text-white font-sunflower text-base px-4">
                             Your Trips
                         </h3>
@@ -161,14 +159,15 @@ export default function MenuBar(props: { userDbDoc: DocumentSnapshot }) {
                                 Create New Trip
                             </span>
                         </div>
+
+                        {/* Invitations section */}
                         <h3 className="text-center text-white font-sunflower text-base px-4">
                             Invitations
                         </h3>
-                        {/* <InvitationButton name="Japan"></InvitationButton>
-						<InvitationButton name="Europe 2024"></InvitationButton> */}
                         {turnUserListOfInvitationsIntoElems(userListOfInvitations)}
                     </div>
 
+                    {/* Log Out button */}
                     <div className="flex-shrink-0 flex justify-center my-4">
                         <button onClick={handleLogOut} className="relative flex items-center justify-center py-2 px-4 rounded-lg shadow-md w-4/5 max-w-xs">
                             <span className="absolute rounded-lg inset-0 bg-[#D86D6D] opacity-75"></span>
