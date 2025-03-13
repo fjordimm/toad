@@ -13,9 +13,9 @@ export default function MainLayout() {
 
     if (topLevelLayoutContext.userDbDoc !== null) {
         return (
-            <div className="grow flex flex-row overflow-hidden max-h-[100vh]">
+            <div className="max-w-full flex flex-row overflow-hidden max-h-[100vh]">
                 <MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
-                <div className="m-5 grow flex overflow-y-auto">
+                <div className="grow m-5 overflow-y-auto">
                     <Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }} />
                 </div>
             </div>

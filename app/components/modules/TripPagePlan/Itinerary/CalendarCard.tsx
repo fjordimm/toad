@@ -217,11 +217,11 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
             <SortableContext items={props.activities} strategy={verticalListSortingStrategy}>
                 <DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
-                    <div className="w-96 px-3 font-sunflower flex items-start justify-center">
+                    <div className="grow w-96 px-3 font-sunflower flex items-start justify-center self-center justify-self-center">
                         {
                             props.activities.length > 0
                                 ? turnActivitiesIntoElems(props.activities)
-                                : <p className="self-center text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
+                                : <p className="grow self-center text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
                         }
                     </div>
                 </DestinationDroppable>

@@ -23,7 +23,7 @@ export function DestinationDroppable(props: { id: string, children: ReactNode })
     const { setNodeRef } = useDroppable({ id: props.id });
 
     return (
-        <div ref={setNodeRef} className="grow flex items-stretch justify-stretch">
+        <div ref={setNodeRef} className="grow max-w-full min-w-0 flex flex-col">
             {props.children}
         </div>
     );
@@ -34,7 +34,7 @@ function DndDraggable(props: { id: string, children: ReactNode }) {
     const { attributes, listeners, setNodeRef } = useDraggable({ id: props.id });
 
     return (
-        <div ref={setNodeRef} {...listeners} {...attributes} className="flex justify-center items-center cursor-auto">
+        <div ref={setNodeRef} {...listeners} {...attributes} className="max-w-full cursor-auto flex flex-col justify-center">
             {props.children}
         </div>
     );
@@ -44,7 +44,7 @@ export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, ac
     if (props.activeDraggableId !== props.destinationId) {
         return (
             <DndDraggable id={props.destinationId}>
-                <div className="w-full my-1">
+                <div className="max-w-full my-1">
                     <DestinationBox
                         tripDbDoc={props.tripDbDoc}
                         destinationId={props.destinationId}
@@ -67,7 +67,7 @@ function DndSortable(props: { id: string, children: ReactNode }) {
 
     return (
         <div
-            ref={setNodeRef} {...listeners} {...attributes} className="flex justify-center items-center"
+            ref={setNodeRef} {...listeners} {...attributes} className="flex justify-stretch items-stretch"
             style={{
                 transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
                 transition,
@@ -84,7 +84,7 @@ export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, act
     if (props.activeDraggableId !== props.destinationId) {
         return (
             <DndSortable id={props.destinationId}>
-                <div className="w-full my-1">
+                <div className="grow max-w-full my-1">
                     <DestinationBox
                         tripDbDoc={props.tripDbDoc}
                         destinationId={props.destinationId}
@@ -160,25 +160,25 @@ export default function TripPagePlan() {
     }
 
     return (
-        <div className="grow flex flex-col gap-5 bg-dashboard_lime">
+        <div className="max-w-full flex flex-col gap-5 bg-dashboard_lime">
             <div className="py-1 px-4 bg-dashboard_component_bg rounded-lg w-min h-min">
                 <Link to="./.." className="font-sunflower text-sidebar_deep_green underline">Back</Link>
             </div>
 
-            <div className="grow flex flex-row gap-5">
-                <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+                <div className="max-w-full flex flex-row justify-stretch gap-5">
                     <Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
                     <PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
+                </div>
 
-                    <DragOverlay>
-                        {
-                            activeDraggableId !== null ? (
-                                makeActiveDragOverlay(activeDraggableId)
-                            ) : null
-                        }
-                    </DragOverlay>
-                </DndContext>
-            </div>
+                <DragOverlay>
+                    {
+                        activeDraggableId !== null ? (
+                            makeActiveDragOverlay(activeDraggableId)
+                        ) : null
+                    }
+                </DragOverlay>
+            </DndContext>
         </div>
     );
 }
