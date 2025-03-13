@@ -8,7 +8,7 @@
   - Database: Firestore writes
 */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import cross from "/cross.svg";
 import DeletePoll from "/DeletePoll.svg";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
