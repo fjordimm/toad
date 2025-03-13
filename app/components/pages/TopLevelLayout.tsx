@@ -1,3 +1,14 @@
+/*
+ Description:
+  The parent of all other routes.
+  This component's only job is to perform authentication, read the user doc from the database, and pass that down to any children.
+ 
+ Interactions:
+  - Parent Component(s): none (it is the highest level route)
+  - Direct Children Component(s): SignInPage (as Outlet), SignUpPage (as Outlet), MainLayout (as Outlet)
+  - Database: Firebase Authentication, Firestore reads
+*/
+
 import React from "react";
 import { Outlet, useOutletContext } from "react-router";
 import { useEffect, useState } from "react";
@@ -56,6 +67,7 @@ export default function TopLevelLayout() {
 
     return (
         <div className="grow flex flex-col justify-stretch items-stretch bg-dashboard_lime">
+            {/* Sub pages (as defined in routes.ts) */}
             <Outlet context={{ userDbDoc: userDbDoc }} />
         </div>
     );

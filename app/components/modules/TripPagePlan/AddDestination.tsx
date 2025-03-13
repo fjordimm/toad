@@ -1,68 +1,31 @@
-
 /*
- * File Description: This component opens a modal that allows users to add a potential destination to a trip.
- *                   It contains a form that, asks users for name, price, length, time of day, and description.
- *                   When users submit the form, it adds a potential destination to the database. 
- * File Interactions: This component is called in TripPagePlan.tsx, where the button for adding a destination is located. 
- *                    It also refers to the functions that are imported in the header.
- */
-/*
-Instructions for use: 
-
-This file, when implemented, will interact with TWO other files. Sidebar, and also TripLandingPage. 
-***
-TripLandingPage: 
-***
-//import the element
-import AddDestination from '../modules/PlanPage/AddDestination';
-
-//declare this inside the function 
-const [isModalOpen, setIsModalOpen] = useState(false);
-
-// this goes in the return statement wherever 
-{isModalOpen && (
-            <AddDestination 
-            tripDbDoc={tripDbDoc}
-            onClose={() => setIsModalOpen(false)}
-            />)
-
-//wherever the sidebar is called, include code similar to this
-//the idea is that you just have to pass in the parameter "onOpenModal={() => setIsModalOpen(true)}"
-<ToadCount 
-                tripDbDoc={tripDbDoc} 
-                onOpenModal={() => setIsModalOpen(true)}
-            />
-***
-PossibleStops.tsx
-***
-
-Inside the button element for "Add a Possible Destination", include: 
-onClick={onOpenModal}
-
-Additionally, you will have to pass in the function. So you will need to modify the function header to be something like:
-type ToadCountProps = {
-    tripDbDoc: DocumentSnapshot | null;
-    onOpenModal: () => void;
-};
-const ToadCount: React.FC<ToadCountProps> = ({ tripDbDoc, onOpenModal }) => {
-(i am using ToadCount as an example because that is where I included my button, but it will be different for PossibleStops)
-
+ Description:
+  A modal for adding a new destination. One added, the new destination will show up in PossibleStops.
+ 
+ Interactions:
+  - Parent Component(s): PossibleStops
+  - Direct Children Component(s): none
+  - Database: Firestore writes
 */
+
 import React from "react";
-import { useRef, useState } from 'react';
-import { type DocumentSnapshot } from 'firebase/firestore';
+import { useRef, useState } from "react";
+import { type DocumentSnapshot } from "firebase/firestore";
 import cross from "/cross.svg";
 import { dbAddDestination } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | null, onClose: () => void }) {
 
+    debugLogComponentRerender("AddDestination");
+
     const modalContentRef = useRef<HTMLDivElement>(null);
 
-    const [destinationName, setDestinationName] = useState('');
-    const [price, setPrice] = useState('');
-    const [length, setLength] = useState('');
-    const [timeOfDay, setTimeOfDay] = useState('');
-    const [description, setDescription] = useState('');
+    const [destinationName, setDestinationName] = useState("");
+    const [price, setPrice] = useState("");
+    const [length, setLength] = useState("");
+    const [timeOfDay, setTimeOfDay] = useState("");
+    const [description, setDescription] = useState("");
 
     async function handleSubmitDestination(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -86,7 +49,6 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
         }
     };
 
-
     return (
         <div
             className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
@@ -107,7 +69,6 @@ export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | nu
                 <div className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg" onClick={props.onClose}>
                     <img src={cross} className="w-7 h-7"></img>
                 </div>
-
 
                 {/* Form Container */}
                 <form className="w-full flex flex-col justify-center items-center" onSubmit={handleSubmitDestination}>

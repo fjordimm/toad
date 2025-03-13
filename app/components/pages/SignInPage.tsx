@@ -1,11 +1,21 @@
+/*
+ Description:
+  The page (with url '/sign-in') for signing in.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: Firebase Authentication
+*/
+
 import React from "react";
-import { useState } from 'react';
-import emailicon from '/mail.svg'
-import lock from '/lock.svg'
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { firebaseAuth } from '../../src/toadFirebase'
-import { useNavigate } from 'react-router';
-import { debugLogComponentRerender } from '~/src/debugUtil';
+import { useState } from "react";
+import emailicon from "/mail.svg"
+import lock from "/lock.svg"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "../../src/toadFirebase"
+import { useNavigate } from "react-router";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -15,9 +25,9 @@ export default function SignInPage() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     function isValidEmail(email: string) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,13 +56,13 @@ export default function SignInPage() {
                     setError("The password you entered is incorrect!");
                 } else {
                     setError("An unknown error has occurred!");
-                    console.log("An unknown Firebase error occurred while trying to add a new user:");
-                    console.log(err);
+                    debugLogError("An unknown Firebase error occurred while trying to add a new user:");
+                    console.error(err);
                 }
             } else {
                 setError("An unknown error has occurred!");
-                console.log("An unknown error occurred while trying to add a new user:");
-                console.log(err);
+                debugLogError("An unknown error occurred while trying to add a new user:");
+                console.error(err);
             }
         }
     }

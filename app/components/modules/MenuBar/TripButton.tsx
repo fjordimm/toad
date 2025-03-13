@@ -1,9 +1,22 @@
+/*
+ Description:
+  A button representing one of a user's trips.
+ 
+ Interactions:
+  - Parent Component(s): MenuBar
+  - Direct Children Component(s): none
+  - Database: none
+*/
+
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { Link } from "react-router";
 import { indexTo15UniqueColor } from "~/src/miscUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
-export default function TripsButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
+export default function TripButton(props: { tripDbDoc: DocumentSnapshot, tripColorIndex: number }) {
+
+    debugLogComponentRerender("TripButton");
 
     const color = indexTo15UniqueColor(props.tripColorIndex);
 

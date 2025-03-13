@@ -1,11 +1,24 @@
+/*
+ Description:
+  A modal for adding a new expense.
+ 
+ Interactions:
+  - Parent Component(s): TripPageExpenses
+  - Direct Children Component(s): NewExpenseStepOne, NewExpenseStepTwo
+  - Database: Firestore writes
+*/
+
 import React, { useRef, useState } from "react";
 import cross from "/cross.svg";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
 import { dbAddExpense } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function NewExpense(props: { onClose: () => void }) {
+
+    debugLogComponentRerender("NewExpense");
 
     const modalContentRef = useRef<HTMLDivElement>(null);
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
@@ -18,9 +31,9 @@ export default function NewExpense(props: { onClose: () => void }) {
 
     const [activeSection, setActiveSection] = useState(1);
 
-    const [expenseName, setExpenseName] = useState('');
-    const [date, setDate] = useState('');
-    const [totalCost, setTotalCost] = useState('');
+    const [expenseName, setExpenseName] = useState("");
+    const [date, setDate] = useState("");
+    const [totalCost, setTotalCost] = useState("");
 
     // useState for payees and their amounts due to keep track across components
     // Dictionary Structure:

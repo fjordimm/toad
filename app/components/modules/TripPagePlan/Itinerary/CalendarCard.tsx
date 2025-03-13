@@ -1,3 +1,13 @@
+/*
+ Description:
+  A card representing a single day of the itinerary. See Itinerary for more details.
+ 
+ Interactions:
+  - Parent Component(s): Itinerary
+  - Direct Children Component(s): DestinationBox
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import { useEffect, useRef, type ReactNode } from "react";
 import { DocumentSnapshot, Timestamp, updateDoc } from "firebase/firestore";
@@ -6,35 +16,29 @@ import stayAtIcon from "/stayAt.svg"
 import { DestinationDroppable, SortableDestinationBox } from "~/components/pages/TripPagePlan";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import linkifyHtml from "linkify-html";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
-const options = {
+const linkifyOptions = {
     defaultProtocol: "https",
     attributes: {
-      target: "_blank",
-      rel: "noopener noreferrer",
-      contentEditable: "false"
+        target: "_blank",
+        rel: "noopener noreferrer",
+        contentEditable: "false"
     },
     // Ensures that URLs without http(s) get prefixed appropriately
-    formatHref: (href:string, type:string) => {
-      if (type === "url" && !/^(?:https?|ftp):\/\//i.test(href)) {
-        return "https://" + href;
-      }
-      return href;
+    formatHref: (href: string, type: string) => {
+        if (type === "url" && !/^(?:https?|ftp):\/\//i.test(href)) {
+            return "https://" + href;
+        }
+        return href;
     },
-    // format: (value: string, type: string): string => {
-    //     if (type === "url") {
-    //       return value.replace(/^https?:\/\//, "");
-    //     }
-    //     return value;
-    //   },
-  };
-  
-
-// CalendarCard creates SINGULAR itinerary card representing a single day
+};
 
 export default function CalendarCard(props: { dbIndex: number, activities: any[], day: Timestamp, stay_at: string, additional_notes: string, tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
+
+    debugLogComponentRerender("CalendarCard");
+
     const { tripId } = useParams();
-    // console.log("DBDoc ID: " + tripDbDoc?.id);
 
     // DATE HANDLER ===================================================
     // Interfaces with databse itinerary to get the display date of each card
@@ -58,19 +62,19 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
     // Use REFs to avoid unecessary rerenders
     const contentRef = useRef<HTMLDivElement | null>(null);
     /*  
-    SAVE: When user clicks out of the input box, save updated content to 
-    additional_notes in the corresponding day in database 
+     SAVE: When user clicks out of the input box, save updated content to 
+     additional_notes in the corresponding day in database 
     */
 
     const updateClickableUrls = () => {
         if (stayAtRef.current) {
-          const textContent = stayAtRef.current.innerText;
-          stayAtRef.current.innerHTML = linkifyHtml(textContent, options);
+            const textContent = stayAtRef.current.innerText;
+            stayAtRef.current.innerHTML = linkifyHtml(textContent, linkifyOptions);
         }
         if (contentRef.current) {
             const textContent = contentRef.current.innerText;
-            contentRef.current.innerHTML = linkifyHtml(textContent, options);
-          }
+            contentRef.current.innerHTML = linkifyHtml(textContent, linkifyOptions);
+        }
     };
 
     const handleSave = async () => {
@@ -103,8 +107,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                         updateClickableUrls();
                     }
                 }
-            } catch (e) {
-                console.error("Error updating additional notes: ", e);
+            } catch (err) {
+                debugLogError("Error updating additional notes:");
+                console.error(err);
             }
         }
     };
@@ -128,19 +133,19 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                 // if additional_notes in database is updated - change content of div via ref
                 if (contentRef.current && updatedNotes) {
                     // contentRef.current.innerText = updatedNotes;
-                    contentRef.current.innerHTML = linkifyHtml(updatedNotes, options);
+                    contentRef.current.innerHTML = linkifyHtml(updatedNotes, linkifyOptions);
                 }
 
                 if (stayAtRef.current && updatedStayAt) {
-                    stayAtRef.current.innerHTML = linkifyHtml(updatedStayAt, options);
+                    stayAtRef.current.innerHTML = linkifyHtml(updatedStayAt, linkifyOptions);
                 }
             }
         }
     }, [props.tripDbDoc]);
 
-    useEffect(() =>{
+    useEffect(() => {
         const currentStayAt = stayAtRef.current;
-        if(currentStayAt) {
+        if (currentStayAt) {
             const clickHandler = (e: MouseEvent) => {
                 const target = e.target as HTMLElement;
                 if (target.tagName === "A") {
@@ -153,9 +158,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
         }
     }, []);
 
-    useEffect(() =>{
+    useEffect(() => {
         const currentNotes = contentRef.current;
-        if(currentNotes) {
+        if (currentNotes) {
             const clickHandler = (e: MouseEvent) => {
                 const target = e.target as HTMLElement;
                 if (target.tagName === "A") {
@@ -217,11 +222,11 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
             <SortableContext items={props.activities} strategy={verticalListSortingStrategy}>
                 <DestinationDroppable id={`calendarcard_${props.dbIndex}`}>
-                    <div className="w-96 px-3 font-sunflower flex items-start justify-center">
+                    <div className="grow w-96 px-3 font-sunflower flex items-start justify-center self-center justify-self-center">
                         {
                             props.activities.length > 0
                                 ? turnActivitiesIntoElems(props.activities)
-                                : <p className="self-center text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
+                                : <p className="grow self-center text-sidebar_deep_green max-w-48">Drag activities from Possible Stops to plan it for this day</p>
                         }
                     </div>
                 </DestinationDroppable>

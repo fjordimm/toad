@@ -1,19 +1,28 @@
-{/*Takes in 5 prop arguments: Destination name, cost, duration, time, and activity description
-    I put comments where these arguments will be called. */}
+/*
+ Description:
+  A card representing a single destination and all its info. This will be dragged between Itinerary and PossibleStops.
+ 
+ Interactions:
+  - Parent Component(s): TripPagePlan
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
 
 import React from "react";
 import { useState } from "react";
 import MovableIcon from "/MovableIcon.svg";
 import NotCollapsed from "/NotCollapsed.svg";
 import Collapsed from "/Collapsed.svg";
-import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, destinationId: string, name: string, price: string, length: string, time: string, description: string }) {
+
+    debugLogComponentRerender("DestinationBox");
+
     const [isCollapsed, setIsCollapsed] = useState(true);
-    // const [mouseIsOver, setMouseIsOver] = useState(false);
 
     async function handleDelete(destinationId: string) {
         await dbRemoveDestinationFromAllItineraryDays(props.tripDbDoc.ref, destinationId);
@@ -21,19 +30,19 @@ export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, des
     }
 
     return (
-        <div className="w-full max-w-96 bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col">
+        <div className="max-w-full bg-[#EAFFB9] rounded-lg shadow-sm p-3 flex flex-col items-stretch">
             {/* Top Section - Flex for responsive layout */}
-            <div className="flex items-center justify-between">
+            <div className="max-w-full flex flex-row items-center justify-between">
                 {/* Left Side - Movable Icon & Name */}
-                <div className="flex items-center ml-[-10px] flex-1 overflow-hidden">
+                <div className="max-w-full min-w-0 flex flex-row items-center overflow-hidden">
                     <img src={MovableIcon} alt="Movable Icon" className="w-6 h-6 mr-1" />
                     {/*Destination name here*/}
-                    <span className="text-black font-sunflower font-bold overflow-hidden text-ellipsis whitespace-nowrap max-w-[145px] mt-1">{props.name}</span>
+                    <span className="max-w-full min-w-0 text-black font-sunflower font-bold overflow-hidden overflow-ellipsis whitespace-nowrap mt-1 mx-3">{props.name}</span>
                 </div>
 
                 {/* Right Side - Buttons */}
 
-                <div className="flex flex-wrap justify-end gap-1" onPointerDown={(e) => e.stopPropagation()}>
+                <div className="flex flex-row justify-end gap-1" onPointerDown={(e) => e.stopPropagation()}>
                     {/* Edit Button */}
                     {/* <button className="w-6 h-6" aria-label="Edit destination">
                         <img src={EditBox} alt="Edit Box" />

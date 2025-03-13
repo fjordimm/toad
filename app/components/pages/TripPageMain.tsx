@@ -1,29 +1,24 @@
 /*
- * File Description: This page is the main trip page, or the first thing a user sees when the click on a trip from the sidebar.
- *                   It contains a feed of polls, navigation buttons to the plan/budget page, a view of the members of the trip
- * File Interactions: This page interacts with ToadCount.tsx, PollModal.tsx, PollCard.tsx, and navigates to the budget/trip pages
- */
+ Description:
+  The page (with url '/trip/:tripId/') representing a single trip. You get to this page when clicking on a trip in the menu bar.
+  It contains a feed of polls, ToadCount, and navigation buttons to the plan and the budget pages.
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): ToadCount, PollModal, PollDisplay
+  - Database: none
+*/
 
+import React, { useState } from "react";
 import ToadCount from "../modules/ToadCount";
-import NewPoll from "../modules/Polls/PollModal";
+import PollModal from "../modules/Polls/PollModal";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
-import React, { useState } from "react";
 import { Link } from "react-router";
 import AddPoll from "/AddPoll.svg";
-import PollCard from "../modules/Polls/PollDisplay";
+import PollDisplay from "../modules/Polls/PollDisplay";
 import CalenderDate from "/calendar-date.svg";
 import Dollar from "/currency-dollar-circle.svg"
-
-interface PollData {
-    description: string,
-    options: string[],
-    poll_owner: string,
-    time_added: Number,
-    title: string,
-    votes: Record<string, string[]>,
-}
-
 
 export default function TripPageMain() {
 
@@ -32,8 +27,8 @@ export default function TripPageMain() {
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
 
-    if(!(tripPageLayoutContext.tripDbDoc.get("trip_active_users").includes(currUser))) {
-        return(
+    if (!(tripPageLayoutContext.tripDbDoc.get("trip_active_users").includes(currUser))) {
+        return (
             <div className="flex w-full align-middle justify-center items-center font-sunflower text-4xl text-sidebar_deep_green">
                 <text>Forbidden! You are not a part of this trip.</text>
             </div>
@@ -43,7 +38,7 @@ export default function TripPageMain() {
     const tripName: string = tripPageLayoutContext.tripDbDoc.get("trip_name");
 
     // Converts Map of 'Polls' into an Array sorted by time_added
-    const tripPolls: Map<string, PollData> = tripPageLayoutContext.tripDbDoc.get('polls');
+    const tripPolls: { [key: string]: any } = tripPageLayoutContext.tripDbDoc.get("polls");
     const tripPollsSorted = tripPolls && Object.keys(tripPolls).length > 0
         ? Object.entries(tripPolls).sort((a, b) => a[1].time_added - b[1].time_added)
         : [];
@@ -55,10 +50,12 @@ export default function TripPageMain() {
     return (
         <div className="w-full flex flex-row justify-between gap-5 bg-dashboard_lime">
             <div className="grow flex flex-col gap-5 overflow-x-hidden">
+                {/* Trip title */}
                 <div className="bg-dashboard_component_bg rounded-lg p-5 text-sidebar_deep_green font-sunflower text-4xl" style={{ fontWeight: 900 }}>
                     <h1 className="overflow-hidden overflow-ellipsis">{tripName}</h1>
                 </div>
 
+                {/* Polls sections */}
                 <div className="h-full overflow-auto rounded-xl p-4 bg-[#D4F28F] flex flex-col items-center gap-4">
                     <button
                         onClick={() => setIsPollModalOpen(true)}
@@ -71,7 +68,7 @@ export default function TripPageMain() {
 
                     <div className="w-full flex flex-col gap-2 overflow-auto">
                         {tripPollsSorted.map(([pollID, poll]) => (
-                            <PollCard
+                            <PollDisplay
                                 pollID={pollID || " "}
                                 description={poll.description || " "}
                                 options={poll.options || []}
@@ -91,8 +88,10 @@ export default function TripPageMain() {
             </div>
 
             <div className="flex flex-col items-center justify-start gap-3">
+                {/* ToadCount (list of members, and delete button) */}
                 <ToadCount tripDbDoc={tripPageLayoutContext.tripDbDoc} tripMembersInfo={tripPageLayoutContext.tripMembersInfo} />
 
+                {/* Link to plan page */}
                 <Link to="./plan" className="w-full flex justify-center">
                     <button className="w-full bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={CalenderDate} className="w-12 h-12" />
@@ -100,6 +99,7 @@ export default function TripPageMain() {
                     </button>
                 </Link>
 
+                {/* Link to budget page */}
                 <Link to="./budget" className="w-full flex justify-center">
                     <button className="w-full bg-[#D4F28F] text-green-900 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
                         <img src={Dollar} className="w-12 h-12" />
@@ -109,7 +109,7 @@ export default function TripPageMain() {
             </div>
 
             {/* Show the modal when isPollModalOpen is true */}
-            {isPollModalOpen && <NewPoll onClose={() => setIsPollModalOpen(false)} />}
+            {isPollModalOpen && <PollModal onClose={() => setIsPollModalOpen(false)} />}
         </div>
     );
 }

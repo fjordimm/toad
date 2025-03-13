@@ -1,13 +1,17 @@
 /*
- * File Description: This file renders the ToadCount component that displays a list of users from the trip, an invite button, and delete trip button.
- *                   Removing members from trips and deleting the trip is only displayed if the signed in user is the trip owner.
- * File Interactions: This file calls ToadMember as it generates a list of user cards, ConfirmDelete to ensure a user doesn't accidentally delete a trip,
- *                    as well as other functions imported in its header.
- */
+ Description:
+  The card in the top right of a trip's main page, displaying a list of members of the trip, an invite button, and a delete trip button.
+  However, the delete trip button and the buttons to remove members will only show up if the user is the owner of the trip.
+ 
+ Interactions:
+  - Parent Component(s): TripPageMain
+  - Direct Children Component(s): ToadMember, ConfirmDelete
+  - Database: Firestore writes
+*/
 
 import React, { type ReactNode } from "react";
 import { useState } from "react";
-import { Form, useNavigate } from "react-router";
+import { Form } from "react-router";
 import ToadMember from "./ToadCount/ToadMember";
 import ConfirmDelete from "./ToadCount/ConfirmDelete"
 import { type DocumentSnapshot } from "firebase/firestore";
@@ -20,8 +24,6 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
 
     debugLogComponentRerender("ToadCount");
 
-    const navigate = useNavigate();
-
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
     const trip_active_users: string[] = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
 
@@ -29,9 +31,9 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
             const memberInfo = props.tripMembersInfo[memberEmailId];
 
-            if(trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
+            if (trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
                 return (
-                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
+                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner} />
                 );
             }
         });
@@ -43,8 +45,8 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
-    let isTripOwner:boolean = true;
-    if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
+    let isTripOwner: boolean = true;
+    if (tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
         isTripOwner = false;
     }
 
@@ -121,10 +123,10 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
                 </button>
             </div>)}
             {isModalOpen && (
-            <ConfirmDelete 
-            tripDbDoc={props.tripDbDoc}
-            onClose={() => setIsModalOpen(false)}
-            />)}
+                <ConfirmDelete
+                    tripDbDoc={props.tripDbDoc}
+                    onClose={() => setIsModalOpen(false)}
+                />)}
         </div>
     );
 }

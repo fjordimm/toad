@@ -1,10 +1,19 @@
-import type { DocumentSnapshot } from "firebase/firestore";
+/*
+ Description:
+  A card representing a single member within ToadCount.
+ 
+ Interactions:
+  - Parent Component(s): ToadCount
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
+
 import React from "react";
+import type { DocumentSnapshot } from "firebase/firestore";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
-
-export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null, isTripOwner: boolean}) {
+export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null, isTripOwner: boolean }) {
 
     debugLogComponentRerender("ToadMember");
 
@@ -22,8 +31,8 @@ export default function ToadMember(props: { memberColor: string, tripDbDoc: Docu
         ;
 
     return (
-        <div className = "flex flex-row  w-full">
-            <div className={`relative ${props.isTripOwner ? 'w-10/12' : 'w-full'} items-center h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm`}>
+        <div className="flex flex-row  w-full">
+            <div className={`relative ${props.isTripOwner ? "w-10/12" : "w-full"} items-center h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm`}>
                 {/* Circle representing the color icon */}
                 <div
                     className={`w-[18.86px] h-[18.86px] rounded-full absolute left-[8px] top-1/2 transform -translate-y-1/2 ${props.memberColor}`}
@@ -36,6 +45,7 @@ export default function ToadMember(props: { memberColor: string, tripDbDoc: Docu
                     </span>
                 </div>
             </div>
+            
             {/* Delete Button */}
             {props.isTripOwner && (<button
                 onClick={handleRemoveMember}

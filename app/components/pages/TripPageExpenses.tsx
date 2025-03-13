@@ -1,18 +1,27 @@
 /*
-TripPageExpenses.tsx is a mostly standalone component; it is referenced in routes.tsx once.
-This file is the main overview for all expenses. There are three separate tabs for different expense views.
-When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
+ Description:
+  The page (with url '/trip/:tripId/budget) for showing all content to do with expenses.
+  It has a number of tabs for filtering expenses.
+  This component's main job is to parse through the trip database doc to find and sort expenses, and pass them to ExpenseList (or MemberBreakdown).
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): ExpenseList, NewExpense, MemberBreakdown
+  - Database: none
 */
 
-import { Link } from "react-router";
 import React, { useState } from "react";
+import { Link } from "react-router";
 import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
 import type { DocumentSnapshot } from "firebase/firestore";
 import MemberBreakdown from "../modules/TripPageExpenses/MemberBreakdown";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
-export default function BudgetPageMain() {
+export default function TripPageExpenses() {
+
+    debugLogComponentRerender("TripPageExpenses");
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
@@ -21,7 +30,6 @@ export default function BudgetPageMain() {
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
     const expenses = tripPageLayoutContext.tripDbDoc.get("expenses");
-    const users_list = tripPageLayoutContext.tripDbDoc.get("trip_active_users");
     const users_archived_list = tripPageLayoutContext.tripDbDoc.get("trip_users");
     const expenses_sorted: string[] = Object.keys(expenses).sort((a, b) => {
         const dateA: number = new Date(expenses[a].date).getTime();
@@ -75,13 +83,13 @@ export default function BudgetPageMain() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     //const [isMemberModalOpen, setMemberModalOpen] = useState(false);
-    const [selectedMember, setSelectedMember] =  useState<DocumentSnapshot | null>(null);
+    const [selectedMember, setSelectedMember] = useState<DocumentSnapshot | null>(null);
 
-    const MemberBox = ({ member, onClick }: {member: DocumentSnapshot, onClick:(member: DocumentSnapshot) => void}) => {
+    const MemberBox = ({ member, onClick }: { member: DocumentSnapshot, onClick: (member: DocumentSnapshot) => void }) => {
         const memberName = `${member.get("first_name")} ${member.get("last_name")}`;
         const userColor = tripPageLayoutContext.tripMembersInfo[member.id].color;
         return (
-            <div 
+            <div
                 onClick={() => onClick(member)}
                 className="relative w-full h-[28px] bg-[#8FA789]/40 shadow-sm rounded-lg"
             >
@@ -94,7 +102,7 @@ export default function BudgetPageMain() {
             </div>
         );
     };
-    
+
 
     const renderAllMembers = () => {
         return (
@@ -103,26 +111,26 @@ export default function BudgetPageMain() {
                     <p>View Expenses By Person</p>
                 </div>
                 <div className="flex flex-col mx-2  my-3 gap-2">
-                {
-                    users_archived_list.map((memberEmail: string) => {
-                        if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
-                            return (
-                                <MemberBox 
-                                    key={memberEmail} 
-                                    member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc} 
-                                    onClick={(member) => setSelectedMember(member)}
-                                />
-                            );
-                        } else {
-                            return null;
-                        }
-                    })
-                }
+                    {
+                        users_archived_list.map((memberEmail: string) => {
+                            if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
+                                return (
+                                    <MemberBox
+                                        key={memberEmail}
+                                        member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc}
+                                        onClick={(member) => setSelectedMember(member)}
+                                    />
+                                );
+                            } else {
+                                return null;
+                            }
+                        })
+                    }
                 </div>
             </div>
         );
     };
-    
+
     return (
         <div className="grow flex flex-col flex-auto gap-5 overflow-auto scrollbar-thin scrollbar-thumb-sidebar_deep_green scrollbar-track-transparent bg-dashboard_lime">
             {/* Non button div */}

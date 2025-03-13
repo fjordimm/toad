@@ -1,8 +1,19 @@
+/*
+ Description:
+  The left side of the plan page; a list of all days for the trip. Each day (CalendarCard) has a slot for 'Staying At', a slot for 'Additional Notes', and a list of all planned destinations.
+ 
+ Interactions:
+  - Parent Component(s): TripPagePlan
+  - Direct Children Component(s): CalendarCard
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import { useEffect, useState } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
 import CalendarCard from "./Itinerary/CalendarCard";
 import { dbRetrieveTripItinerary } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 /*
 retrieveItinerary: retrieves itinerary field from trip database as array of dict days
@@ -11,13 +22,14 @@ returns: Array[{activities:... day:... stay_at: ... additional_notes:...}]
 */
 async function retrieveItinerary(tripDbDoc: DocumentSnapshot) {
     const itineraryDaysList = await dbRetrieveTripItinerary(tripDbDoc);
-    // console.log("Retrieving Trip: " + tripDbDoc.id + "Content: " + ItineraryDaysList);
     return itineraryDaysList || null;
 }
 
 export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
-    const [itineraryList, setItineraryList] = useState<any[]>([]);
 
+    debugLogComponentRerender("Itinerary");
+
+    const [itineraryList, setItineraryList] = useState<any[]>([]);
     useEffect(() => {
         if (props.tripDbDoc) {
             const fetchItinerary = async () => {
@@ -31,7 +43,6 @@ export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDe
             setItineraryList([]);
         }
     }, [props.tripDbDoc])
-
 
     return (
         <div className="flex flex-col gap-4">

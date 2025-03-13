@@ -1,3 +1,13 @@
+/*
+ Description:
+  The main page layout. It has the menu bar on the left, and the subpage on the right.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): MenuBar, LandingPage (as Outlet), CreateTrip (as Outlet), TripPageLayout (as Outlet)
+  - Database: none
+*/
+
 import React from "react";
 import { Link, Outlet, useOutletContext } from "react-router";
 import MenuBar from "../modules/MenuBar";
@@ -13,14 +23,16 @@ export default function MainLayout() {
 
     if (topLevelLayoutContext.userDbDoc !== null) {
         return (
-            <div className="grow flex flex-row overflow-hidden max-h-[100vh]">
+            <div className="max-w-full flex flex-row overflow-hidden max-h-[100vh]">
                 <MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
-                <div className="m-5 grow flex overflow-y-auto">
+                <div className="grow m-5 overflow-y-auto flex flex-col">
+                    {/* Sub pages (as defined in routes.ts) */}
                     <Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }} />
                 </div>
             </div>
         );
     } else {
+        // Alternative 'You are not signed in' page.
         return (
             <div>
                 <p>You are not signed in.</p>

@@ -1,7 +1,15 @@
 /*
- * File Description: This is the plan page for all trips, featuring a sidebar of possible stops, and the actual itinerary.
- * File Interactions: This file heavily relies on the dnd-kit sortable library, as well as CalendarCard.tsx, Itinerary.tsx, and the rest of the imports it has.
- */
+ Description:
+  The page (with url '/trip/:tripId/plan') representing the users' plans for which destinations they will go to.
+  The Itinerary component is on the left, and the PossibleStops component is on the right.
+  You can drag destinations between the two.
+  This file also contains helper components for using the @dnd-kit/sortable library.
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): Itinerary, PossibleStops, DestinationBox
+  - Database: Firestore writes
+*/
 
 import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
@@ -16,35 +24,40 @@ import DestinationBox from "../modules/TripPagePlan/DestinationBox";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbMoveDestination, dbSortDestinationWithinDay } from "~/src/databaseUtil";
 
+// The outline of a destination you see while dragging it, before dropping it
 const destinationBoxShadow = <div className="w-full my-1 max-w-96 h-[86px] rounded-lg bg-[#00000020]"></div>;
 
+// A utility component for making destinations draggable
 export function DestinationDroppable(props: { id: string, children: ReactNode }) {
 
     const { setNodeRef } = useDroppable({ id: props.id });
 
     return (
-        <div ref={setNodeRef} className="grow flex items-stretch justify-stretch">
+        <div ref={setNodeRef} className="grow max-w-full min-w-0 flex flex-col">
             {props.children}
         </div>
     );
 }
 
+// A utility component for making destinations draggable
 function DndDraggable(props: { id: string, children: ReactNode }) {
 
     const { attributes, listeners, setNodeRef } = useDraggable({ id: props.id });
 
     return (
-        <div ref={setNodeRef} {...listeners} {...attributes} className="flex justify-center items-center cursor-auto">
+        <div ref={setNodeRef} {...listeners} {...attributes} className="max-w-full cursor-auto flex flex-col justify-center">
             {props.children}
         </div>
     );
 }
 
+// A utility component for making destinations draggable
+// To be used by PossibleStops
 export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any }) {
     if (props.activeDraggableId !== props.destinationId) {
         return (
             <DndDraggable id={props.destinationId}>
-                <div className="w-full my-1">
+                <div className="max-w-full my-1">
                     <DestinationBox
                         tripDbDoc={props.tripDbDoc}
                         destinationId={props.destinationId}
@@ -62,12 +75,13 @@ export function DraggableDestinationBox(props: { tripDbDoc: DocumentSnapshot, ac
     }
 }
 
+// A utility component for making destinations draggable
 function DndSortable(props: { id: string, children: ReactNode }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
 
     return (
         <div
-            ref={setNodeRef} {...listeners} {...attributes} className="flex justify-center items-center"
+            ref={setNodeRef} {...listeners} {...attributes} className="flex justify-stretch items-stretch"
             style={{
                 transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
                 transition,
@@ -80,11 +94,12 @@ function DndSortable(props: { id: string, children: ReactNode }) {
     );
 }
 
+// A utility component for making destinations draggable
 export function SortableDestinationBox(props: { tripDbDoc: DocumentSnapshot, activeDraggableId: string | null, destinationId: string, destinationObj: any }) {
     if (props.activeDraggableId !== props.destinationId) {
         return (
             <DndSortable id={props.destinationId}>
-                <div className="w-full my-1">
+                <div className="grow max-w-full my-1">
                     <DestinationBox
                         tripDbDoc={props.tripDbDoc}
                         destinationId={props.destinationId}
@@ -116,7 +131,7 @@ export default function TripPagePlan() {
 
     const [activeDraggableId, setActiveDraggableId] = useState<string | null>(null);
 
-    // This will be done on drag end:
+    // The action will be done on drag end
     let activityMoveAction: { id: string, day: number } | null = null;
 
     function handleDragStart(e: DragStartEvent) {
@@ -160,25 +175,27 @@ export default function TripPagePlan() {
     }
 
     return (
-        <div className="grow flex flex-col gap-5 bg-dashboard_lime">
+        <div className="max-w-full flex flex-col gap-5 bg-dashboard_lime">
             <div className="py-1 px-4 bg-dashboard_component_bg rounded-lg w-min h-min">
                 <Link to="./.." className="font-sunflower text-sidebar_deep_green underline">Back</Link>
             </div>
 
-            <div className="grow flex flex-row gap-5">
-                <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+                <div className="max-w-full flex flex-row justify-stretch gap-5">
+                    {/* The actual content */}
                     <Itinerary tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
                     <PossibleStops tripDbDoc={tripPageLayoutContext.tripDbDoc} listOfDestinations={listOfDestinations} activeDraggableId={activeDraggableId} />
+                </div>
 
-                    <DragOverlay>
-                        {
-                            activeDraggableId !== null ? (
-                                makeActiveDragOverlay(activeDraggableId)
-                            ) : null
-                        }
-                    </DragOverlay>
-                </DndContext>
-            </div>
+                {/* Displays the destination while you are dragging it (if any), with a non-fixed position */}
+                <DragOverlay>
+                    {
+                        activeDraggableId !== null ? (
+                            makeActiveDragOverlay(activeDraggableId)
+                        ) : null
+                    }
+                </DragOverlay>
+            </DndContext>
         </div>
     );
 }

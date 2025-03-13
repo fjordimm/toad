@@ -1,13 +1,23 @@
+/*
+ Description:
+  The page (with url '/sign-up') for creating a new account.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: Firebase Authentication, Firestore writes
+*/
+
 import React from "react";
-import { useState } from 'react';
-import emailicon from '/mail.svg';
-import lock from '/lock.svg';
-import person from '/person.svg';
-import { firebaseAuth, firebaseDb } from '../../src/toadFirebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router';
-import { debugLogComponentRerender } from '~/src/debugUtil';
+import { useState } from "react";
+import emailicon from "/mail.svg";
+import lock from "/lock.svg";
+import person from "/person.svg";
+import { firebaseAuth, firebaseDb } from "../../src/toadFirebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import logo from "/toadLogo.svg";
 import { FirebaseError } from "firebase/app";
 
@@ -17,11 +27,11 @@ export default function SignUpPage() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [fname, setFName] = useState('');
-    const [lname, setLName] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fname, setFName] = useState("");
+    const [lname, setLName] = useState("");
+    const [error, setError] = useState("");
 
     function isValidEmail(email: string) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,17 +65,17 @@ export default function SignUpPage() {
                     setError("Email already in use!");
                 } else if (err.code === "auth/invalid-email") {
                     setError("Please enter a valid email!");
-                } else if (err.code === "auth/weak-password") { 
+                } else if (err.code === "auth/weak-password") {
                     setError("Your password is too weak!");
-                }else {
+                } else {
                     setError("An unknown error has occurred!");
-                    console.log("An unknown Firebase error occurred while trying to add a new user:");
-                    console.log(err);
+                    debugLogError("An unknown Firebase error occurred while trying to add a new user:");
+                    console.error(err);
                 }
             } else {
                 setError("An unknown error has occurred!");
-                console.log("An unknown error occurred while trying to add a new user:");
-                console.log(err);
+                debugLogError("An unknown error occurred while trying to add a new user:");
+                console.error(err);
             }
         }
     }

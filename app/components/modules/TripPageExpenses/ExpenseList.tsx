@@ -1,16 +1,22 @@
 /*
-This component is what displays the various view of expenses for TripPageExpenses. 
-It takes in a view (which is changed when the button in TripPageExpenses is clicked) as a prop
-It also takes in the props expenses, peopleOweMe, iOwePeople as three different arrays
-These arrays are uuids for expenses and will be used to generate the Expense components. 
+ Description:
+  A list of expenses to be used in the expenses page. It takes in three arrays of expense ids (expenses, peopleOweMe, iOwePeople) from TripPageExpenses.
+ 
+ Interactions:
+  - Parent Component(s): TripPageExpenses
+  - Direct Children Component(s): Expense
+  - Database: none
 */
 
-import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import type { DocumentSnapshot } from "firebase/firestore";
 import Expense from "./ExpenseList/Expense";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo, expenses_dict: any, currentUser: string }) {
+
+    debugLogComponentRerender("ExpenseList");
 
     if (props.view === "all") {
         const all_paid: string[] = [];
@@ -34,7 +40,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         }
 
         if (props.filter === "all") {
-            // return (<p>All Expenses View ALL.</p>);
             if (props.expenses.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -44,9 +49,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             props.expenses.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -62,7 +64,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "paid") {
-            // return (<p>All Expenses View PAID.</p>);
             if (all_paid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -72,9 +73,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             all_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -90,7 +88,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "unpaid") {
-            // return (<p>All Expenses View UNPAID.</p>);
             if (all_unpaid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -100,9 +97,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             all_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -132,7 +126,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         }
 
         if (props.filter === "all") {
-            // return (<p>I Owe People View ALL.</p>);
             if (props.iOwePeople.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -142,9 +135,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             props.iOwePeople.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -160,7 +150,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "paid") {
-            // return (<p>I Owe People View PAID.</p>);
             if (owe_paid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -170,9 +159,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             owe_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -188,7 +174,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "unpaid") {
-            // return (<p>I Owe People View UNPAID.</p>);
             if (owe_unpaid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -198,9 +183,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             owe_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -239,7 +221,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
         }
 
         if (props.filter === "all") {
-            // return (<p>People Owe Me ALL.</p>);
             if (props.peopleOweMe.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -249,9 +230,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             props.peopleOweMe.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -267,7 +245,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "paid") {
-            // return (<p>People Owe Me PAID.</p>);
             if (owed_paid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -277,9 +254,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             owed_paid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {
@@ -295,7 +269,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
                 );
             }
         } else if (props.filter === "unpaid") {
-            // return (<p>People Owe Me UNPAID.</p>);
             if (owed_unpaid.length == 0) {
                 return (
                     <div className="mt-48 flex justify-center items-center">
@@ -305,9 +278,6 @@ export default function ExpenseList(props: { view: "all" | "owe" | "owed", filte
             } else {
                 return (
                     <div className="flex flex-col gap-3 m-3">
-                        {/* {props.expenses.map(expense => (
-                            <Expense tripDbDoc={tripDbDoc} tripId={expense}></Expense>
-                        ))} */}
                         {
                             owed_unpaid.map((expenseId: string) => {
                                 if (props.tripDbDoc !== null) {

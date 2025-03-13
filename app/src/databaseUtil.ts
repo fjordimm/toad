@@ -1,7 +1,17 @@
+/*
+ Description:
+  A collection of functions for reading from and writing to Firestore.
+  React components should always use these functions rather than directly interfacing with Firestore.
+ 
+ Interactions:
+  - used by multiple React components (not listed here)
+*/
+
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth, firebaseDb } from "./toadFirebase";
 import { generateUuid } from "./miscUtil";
+import { debugLogError } from "./debugUtil";
 
 export class DbError extends Error {
     constructor(message: string) {
@@ -59,7 +69,6 @@ export async function dbRetrieveTrip(tripId: string): Promise<DocumentSnapshot> 
 export function dbCheckAndGetUserAuthentication(onAuthenticated: (result: DocumentReference) => void, onNotAuthenticated: () => void) {
     onAuthStateChanged(firebaseAuth, (authUser: User | null) => {
         if (authUser !== null) {
-            // TODO: better null checking and error handling. The 'as' shouldn't be there
             onAuthenticated(doc(firebaseDb, "users", authUser.email as string));
         } else {
             onNotAuthenticated();
@@ -132,8 +141,6 @@ export async function dbDeleteTrip(tripDbDoc: DocumentSnapshot) {
         });
     }
 
-    // TODO: what if someone was invited to a trip, then the trip was deleted, then they accept the invitation
-
     await deleteDoc(tripDbDoc.ref);
 }
 
@@ -159,16 +166,15 @@ export async function dbRetrieveTripItinerary(tripDbDoc: DocumentSnapshot): Prom
             return itineraryList;
 
         } else {
-            console.log("Trip Document Does Not Exist");
+            debugLogError("Trip Document Does Not Exist");
             return [];
         }
-    } catch (error) {
-        console.error("Error fetching document:", error);
+    } catch (err) {
+        debugLogError("Error fetching document:");
+        console.log(err);
         return [];
     }
 }
-
-// TODO: be more consistent/deliberate with DocumentReference vs. DocumentSnapshot
 
 export async function dbInviteUser(tripDbDocRef: DocumentReference, userEmailId: string) {
     const userDbDoc: DocumentSnapshot = await dbRetrieveUser(userEmailId);
@@ -194,7 +200,7 @@ export async function dbDeclineInvitation(userDbDoc: DocumentSnapshot, tripId: s
 
 export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userDbDoc: DocumentSnapshot) {
     await updateDoc(tripDbDocRef, {
-        trip_users: arrayUnion(userDbDoc.id), 
+        trip_users: arrayUnion(userDbDoc.id),
         trip_active_users: arrayUnion(userDbDoc.id)
     });
 
@@ -361,7 +367,7 @@ export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReferenc
 }
 
 
-export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] } ) {
+export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] }) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
     const pollId: string = generateUuid();
@@ -376,25 +382,23 @@ export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, 
         votes: votes
     };
 
-    console.log("Poll object before update:", pollObj);
-    
     await updateDoc(tripDbDoc.ref, {
         polls: pollObj
     });
 }
 
-export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string){
+export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
     const pollObj = tripDbDoc.get("polls");
-    delete(pollObj[pollId])
+    delete (pollObj[pollId])
     await updateDoc(tripDbDoc.ref, {
         polls: pollObj
     });
 }
 
 // Add user email to votes[options] once a vote is casted for a specific pollID and option
-export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option:string, user:string){
+export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option: string, user: string) {
 
     await dbDeleteVotes(tripDbDocRef, pollId, user);   // ensure only one option is selected
 
@@ -404,19 +408,19 @@ export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string,
 }
 
 // Clears ALL of current user's votes
-export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user:string){
+export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
-    if(tripDbDoc.exists()){
+    if (tripDbDoc.exists()) {
         const votesObj = tripDbDoc.data().polls[pollId].votes || {}
 
-        for (const option in votesObj){
-            if (votesObj[option]){
+        for (const option in votesObj) {
+            if (votesObj[option]) {
                 votesObj[option] = votesObj[option].filter((voter: string) => voter !== user);
             }
         }
 
-        await updateDoc(tripDbDocRef,{
+        await updateDoc(tripDbDocRef, {
             [`polls.${pollId}.votes`]: votesObj,
         })
     }
