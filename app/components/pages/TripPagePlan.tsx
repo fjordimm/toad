@@ -1,7 +1,15 @@
 /*
- * File Description: This is the plan page for all trips, featuring a sidebar of possible stops, and the actual itinerary.
- * File Interactions: This file heavily relies on the dnd-kit sortable library, as well as CalendarCard.tsx, Itinerary.tsx, and the rest of the imports it has.
- */
+ Description:
+  The page (with url '/trip/:tripId/plan') representing the users' plans for which destinations they will go to.
+  The Itinerary component is on the left, and the PossibleStops component is on the right.
+  You can drag destinations between the two.
+  This file also contains helper components for using the @dnd-kit/sortable library.
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): Itinerary, PossibleStops, DestinationBox
+  - Database: Firestore writes
+*/
 
 import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";

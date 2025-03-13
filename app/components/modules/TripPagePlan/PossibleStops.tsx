@@ -1,3 +1,13 @@
+/*
+ Description:
+  The right side of the plan page; a list of destinations that aren't placed on a specific day in the itinerary yet.
+ 
+ Interactions:
+  - Parent Component(s): TripPagePlan
+  - Direct Children Component(s): DestinationBox, AddDestination
+  - Database: none
+*/
+
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { useState, type ReactNode } from "react";

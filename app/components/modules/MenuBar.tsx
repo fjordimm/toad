@@ -1,3 +1,14 @@
+/*
+ Description:
+  The menu bar that always shows up on the left part of your screen (except for the sign-in or sign-up page).
+  This will display all trips that the user is a part of, as well as any pending invitations.
+ 
+ Interactions:
+  - Parent Component(s): MainLayout
+  - Direct Children Component(s): TripsButton, InvitationButton
+  - Database: Firestore reads, Firebase Authentication
+*/
+
 import React, { useRef } from "react";
 import InvitationButton from './MenuBar/InvitationButton';
 import { useEffect, useState, type ReactNode } from 'react';

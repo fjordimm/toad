@@ -1,7 +1,13 @@
 /*
-TripPageExpenses.tsx is a mostly standalone component; it is referenced in routes.tsx once.
-This file is the main overview for all expenses. There are three separate tabs for different expense views.
-When clicked, these tabs display all expenses for that view via ExpenseList.tsx.
+ Description:
+  The page (with url '/trip/:tripId/budget) for showing all content to do with expenses.
+  It has a number of tabs for filtering expenses.
+  This component's main job is to parse through the trip database doc to find and sort expenses, and pass them to ExpenseList (or MemberBreakdown).
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): ExpenseList, NewExpense, MemberBreakdown
+  - Database: none
 */
 
 import { Link } from "react-router";
@@ -12,7 +18,7 @@ import NewExpense from "../modules/TripPageExpenses/NewExpense";
 import type { DocumentSnapshot } from "firebase/firestore";
 import MemberBreakdown from "../modules/TripPageExpenses/MemberBreakdown";
 
-export default function BudgetPageMain() {
+export default function TripPageExpenses() {
 
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 

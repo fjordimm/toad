@@ -1,8 +1,19 @@
+/*
+ Description:
+  A modal containing the expense breakdown as well as all the expenses, but only ones involving a specified member. This shows up when you click one of the names under 'View Expenses by Person'.
+ 
+ Interactions:
+  - Parent Component(s): TripPageExpenses
+  - Direct Children Component(s): Expense
+  - Database: none
+*/
+
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { useRef, useState } from 'react';
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
-import Expense from "../../modules/TripPageExpenses/ExpenseList/Expense"
+import Expense from "../../modules/TripPageExpenses/ExpenseList/Expense";
+
 export default function MemberBreakdown(props: {memberEmail: string, memberFirstName: string, iOwePeople: string[], peopleOweMe: string[], currUser: string, expensesDict: any, tripMembersInfo: TripMembersInfo,  tripDbDoc: DocumentSnapshot | null, onClose: () => void}) {
 
     const modalContentRef = useRef<HTMLDivElement>(null);

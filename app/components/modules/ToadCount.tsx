@@ -1,9 +1,13 @@
 /*
- * File Description: This file renders the ToadCount component that displays a list of users from the trip, an invite button, and delete trip button.
- *                   Removing members from trips and deleting the trip is only displayed if the signed in user is the trip owner.
- * File Interactions: This file calls ToadMember as it generates a list of user cards, ConfirmDelete to ensure a user doesn't accidentally delete a trip,
- *                    as well as other functions imported in its header.
- */
+ Description:
+  The card in the top right of a trip's main page, displaying a list of members of the trip, an invite button, and a delete trip button.
+  However, the delete trip button and the buttons to remove members will only show up if the user is the owner of the trip.
+ 
+ Interactions:
+  - Parent Component(s): TripPageMain
+  - Direct Children Component(s): ToadMember, ConfirmDelete
+  - Database: Firestore writes
+*/
 
 import React, { type ReactNode } from "react";
 import { useState } from "react";

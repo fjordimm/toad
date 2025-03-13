@@ -1,3 +1,13 @@
+/*
+ Description:
+  The page (with url '/') when you first log in to TOAD. It only contains a simple message in the center of the screen.
+ 
+ Interactions:
+  - Parent Component(s): MainLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: none
+*/
+
 import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 

@@ -1,7 +1,12 @@
 /*
- * File Description: This file opens a modal that asks to confirm if they want to delete a trip, so that they don't delete one on accident.
- * File Interactions: This file interacts with ToadCount.tsx primarily. It also refers to functions that are imported in the header.
- */
+ Description:
+  A modal that asks to confirm if they want to delete a trip, so that they don't delete one on accident.
+ 
+ Interactions:
+  - Parent Component(s): ToadCount
+  - Direct Children Component(s): none
+  - Database: none
+*/
 
 import { dbDeleteTrip} from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
@@ -9,6 +14,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { debugLogError } from "~/src/debugUtil";
 import { useRef } from "react";
+
 export default function ConfirmDelete(props: {tripDbDoc: DocumentSnapshot | null, onClose: () => void  }) {
     const navigate = useNavigate();
     const modalContentRef = useRef<HTMLDivElement>(null);

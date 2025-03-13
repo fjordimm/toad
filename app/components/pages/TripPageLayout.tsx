@@ -1,3 +1,14 @@
+/*
+ Description:
+  The page layout (with url prefix '/trip/:tripId/') for the content for a specific trip.
+  This component's main job is to load the trip document from the database, as well as generate the colors and load the names for all members of the trip, and pass both of those down to any children.
+ 
+ Interactions:
+  - Parent Component(s): MainLayout (as Outlet)
+  - Direct Children Component(s): TripPageMain (as Outlet), TripPagePlan (as Outlet), TripPageExpenses (as Outlet)
+  - Database: Firestore reads
+*/
+
 import React from "react";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import type { Route } from "./+types/TripPageLayout";

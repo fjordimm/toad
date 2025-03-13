@@ -1,3 +1,13 @@
+/*
+ Description:
+  The left side of the plan page; a list of all days for the trip. Each day (CalendarCard) has a slot for 'Staying At', a slot for 'Additional Notes', and a list of all planned destinations.
+ 
+ Interactions:
+  - Parent Component(s): TripPagePlan
+  - Direct Children Component(s): CalendarCard
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import { useEffect, useState } from "react";
 import { DocumentSnapshot } from "firebase/firestore";

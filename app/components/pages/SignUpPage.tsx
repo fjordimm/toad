@@ -1,3 +1,13 @@
+/*
+ Description:
+  The page (with url '/sign-up') for creating a new account.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: Firebase Authentication, Firestore writes
+*/
+
 import React from "react";
 import { useState } from 'react';
 import emailicon from '/mail.svg';

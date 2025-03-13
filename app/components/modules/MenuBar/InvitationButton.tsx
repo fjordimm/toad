@@ -1,13 +1,17 @@
+/*
+ Description:
+  A card that shows up on the menu bar, prompting the user if they want to accept or decline an invitation.
+ 
+ Interactions:
+  - Parent Component(s): MenuBar
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbAcceptInvitation, dbDeclineInvitation } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
-
-// When you call this component, give 2 paramenteters: NameOfTrip and TripNumber
-// Example: <TripButton name="Portland" num={0}></TripButton>
-// OnClick not implemented
-
-
 
 export default function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: DocumentSnapshot }) {
 

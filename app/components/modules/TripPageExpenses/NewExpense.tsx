@@ -1,3 +1,13 @@
+/*
+ Description:
+  A modal for adding a new expense.
+ 
+ Interactions:
+  - Parent Component(s): TripPageExpenses
+  - Direct Children Component(s): NewExpenseStepOne, NewExpenseStepTwo
+  - Database: Firestore writes
+*/
+
 import React, { useRef, useState } from "react";
 import cross from "/cross.svg";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";

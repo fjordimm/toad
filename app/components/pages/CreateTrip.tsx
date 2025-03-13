@@ -1,3 +1,13 @@
+/*
+ Description:
+  The page (with url '/create-trip') for creating a new trip.
+ 
+ Interactions:
+  - Parent Component(s): MainLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import { useState } from "react";
 import calendarIcon from "/calendarIcon.svg";
@@ -5,8 +15,6 @@ import { useMainLayoutContext, type MainLayoutContext } from "./MainLayout";
 import { useNavigate } from "react-router";
 import { dbCreateTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
-
-// TODO: error handling
 
 export default function CreateTrip() {
 

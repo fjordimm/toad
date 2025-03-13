@@ -1,5 +1,12 @@
-{/*Takes in 5 prop arguments: Destination name, cost, duration, time, and activity description
-    I put comments where these arguments will be called. */}
+/*
+ Description:
+  A card representing a single destination and all its info. This will be dragged between Itinerary and PossibleStops.
+ 
+ Interactions:
+  - Parent Component(s): TripPagePlan
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
 
 import React from "react";
 import { useState } from "react";

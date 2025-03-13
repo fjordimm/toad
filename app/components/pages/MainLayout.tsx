@@ -1,3 +1,13 @@
+/*
+ Description:
+  The main page layout. It has the menu bar on the left, and the subpage on the right.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): MenuBar, LandingPage (as Outlet), CreateTrip (as Outlet), TripPageLayout (as Outlet)
+  - Database: none
+*/
+
 import React from "react";
 import { Link, Outlet, useOutletContext } from "react-router";
 import MenuBar from "../modules/MenuBar";

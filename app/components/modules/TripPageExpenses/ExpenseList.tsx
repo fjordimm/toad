@@ -1,8 +1,11 @@
 /*
-This component is what displays the various view of expenses for TripPageExpenses. 
-It takes in a view (which is changed when the button in TripPageExpenses is clicked) as a prop
-It also takes in the props expenses, peopleOweMe, iOwePeople as three different arrays
-These arrays are uuids for expenses and will be used to generate the Expense components. 
+ Description:
+  A list of expenses to be used in the expenses page. It takes in three arrays of expense ids (expenses, peopleOweMe, iOwePeople) from TripPageExpenses.
+ 
+ Interactions:
+  - Parent Component(s): TripPageExpenses
+  - Direct Children Component(s): Expense
+  - Database: none
 */
 
 import type { DocumentSnapshot } from "firebase/firestore";

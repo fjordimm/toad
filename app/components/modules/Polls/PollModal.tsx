@@ -1,3 +1,13 @@
+/*
+ Description:
+  A modal that pops up when you create a new poll from a trip's main page.
+ 
+ Interactions:
+  - Parent Component(s): TripPageMain
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
+
 import React, { useEffect, useRef, useState } from "react";
 import { updateDoc } from 'firebase/firestore';
 import cross from "/cross.svg";

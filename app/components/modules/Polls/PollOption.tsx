@@ -1,3 +1,12 @@
+/*
+ Description:
+  A button/display representing on of the options within a poll. You click this button to vote for this option.
+ 
+ Interactions:
+  - Parent Component(s): PollDisplay
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
 
 import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import { DocumentSnapshot, getDoc } from "firebase/firestore";

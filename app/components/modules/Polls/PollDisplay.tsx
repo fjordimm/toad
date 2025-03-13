@@ -1,3 +1,13 @@
+/*
+ Description:
+  A card representing a single poll on the poll section of a trip's main page.
+ 
+ Interactions:
+  - Parent Component(s): TripPageMain
+  - Direct Children Component(s): PollOption
+  - Database: none
+*/
+
 import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "~/components/pages/TripPageLayout"
 import PollOption from "./PollOption";
 import { dbDeletePoll, dbDeleteVotes } from "~/src/databaseUtil";

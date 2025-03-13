@@ -1,6 +1,11 @@
 /*
-    This component is a card containing the information for a single expense.
-    It is to be used in ExpenseList.
+ Description:
+  A card containing the information for a single expense.
+ 
+ Interactions:
+  - Parent Component(s): ExpenseList, MemberBreakdown
+  - Direct Children Component(s): none
+  - Database: Firestore writes
 */
 
 import React, { type ReactNode } from "react";

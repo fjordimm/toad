@@ -1,3 +1,13 @@
+/*
+ Description:
+  A button representing one of a user's trips.
+ 
+ Interactions:
+  - Parent Component(s): MenuBar
+  - Direct Children Component(s): none
+  - Database: none
+*/
+
 import React from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { Link } from "react-router";

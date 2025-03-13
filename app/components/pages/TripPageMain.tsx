@@ -1,8 +1,13 @@
 /*
- * File Description: This page is the main trip page, or the first thing a user sees when the click on a trip from the sidebar.
- *                   It contains a feed of polls, navigation buttons to the plan/budget page, a view of the members of the trip
- * File Interactions: This page interacts with ToadCount.tsx, PollModal.tsx, PollCard.tsx, and navigates to the budget/trip pages
- */
+ Description:
+  The page (with url '/trip/:tripId/') representing a single trip. You get to this page when clicking on a trip in the menu bar.
+  It contains a feed of polls, ToadCount, and navigation buttons to the plan and the budget pages.
+ 
+ Interactions:
+  - Parent Component(s): TripPageLayout (as Outlet)
+  - Direct Children Component(s): ToadCount, PollModal, PollDisplay
+  - Database: none
+*/
 
 import ToadCount from "../modules/ToadCount";
 import NewPoll from "../modules/Polls/PollModal";

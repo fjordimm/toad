@@ -1,3 +1,13 @@
+/*
+ Description:
+  A card representing a single day of the itinerary. See Itinerary for more details.
+ 
+ Interactions:
+  - Parent Component(s): Itinerary
+  - Direct Children Component(s): DestinationBox
+  - Database: Firestore writes
+*/
+
 import React from "react";
 import { useEffect, useRef, type ReactNode } from "react";
 import { DocumentSnapshot, Timestamp, updateDoc } from "firebase/firestore";

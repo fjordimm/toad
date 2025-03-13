@@ -1,8 +1,17 @@
+/*
+ Description:
+  A card representing a single member within ToadCount.
+ 
+ Interactions:
+  - Parent Component(s): ToadCount
+  - Direct Children Component(s): none
+  - Database: Firestore writes
+*/
+
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
-
 
 export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null, isTripOwner: boolean}) {
 

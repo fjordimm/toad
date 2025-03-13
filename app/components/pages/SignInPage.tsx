@@ -1,3 +1,13 @@
+/*
+ Description:
+  The page (with url '/sign-in') for signing in.
+ 
+ Interactions:
+  - Parent Component(s): TopLevelLayout (as Outlet)
+  - Direct Children Component(s): none
+  - Database: Firebase Authentication
+*/
+
 import React from "react";
 import { useState } from 'react';
 import emailicon from '/mail.svg'
