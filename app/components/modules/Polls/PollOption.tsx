@@ -14,37 +14,26 @@ import { dbAddVote } from "~/src/databaseUtil";
 import Loading from "../Loading";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
-
-interface PollOption{
-    id: string,
-    option: string,      // Option
-    votes: string[],     // string[] array of user emails that voted for this option
-    totalVotes: number,
-    tripDbDoc: DocumentSnapshot,
-    tripMembersInfo: TripMembersInfo,
-    voterDbDoc: DocumentSnapshot
-}
-
 // Includes yellow option box and percentage
-export default function PollOption({id, option, votes, totalVotes, tripDbDoc, tripMembersInfo, voterDbDoc}:PollOption) {
+export default function PollOption(props: {id: string, option: string, votes: string[], totalVotes: number, tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, voterDbDoc: DocumentSnapshot}) {
     
     debugLogComponentRerender("PollOption");
     
     // email of current logged-in user - the voter
-    const voter = voterDbDoc.get("email");
+    const voter = props.voterDbDoc.get("email");
     
     // Adds user to database for corresponding vote once they click on an option
     async function handleVoteCasted () {
-        if (tripDbDoc) {
+        if (props.tripDbDoc) {
             console.log("User votedwadad: "+ voter)
 
-            await dbAddVote(tripDbDoc.ref, id, option, voter);
+            await dbAddVote(props.tripDbDoc.ref, props.id, props.option, voter);
         } 
     }
     
     // Ratio of:     voters who voted for this option / total voters
     // NaN values return 0
-    const voterPercentage = isNaN((votes.length / totalVotes) * 100) ? 0 : Math.round((votes.length / totalVotes) * 100);
+    const voterPercentage = isNaN((props.votes.length / props.totalVotes) * 100) ? 0 : Math.round((props.votes.length / props.totalVotes) * 100);
 
     // Math.round((Number(totalCost) / Object.keys(payees).length) * 100) / 100
     return (
@@ -61,7 +50,7 @@ export default function PollOption({id, option, votes, totalVotes, tripDbDoc, tr
                     {/* Progress Bar Overlay - deep orange*/}
                     <div className="absolute h-full rounded-md bg-[#E29F2C] text-left font-sunflower text-sidebar_deep_green p-2 font-bold" 
                         style={{ width: `${voterPercentage}%` }}>
-                            <div className="whitespace-nowrap pl-4 overflow-x-visible">{option}</div> 
+                            <div className="whitespace-nowrap pl-4 overflow-x-visible">{props.option}</div> 
                     </div>
 
                     {/* Vote Option Background - yellow */}
@@ -75,9 +64,9 @@ export default function PollOption({id, option, votes, totalVotes, tripDbDoc, tr
 
                 {/* Display voters' avatars */}
                 <div className="flex gap-1 min-h-4">
-                    {votes.map((user, index) => {
-                        if (tripMembersInfo[user] !== null && tripMembersInfo[user] !== undefined) {
-                            return <div className={`w-[14px] h-[14px] rounded-full ${tripMembersInfo[user].color}`}></div>;
+                    {props.votes.map((user, index) => {
+                        if (props.tripMembersInfo[user] !== null && props.tripMembersInfo[user] !== undefined) {
+                            return <div className={`w-[14px] h-[14px] rounded-full ${props.tripMembersInfo[user].color}`}></div>;
                         } else {
                             return <Loading />;
                         }

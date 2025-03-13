@@ -18,7 +18,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import linkifyHtml from "linkify-html";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
-const options = {
+const linkifyOptions = {
     defaultProtocol: "https",
     attributes: {
         target: "_blank",
@@ -32,12 +32,6 @@ const options = {
         }
         return href;
     },
-    // format: (value: string, type: string): string => {
-    //     if (type === "url") {
-    //       return value.replace(/^https?:\/\//, "");
-    //     }
-    //     return value;
-    //   },
 };
 
 export default function CalendarCard(props: { dbIndex: number, activities: any[], day: Timestamp, stay_at: string, additional_notes: string, tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
@@ -76,11 +70,11 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
     const updateClickableUrls = () => {
         if (stayAtRef.current) {
             const textContent = stayAtRef.current.innerText;
-            stayAtRef.current.innerHTML = linkifyHtml(textContent, options);
+            stayAtRef.current.innerHTML = linkifyHtml(textContent, linkifyOptions);
         }
         if (contentRef.current) {
             const textContent = contentRef.current.innerText;
-            contentRef.current.innerHTML = linkifyHtml(textContent, options);
+            contentRef.current.innerHTML = linkifyHtml(textContent, linkifyOptions);
         }
     };
 
@@ -139,11 +133,11 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
                 // if additional_notes in database is updated - change content of div via ref
                 if (contentRef.current && updatedNotes) {
                     // contentRef.current.innerText = updatedNotes;
-                    contentRef.current.innerHTML = linkifyHtml(updatedNotes, options);
+                    contentRef.current.innerHTML = linkifyHtml(updatedNotes, linkifyOptions);
                 }
 
                 if (stayAtRef.current && updatedStayAt) {
-                    stayAtRef.current.innerHTML = linkifyHtml(updatedStayAt, options);
+                    stayAtRef.current.innerHTML = linkifyHtml(updatedStayAt, linkifyOptions);
                 }
             }
         }
