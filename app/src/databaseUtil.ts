@@ -1,3 +1,12 @@
+/*
+ Description:
+  A collection of functions for reading from and writing to Firestore.
+  React components should always use these functions rather than directly interfacing with Firestore.
+ 
+ Interactions:
+  - used by multiple React components (not listed here)
+*/
+
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentReference, getDoc, updateDoc, type DocumentSnapshot } from "firebase/firestore";
 import { firebaseAuth, firebaseDb } from "./toadFirebase";

@@ -1,3 +1,10 @@
+/*
+ Description:
+  A set of miscellaneous helper functions used throughout the project.
+ 
+ Interactions:
+  - used by multiple files (not listed here)
+*/
 
 export function stringHash(input: string) {
     let hash: number = 0;

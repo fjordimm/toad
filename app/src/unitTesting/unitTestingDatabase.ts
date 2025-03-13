@@ -1,3 +1,12 @@
+/*
+ Description:
+  A simple program for checking the validity of the values stored in the database.
+ 
+ Interactions:
+  - Meant to be used on the command line, separate from React-Router.
+    The command `npm run test-database` should run this file.
+*/
+
 import { collection, doc, DocumentSnapshot, getDoc, getDocs, QuerySnapshot, Timestamp } from "firebase/firestore";
 import { firebaseDb } from "../toadFirebase";
 

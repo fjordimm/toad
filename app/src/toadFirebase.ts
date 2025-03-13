@@ -1,8 +1,14 @@
+/*
+ Description:
+  The API keys and initializer for Firebase functionality.
+ 
+ Interactions:
+  - Should almost exclusively be used by databaseUtil.ts, with few exceptions.
+*/
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
     apiKey: "AIzaSyByesNrYrupfSitTm_UlwaO01sibnzXsHg",
