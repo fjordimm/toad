@@ -17,9 +17,9 @@ import { dbAddPoll } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function PollModal(props: { onClose: () => void }) {
-    
+
     debugLogComponentRerender("PollModal");
-    
+
     const modalContentRef = useRef<HTMLDivElement>(null);
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
@@ -87,9 +87,9 @@ export default function PollModal(props: { onClose: () => void }) {
 
     const validateDuplicateOptions = (options: string[]) => {
         const uniqueOptions = new Set(options);
-        if (uniqueOptions.size < options.length){
+        if (uniqueOptions.size < options.length) {
             setError("Error: options cannot have the same name");
-        }else{
+        } else {
             setError("");
         }
     }
@@ -102,14 +102,14 @@ export default function PollModal(props: { onClose: () => void }) {
     };
 
     return (
-        <div 
-            className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50" 
+        <div
+            className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
             onClick={handleOverlayClick}
         >
             {/* Modal Container */}
-            <div 
-                ref={modalContentRef} 
-                className="relative flex flex-col w-2/5 bg-dashboard_component_bg py-8 rounded-2xl gap-6" 
+            <div
+                ref={modalContentRef}
+                className="relative flex flex-col w-2/5 bg-dashboard_component_bg py-8 rounded-2xl gap-6"
                 onClick={(e) => e.stopPropagation()}
             >
 
@@ -121,8 +121,8 @@ export default function PollModal(props: { onClose: () => void }) {
                 </div>
 
                 {/* Close Button */}
-                <div 
-                    className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg cursor-pointer" 
+                <div
+                    className="absolute top-4 right-4 rounded-full h-10 w-10 flex items-center justify-center bg-sidebar_button_bg cursor-pointer"
                     onClick={props.onClose}
                 >
                     <img src={cross} className="w-7 h-7" />
@@ -130,30 +130,30 @@ export default function PollModal(props: { onClose: () => void }) {
 
                 {/* Poll Form */}
                 <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-                    
+
                     {/* Poll Title Input */}
                     <div className="bg-sidebar_deep_green/15 py-4 px-8 w-11/12 rounded-2xl focus-within:ring-2 focus-within:ring-[#FFF]/40">
-                        <input 
-                            type="text" 
-                            id="title" 
-                            name="title" 
-                            value={title} 
-                            onChange={(e) => setTitle(e.target.value)} 
-                            required 
-                            placeholder="Name of Poll" 
-                            className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower border-b-2 border-[#FFF]/50 focus:outline-none" 
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                            placeholder="Name of Poll"
+                            className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower border-b-2 border-[#FFF]/50 focus:outline-none"
                         />
                     </div>
 
                     {/* Poll Description */}
                     <div className="mt-5 bg-sidebar_deep_green/15 py-4 px-8 w-11/12 min-h-28 rounded-2xl focus-within:ring-2 focus-within:ring-[#FFF]/40">
-                        <textarea 
-                            id="description" 
-                            name="description" 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)} 
-                            placeholder="Description" 
-                            className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0" 
+                        <textarea
+                            id="description"
+                            name="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Description"
+                            className="w-full bg-transparent text-[#FFF] placeholder:text-[#FFF]/50 font-sunflower focus:outline-none focus:ring-0"
                         />
                     </div>
 
@@ -161,9 +161,9 @@ export default function PollModal(props: { onClose: () => void }) {
                     <div className="w-11/12 bg-[#8FAE72] p-4 rounded-xl mt-4 h-[290px] overflow-y-auto scrollbar-none flex flex-col items-center">
 
                         {/* Add Poll Option Button */}
-                        <button 
-                            type="button" 
-                            onClick={handleAddOption} 
+                        <button
+                            type="button"
+                            onClick={handleAddOption}
                             className="bg-[#769368] text-white text-sm font-sunflower px-4 py-1 rounded-md mb-4 w-[190px] text-center"
                         >
                             + Add a Poll Option
@@ -175,12 +175,12 @@ export default function PollModal(props: { onClose: () => void }) {
 
                                 {/* Poll Option Input */}
                                 <div className="flex-grow bg-[#EFDA53] p-2 rounded-md mt-2">
-                                    <input 
-                                        type="text" 
-                                        value={option} 
-                                        onChange={(e) => handleOptionChange(index, e.target.value)} 
-                                        className="w-full bg-transparent text-black placeholder:text-black font-sunflower focus:outline-none" 
-                                        placeholder="Option Name" 
+                                    <input
+                                        type="text"
+                                        value={option}
+                                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                                        className="w-full bg-transparent text-black placeholder:text-black font-sunflower focus:outline-none"
+                                        placeholder="Option Name"
                                     />
                                 </div>
 

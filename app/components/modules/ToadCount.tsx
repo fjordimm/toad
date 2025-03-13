@@ -33,9 +33,9 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
         return Object.keys(props.tripMembersInfo).map((memberEmailId) => {
             const memberInfo = props.tripMembersInfo[memberEmailId];
 
-            if(trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
+            if (trip_active_users.includes(memberInfo.dbDoc.get("email"))) {
                 return (
-                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner}/>
+                    <ToadMember key={memberInfo.dbDoc.id} memberColor={memberInfo.color} tripDbDoc={props.tripDbDoc} memberDbDoc={memberInfo.dbDoc} isTripOwner={isTripOwner} />
                 );
             }
         });
@@ -47,8 +47,8 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const currUser: string = tripPageLayoutContext.userDbDoc.get("email");
-    let isTripOwner:boolean = true;
-    if(tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
+    let isTripOwner: boolean = true;
+    if (tripPageLayoutContext.tripDbDoc.get("trip_owner") !== currUser) {
         isTripOwner = false;
     }
 
@@ -125,10 +125,10 @@ export default function ToadCount(props: { tripDbDoc: DocumentSnapshot | null, t
                 </button>
             </div>)}
             {isModalOpen && (
-            <ConfirmDelete 
-            tripDbDoc={props.tripDbDoc}
-            onClose={() => setIsModalOpen(false)}
-            />)}
+                <ConfirmDelete
+                    tripDbDoc={props.tripDbDoc}
+                    onClose={() => setIsModalOpen(false)}
+                />)}
         </div>
     );
 }

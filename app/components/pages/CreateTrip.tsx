@@ -27,7 +27,7 @@ export default function CreateTrip() {
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-     const [error, setError] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,7 +49,7 @@ export default function CreateTrip() {
 
             navigate(`/trip/${tripDbDocRef.id}`);
         }
-        catch (err:any) {
+        catch (err: any) {
             console.error("Error adding trip: ", error);
         }
     };

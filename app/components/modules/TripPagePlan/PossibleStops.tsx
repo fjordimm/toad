@@ -18,7 +18,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
 
     debugLogComponentRerender("PossibleStops");
-    
+
     function turnUnusedDestinationsIntoElems(): ReactNode {
 
         const destinationsAsElems = [];

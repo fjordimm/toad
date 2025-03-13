@@ -22,7 +22,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 export default function TripPageExpenses() {
 
     debugLogComponentRerender("TripPageExpenses");
-    
+
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");
@@ -84,13 +84,13 @@ export default function TripPageExpenses() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     //const [isMemberModalOpen, setMemberModalOpen] = useState(false);
-    const [selectedMember, setSelectedMember] =  useState<DocumentSnapshot | null>(null);
+    const [selectedMember, setSelectedMember] = useState<DocumentSnapshot | null>(null);
 
-    const MemberBox = ({ member, onClick }: {member: DocumentSnapshot, onClick:(member: DocumentSnapshot) => void}) => {
+    const MemberBox = ({ member, onClick }: { member: DocumentSnapshot, onClick: (member: DocumentSnapshot) => void }) => {
         const memberName = `${member.get("first_name")} ${member.get("last_name")}`;
         const userColor = tripPageLayoutContext.tripMembersInfo[member.id].color;
         return (
-            <div 
+            <div
                 onClick={() => onClick(member)}
                 className="relative w-full h-[28px] bg-[#8FA789]/40 shadow-sm rounded-lg"
             >
@@ -103,7 +103,7 @@ export default function TripPageExpenses() {
             </div>
         );
     };
-    
+
 
     const renderAllMembers = () => {
         return (
@@ -112,26 +112,26 @@ export default function TripPageExpenses() {
                     <p>View Expenses By Person</p>
                 </div>
                 <div className="flex flex-col mx-2  my-3 gap-2">
-                {
-                    users_archived_list.map((memberEmail: string) => {
-                        if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
-                            return (
-                                <MemberBox 
-                                    key={memberEmail} 
-                                    member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc} 
-                                    onClick={(member) => setSelectedMember(member)}
-                                />
-                            );
-                        } else {
-                            return null;
-                        }
-                    })
-                }
+                    {
+                        users_archived_list.map((memberEmail: string) => {
+                            if (tripPageLayoutContext.tripDbDoc !== null && memberEmail !== currUser) {
+                                return (
+                                    <MemberBox
+                                        key={memberEmail}
+                                        member={tripPageLayoutContext.tripMembersInfo[memberEmail].dbDoc}
+                                        onClick={(member) => setSelectedMember(member)}
+                                    />
+                                );
+                            } else {
+                                return null;
+                            }
+                        })
+                    }
                 </div>
             </div>
         );
     };
-    
+
     return (
         <div className="grow flex flex-col flex-auto gap-5 overflow-auto scrollbar-thin scrollbar-thumb-sidebar_deep_green scrollbar-track-transparent bg-dashboard_lime">
             {/* Non button div */}

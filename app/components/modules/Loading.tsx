@@ -14,7 +14,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 export default function Loading() {
 
     debugLogComponentRerender("Loading");
-    
+
     return (
         <div className="flex justify-center items-center p-3 bg-dashboard_component_bg">
             <p className="font-sunflower text-white">Loading...</p>

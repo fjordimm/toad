@@ -65,9 +65,9 @@ export default function SignUpPage() {
                     setError("Email already in use!");
                 } else if (err.code === "auth/invalid-email") {
                     setError("Please enter a valid email!");
-                } else if (err.code === "auth/weak-password") { 
+                } else if (err.code === "auth/weak-password") {
                     setError("Your password is too weak!");
-                }else {
+                } else {
                     setError("An unknown error has occurred!");
                     console.log("An unknown Firebase error occurred while trying to add a new user:");
                     console.log(err);

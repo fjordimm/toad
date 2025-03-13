@@ -27,9 +27,9 @@ async function retrieveItinerary(tripDbDoc: DocumentSnapshot) {
 }
 
 export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
-    
+
     debugLogComponentRerender("Itinerary");
-    
+
     const [itineraryList, setItineraryList] = useState<any[]>([]);
 
     useEffect(() => {

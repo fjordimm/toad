@@ -19,7 +19,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 export default function NewExpense(props: { onClose: () => void }) {
 
     debugLogComponentRerender("NewExpense");
-    
+
     const modalContentRef = useRef<HTMLDivElement>(null);
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 

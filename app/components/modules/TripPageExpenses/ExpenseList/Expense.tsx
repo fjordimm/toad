@@ -18,10 +18,10 @@ const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string, currUser: string}) {
+export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string, currUser: string }) {
 
     debugLogComponentRerender("Expense");
-    
+
     const expenseObj: any = props.tripDbDoc.get("expenses")[props.expenseId];
 
     const expenseOwnerInfo = props.tripMembersInfo[expenseObj.expense_owner];
@@ -105,7 +105,7 @@ export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMember
 
                 {expenseOwnerInfo.dbDoc.get("email") === props.currUser ? <button onClick={handleDeleteButton} className="bg-[#D86D6D]/70 hover:bg-[#D86D6D]/80 flex justify-center items-center px-5 py-1 rounded-lg">
                     <span className="font-sunflower text-base text-white">Delete Expense</span>
-                </button>: null}
+                </button> : null}
             </div>
         </div>
     );

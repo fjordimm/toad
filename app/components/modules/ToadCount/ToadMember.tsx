@@ -13,7 +13,7 @@ import React from "react";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 
-export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null, isTripOwner: boolean}) {
+export default function ToadMember(props: { memberColor: string, tripDbDoc: DocumentSnapshot | null, memberDbDoc: DocumentSnapshot | null, isTripOwner: boolean }) {
 
     debugLogComponentRerender("ToadMember");
 
@@ -31,7 +31,7 @@ export default function ToadMember(props: { memberColor: string, tripDbDoc: Docu
         ;
 
     return (
-        <div className = "flex flex-row  w-full">
+        <div className="flex flex-row  w-full">
             <div className={`relative ${props.isTripOwner ? 'w-10/12' : 'w-full'} items-center h-[28px] bg-[#8FA789]/40 rounded-lg shadow-sm`}>
                 {/* Circle representing the color icon */}
                 <div

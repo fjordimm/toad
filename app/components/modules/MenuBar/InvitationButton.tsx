@@ -14,7 +14,7 @@ import { dbAcceptInvitation, dbDeclineInvitation } from "~/src/databaseUtil";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function InvitationButton(props: { userDbDoc: DocumentSnapshot, tripDbDoc: DocumentSnapshot }) {
-    
+
     debugLogComponentRerender("InvitationButton");
 
     async function handleCheckButton() {

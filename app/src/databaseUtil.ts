@@ -203,7 +203,7 @@ export async function dbDeclineInvitation(userDbDoc: DocumentSnapshot, tripId: s
 
 export async function dbAddUserToTrip(tripDbDocRef: DocumentReference, userDbDoc: DocumentSnapshot) {
     await updateDoc(tripDbDocRef, {
-        trip_users: arrayUnion(userDbDoc.id), 
+        trip_users: arrayUnion(userDbDoc.id),
         trip_active_users: arrayUnion(userDbDoc.id)
     });
 
@@ -370,7 +370,7 @@ export async function dbMarkExpenseAsPaidOrUnpaid(tripDbDocRef: DocumentReferenc
 }
 
 
-export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] } ) {
+export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, description: string, pollOwner: string, options: string[], votes: { [key: string]: string[] }) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
     const pollId: string = generateUuid();
@@ -386,24 +386,24 @@ export async function dbAddPoll(tripDbDocRef: DocumentReference, title: string, 
     };
 
     console.log("Poll object before update:", pollObj);
-    
+
     await updateDoc(tripDbDoc.ref, {
         polls: pollObj
     });
 }
 
-export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string){
+export async function dbDeletePoll(tripDbDocRef: DocumentReference, pollId: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
     const pollObj = tripDbDoc.get("polls");
-    delete(pollObj[pollId])
+    delete (pollObj[pollId])
     await updateDoc(tripDbDoc.ref, {
         polls: pollObj
     });
 }
 
 // Add user email to votes[options] once a vote is casted for a specific pollID and option
-export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option:string, user:string){
+export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string, option: string, user: string) {
 
     await dbDeleteVotes(tripDbDocRef, pollId, user);   // ensure only one option is selected
 
@@ -413,19 +413,19 @@ export async function dbAddVote(tripDbDocRef: DocumentReference, pollId: string,
 }
 
 // Clears ALL of current user's votes
-export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user:string){
+export async function dbDeleteVotes(tripDbDocRef: DocumentReference, pollId: string, user: string) {
     const tripDbDoc: DocumentSnapshot = await getDoc(tripDbDocRef);
 
-    if(tripDbDoc.exists()){
+    if (tripDbDoc.exists()) {
         const votesObj = tripDbDoc.data().polls[pollId].votes || {}
 
-        for (const option in votesObj){
-            if (votesObj[option]){
+        for (const option in votesObj) {
+            if (votesObj[option]) {
                 votesObj[option] = votesObj[option].filter((voter: string) => voter !== user);
             }
         }
 
-        await updateDoc(tripDbDocRef,{
+        await updateDoc(tripDbDocRef, {
             [`polls.${pollId}.votes`]: votesObj,
         })
     }

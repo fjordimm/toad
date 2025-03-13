@@ -22,7 +22,7 @@ import { debugLogComponentRerender } from "~/src/debugUtil";
 export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, destinationId: string, name: string, price: string, length: string, time: string, description: string }) {
 
     debugLogComponentRerender("DestinationBox");
-    
+
     const [isCollapsed, setIsCollapsed] = useState(true);
     // const [mouseIsOver, setMouseIsOver] = useState(false);
 
