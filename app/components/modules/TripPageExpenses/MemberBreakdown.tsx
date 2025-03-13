@@ -13,9 +13,12 @@ import React from "react";
 import { useRef, useState } from 'react';
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 import Expense from "../../modules/TripPageExpenses/ExpenseList/Expense";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function MemberBreakdown(props: {memberEmail: string, memberFirstName: string, iOwePeople: string[], peopleOweMe: string[], currUser: string, expensesDict: any, tripMembersInfo: TripMembersInfo,  tripDbDoc: DocumentSnapshot | null, onClose: () => void}) {
-
+    
+    debugLogComponentRerender("MemberBreakdown");
+    
     const modalContentRef = useRef<HTMLDivElement>(null);
     const [view, setView] = useState<"owe" | "owed">("owe");
 

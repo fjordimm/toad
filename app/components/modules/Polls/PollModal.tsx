@@ -14,8 +14,12 @@ import cross from "/cross.svg";
 import DeletePoll from "/DeletePoll.svg";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import { dbAddPoll } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
-export default function NewPoll(props: { onClose: () => void }) {
+export default function PollModal(props: { onClose: () => void }) {
+    
+    debugLogComponentRerender("PollModal");
+    
     const modalContentRef = useRef<HTMLDivElement>(null);
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 

@@ -17,9 +17,12 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPage
 import NewExpense from "../modules/TripPageExpenses/NewExpense";
 import type { DocumentSnapshot } from "firebase/firestore";
 import MemberBreakdown from "../modules/TripPageExpenses/MemberBreakdown";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function TripPageExpenses() {
 
+    debugLogComponentRerender("TripPageExpenses");
+    
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 
     const [view, setView] = useState<"all" | "owe" | "owed">("all");

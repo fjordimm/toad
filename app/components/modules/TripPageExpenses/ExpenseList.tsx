@@ -12,9 +12,12 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import Expense from "./ExpenseList/Expense";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function ExpenseList(props: { view: "all" | "owe" | "owed", filter: "all" | "paid" | "unpaid", expenses: string[], peopleOweMe: string[], iOwePeople: string[], tripDbDoc: DocumentSnapshot | null, tripMembersInfo: TripMembersInfo, expenses_dict: any, currentUser: string }) {
 
+    debugLogComponentRerender("ExpenseList");
+    
     if (props.view === "all") {
         const all_paid: string[] = [];
         const all_unpaid: string[] = [];

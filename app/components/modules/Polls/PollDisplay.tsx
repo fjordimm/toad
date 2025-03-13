@@ -13,6 +13,7 @@ import PollOption from "./PollOption";
 import { dbDeletePoll, dbDeleteVotes } from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
 import Loading from "../Loading";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 // Properties of a Poll
 interface PollData {
@@ -40,7 +41,9 @@ function totalVotes (votes:Record<string, string[]>  ): number {
 }
 
 // Displays one Poll
-export default function PollCard ({pollID, description, options, poll_owner, title, votes, tripDbDoc, tripMembersInfo, voterDbDoc}:PollData) {
+export default function PollDisplay({pollID, description, options, poll_owner, title, votes, tripDbDoc, tripMembersInfo, voterDbDoc}:PollData) {
+    
+    debugLogComponentRerender("PollDisplay");
     
     //Get Full Name and Avatar Color of pollOwner
     const pollOwnerInfo = tripMembersInfo?.[poll_owner];

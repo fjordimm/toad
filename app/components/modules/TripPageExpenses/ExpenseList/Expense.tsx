@@ -12,6 +12,7 @@ import React, { type ReactNode } from "react";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteExpense, dbMarkExpenseAsPaidOrUnpaid } from "~/src/databaseUtil";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -19,6 +20,8 @@ const months = [
 
 export default function Expense(props: { tripDbDoc: DocumentSnapshot, tripMembersInfo: TripMembersInfo, expenseId: string, currUser: string}) {
 
+    debugLogComponentRerender("Expense");
+    
     const expenseObj: any = props.tripDbDoc.get("expenses")[props.expenseId];
 
     const expenseOwnerInfo = props.tripMembersInfo[expenseObj.expense_owner];

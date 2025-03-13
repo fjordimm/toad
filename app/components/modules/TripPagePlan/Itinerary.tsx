@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
 import CalendarCard from "./Itinerary/CalendarCard";
 import { dbRetrieveTripItinerary } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 /*
 retrieveItinerary: retrieves itinerary field from trip database as array of dict days
@@ -26,6 +27,9 @@ async function retrieveItinerary(tripDbDoc: DocumentSnapshot) {
 }
 
 export default function Itinerary(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
+    
+    debugLogComponentRerender("Itinerary");
+    
     const [itineraryList, setItineraryList] = useState<any[]>([]);
 
     useEffect(() => {

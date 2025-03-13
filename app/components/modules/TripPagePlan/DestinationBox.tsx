@@ -17,8 +17,12 @@ import EditBox from "/EditBox.svg";
 import Cancel from "/Cancel.svg";
 import type { DocumentSnapshot } from "firebase/firestore";
 import { dbDeleteDestination, dbRemoveDestinationFromAllItineraryDays } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function DestinationBox(props: { tripDbDoc: DocumentSnapshot, destinationId: string, name: string, price: string, length: string, time: string, description: string }) {
+
+    debugLogComponentRerender("DestinationBox");
+    
     const [isCollapsed, setIsCollapsed] = useState(true);
     // const [mouseIsOver, setMouseIsOver] = useState(false);
 

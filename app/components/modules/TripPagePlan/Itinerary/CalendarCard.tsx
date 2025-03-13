@@ -16,20 +16,21 @@ import stayAtIcon from "/stayAt.svg"
 import { DestinationDroppable, SortableDestinationBox } from "~/components/pages/TripPagePlan";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import linkifyHtml from "linkify-html";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 const options = {
     defaultProtocol: "https",
     attributes: {
-      target: "_blank",
-      rel: "noopener noreferrer",
-      contentEditable: "false"
+        target: "_blank",
+        rel: "noopener noreferrer",
+        contentEditable: "false"
     },
     // Ensures that URLs without http(s) get prefixed appropriately
-    formatHref: (href:string, type:string) => {
-      if (type === "url" && !/^(?:https?|ftp):\/\//i.test(href)) {
-        return "https://" + href;
-      }
-      return href;
+    formatHref: (href: string, type: string) => {
+        if (type === "url" && !/^(?:https?|ftp):\/\//i.test(href)) {
+            return "https://" + href;
+        }
+        return href;
     },
     // format: (value: string, type: string): string => {
     //     if (type === "url") {
@@ -37,12 +38,12 @@ const options = {
     //     }
     //     return value;
     //   },
-  };
-  
-
-// CalendarCard creates SINGULAR itinerary card representing a single day
+};
 
 export default function CalendarCard(props: { dbIndex: number, activities: any[], day: Timestamp, stay_at: string, additional_notes: string, tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
+
+    debugLogComponentRerender("CalendarCard");
+
     const { tripId } = useParams();
     // console.log("DBDoc ID: " + tripDbDoc?.id);
 
@@ -74,13 +75,13 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
 
     const updateClickableUrls = () => {
         if (stayAtRef.current) {
-          const textContent = stayAtRef.current.innerText;
-          stayAtRef.current.innerHTML = linkifyHtml(textContent, options);
+            const textContent = stayAtRef.current.innerText;
+            stayAtRef.current.innerHTML = linkifyHtml(textContent, options);
         }
         if (contentRef.current) {
             const textContent = contentRef.current.innerText;
             contentRef.current.innerHTML = linkifyHtml(textContent, options);
-          }
+        }
     };
 
     const handleSave = async () => {
@@ -148,9 +149,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
         }
     }, [props.tripDbDoc]);
 
-    useEffect(() =>{
+    useEffect(() => {
         const currentStayAt = stayAtRef.current;
-        if(currentStayAt) {
+        if (currentStayAt) {
             const clickHandler = (e: MouseEvent) => {
                 const target = e.target as HTMLElement;
                 if (target.tagName === "A") {
@@ -163,9 +164,9 @@ export default function CalendarCard(props: { dbIndex: number, activities: any[]
         }
     }, []);
 
-    useEffect(() =>{
+    useEffect(() => {
         const currentNotes = contentRef.current;
-        if(currentNotes) {
+        if (currentNotes) {
             const clickHandler = (e: MouseEvent) => {
                 const target = e.target as HTMLElement;
                 if (target.tagName === "A") {

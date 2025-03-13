@@ -12,6 +12,7 @@ import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutCont
 import { DocumentSnapshot, getDoc } from "firebase/firestore";
 import { dbAddVote } from "~/src/databaseUtil";
 import Loading from "../Loading";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 
 interface PollOption{
@@ -26,6 +27,9 @@ interface PollOption{
 
 // Includes yellow option box and percentage
 export default function PollOption({id, option, votes, totalVotes, tripDbDoc, tripMembersInfo, voterDbDoc}:PollOption) {
+    
+    debugLogComponentRerender("PollOption");
+    
     // email of current logged-in user - the voter
     const voter = voterDbDoc.get("email");
     

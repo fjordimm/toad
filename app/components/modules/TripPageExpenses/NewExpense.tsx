@@ -14,9 +14,12 @@ import { useTripPageLayoutContext, type TripPageLayoutContext } from "app/compon
 import NewExpenseStepOne from "./NewExpense/NewExpenseStepOne";
 import NewExpenseStepTwo from "./NewExpense/NewExpenseStepTwo";
 import { dbAddExpense } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function NewExpense(props: { onClose: () => void }) {
 
+    debugLogComponentRerender("NewExpense");
+    
     const modalContentRef = useRef<HTMLDivElement>(null);
     const tripPageLayoutContext: TripPageLayoutContext = useTripPageLayoutContext();
 

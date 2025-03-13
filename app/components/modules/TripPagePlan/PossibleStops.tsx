@@ -13,9 +13,12 @@ import type { DocumentSnapshot } from "firebase/firestore";
 import { useState, type ReactNode } from "react";
 import { DestinationDroppable, DraggableDestinationBox } from "~/components/pages/TripPagePlan";
 import AddDestination from "./AddDestination";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function PossibleStops(props: { tripDbDoc: DocumentSnapshot, listOfDestinations: { [key: string]: any }, activeDraggableId: string | null }) {
 
+    debugLogComponentRerender("PossibleStops");
+    
     function turnUnusedDestinationsIntoElems(): ReactNode {
 
         const destinationsAsElems = [];

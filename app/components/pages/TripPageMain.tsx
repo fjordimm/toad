@@ -10,13 +10,13 @@
 */
 
 import ToadCount from "../modules/ToadCount";
-import NewPoll from "../modules/Polls/PollModal";
+import PollModal from "../modules/Polls/PollModal";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import React, { useState } from "react";
 import { Link } from "react-router";
 import AddPoll from "/AddPoll.svg";
-import PollCard from "../modules/Polls/PollDisplay";
+import PollDisplay from "../modules/Polls/PollDisplay";
 import CalenderDate from "/calendar-date.svg";
 import Dollar from "/currency-dollar-circle.svg"
 
@@ -76,7 +76,7 @@ export default function TripPageMain() {
 
                     <div className="w-full flex flex-col gap-2 overflow-auto">
                         {tripPollsSorted.map(([pollID, poll]) => (
-                            <PollCard
+                            <PollDisplay
                                 pollID={pollID || " "}
                                 description={poll.description || " "}
                                 options={poll.options || []}
@@ -114,7 +114,7 @@ export default function TripPageMain() {
             </div>
 
             {/* Show the modal when isPollModalOpen is true */}
-            {isPollModalOpen && <NewPoll onClose={() => setIsPollModalOpen(false)} />}
+            {isPollModalOpen && <PollModal onClose={() => setIsPollModalOpen(false)} />}
         </div>
     );
 }

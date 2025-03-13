@@ -56,9 +56,12 @@ import { useRef, useState } from 'react';
 import { type DocumentSnapshot } from 'firebase/firestore';
 import cross from "/cross.svg";
 import { dbAddDestination } from "~/src/databaseUtil";
+import { debugLogComponentRerender } from "~/src/debugUtil";
 
 export default function AddDestination(props: { tripDbDoc: DocumentSnapshot | null, onClose: () => void }) {
 
+    debugLogComponentRerender("AddDestination");
+    
     const modalContentRef = useRef<HTMLDivElement>(null);
 
     const [destinationName, setDestinationName] = useState('');

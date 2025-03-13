@@ -12,10 +12,13 @@ import { dbDeleteTrip} from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { useNavigate } from "react-router";
-import { debugLogError } from "~/src/debugUtil";
+import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import { useRef } from "react";
 
 export default function ConfirmDelete(props: {tripDbDoc: DocumentSnapshot | null, onClose: () => void  }) {
+    
+    debugLogComponentRerender("ConfirmDelete");
+    
     const navigate = useNavigate();
     const modalContentRef = useRef<HTMLDivElement>(null);
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
