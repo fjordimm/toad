@@ -25,7 +25,7 @@ export default function MainLayout() {
         return (
             <div className="max-w-full flex flex-row overflow-hidden max-h-[100vh]">
                 <MenuBar userDbDoc={topLevelLayoutContext.userDbDoc} />
-                <div className="grow m-5 overflow-y-auto">
+                <div className="grow m-5 overflow-y-auto flex flex-col">
                     {/* Sub pages (as defined in routes.ts) */}
                     <Outlet context={{ userDbDoc: topLevelLayoutContext.userDbDoc }} />
                 </div>
