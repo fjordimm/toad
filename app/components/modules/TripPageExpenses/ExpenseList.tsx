@@ -8,8 +8,8 @@
   - Database: none
 */
 
-import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import type { DocumentSnapshot } from "firebase/firestore";
 import Expense from "./ExpenseList/Expense";
 import type { TripMembersInfo } from "~/components/pages/TripPageLayout";
 import { debugLogComponentRerender } from "~/src/debugUtil";

@@ -10,8 +10,8 @@
   - Database: none
 */
 
-import { Link } from "react-router";
 import React, { useState } from "react";
+import { Link } from "react-router";
 import ExpenseList from "~/components/modules/TripPageExpenses/ExpenseList";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
 import NewExpense from "../modules/TripPageExpenses/NewExpense";

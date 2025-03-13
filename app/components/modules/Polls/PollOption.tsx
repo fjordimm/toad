@@ -8,6 +8,7 @@
   - Database: Firestore writes
 */
 
+import React from "react";
 import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "app/components/pages/TripPageLayout";
 import { DocumentSnapshot, getDoc } from "firebase/firestore";
 import { dbAddVote } from "~/src/databaseUtil";

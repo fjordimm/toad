@@ -8,9 +8,9 @@
   - Database: none
 */
 
+import React from "react";
 import { dbDeleteTrip } from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
-import React from "react";
 import { useNavigate } from "react-router";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 import { useRef } from "react";

@@ -8,8 +8,8 @@
   - Database: Firestore writes
 */
 
-import type { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
+import type { DocumentSnapshot } from "firebase/firestore";
 import { dbRemoveUserFromTrip } from "~/src/databaseUtil";
 import { debugLogComponentRerender, debugLogError } from "~/src/debugUtil";
 

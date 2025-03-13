@@ -9,11 +9,11 @@
   - Database: none
 */
 
+import React, { useState } from "react";
 import ToadCount from "../modules/ToadCount";
 import PollModal from "../modules/Polls/PollModal";
 import { debugLogComponentRerender } from "~/src/debugUtil";
 import { useTripPageLayoutContext, type TripPageLayoutContext } from "./TripPageLayout";
-import React, { useState } from "react";
 import { Link } from "react-router";
 import AddPoll from "/AddPoll.svg";
 import PollDisplay from "../modules/Polls/PollDisplay";

@@ -8,7 +8,8 @@
   - Database: none
 */
 
-import { useTripPageLayoutContext, type TripMembersInfo, type TripPageLayoutContext } from "~/components/pages/TripPageLayout"
+import React from "react";
+import { type TripMembersInfo } from "~/components/pages/TripPageLayout"
 import PollOption from "./PollOption";
 import { dbDeletePoll, dbDeleteVotes } from "~/src/databaseUtil";
 import type { DocumentSnapshot } from "firebase/firestore";
